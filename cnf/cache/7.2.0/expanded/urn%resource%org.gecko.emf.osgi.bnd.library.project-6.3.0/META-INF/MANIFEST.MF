@@ -1,0 +1,29 @@
+Manifest-Version: 1.0
+Bnd-LastModified: 1733218169863
+Bundle-ContactAddress: info@datainmotion.com
+Bundle-Copyright: Data In Motion Consuling GmbH - All rights reserved
+Bundle-Developers: sbischof; email="stbischof@bipolis.org"; name="Stef
+ an Bischof"; roles="developer", jalbert; email="j.albert@datainmotion
+ .com"; name="Juergen Albert"; organization="Data In Motion"; organiza
+ tionUrl="https://www.datainmotion.com"; roles="architect,developer", 
+ mhoffmann; name="Mark Hoffmann"; email="m.hoffmann@datainmotion.com";
+  url="https://www.datainmotion.com"; organization="Data In Motion"; o
+ rganizationUrl="https://www.datainmotion.com"; roles="developer,archi
+ tect"
+Bundle-DocURL: https://github.com/geckoprojects-org/org.gecko.emf
+Bundle-License: Eclipse Public License 2.0
+Bundle-ManifestVersion: 2
+Bundle-Name: EMF OSGi Project Library
+Bundle-SCM: url=https://github.com/geckoprojects-org/org.gecko.emf, co
+ nnection=scm:git:https://github.com/geckoprojects-org/org.gecko.emf.g
+ it, developerConnection=scm:git:git@github.com:geckoprojects-org/org.
+ gecko.emf.git
+Bundle-SymbolicName: org.gecko.emf.osgi.bnd.library.project
+Bundle-Vendor: Data In Motion Consuling GmbH
+Bundle-Version: 6.3.0
+Created-By: 17.0.5 (Eclipse Adoptium)
+Private-Package: template
+Provide-Capability: bnd.library;bnd.library=enable-emf;version="1.0.0"
+ ;path=template
+Tool: Bnd-7.1.0.202411130831-SNAPSHOT
+

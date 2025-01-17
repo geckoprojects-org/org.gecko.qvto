@@ -1,0 +1,18 @@
+-library: enable-emf
+
+-buildpath: \
+	org.eclipse.equinox.common;version=latest,\
+	org.eclipse.equinox.registry;version=latest,\
+	org.eclipse.core.resources;version=latest,\
+	org.eclipse.equinox.supplement;version=latest,\
+	org.gecko.emf.osgi.codegen;version=latest,\
+	lpg.runtime.java,\
+	org.eclipse.m2m.qvt.oml.common;version=snapshot,\
+	org.eclipse.ocl;version=snapshot,\
+	org.eclipse.ocl.common;version=snapshot,\
+	org.eclipse.ocl.ecore;version=snapshot,\
+	org.eclipse.m2m.qvt.oml.ecore.imperativeocl;version=snapshot,\
+	org.eclipse.m2m.qvt.oml.cst.parser;version=snapshot,\
+	org.eclipse.m2m.qvt.oml.emf.util;version=snapshot
+src: src,src-gen
+	

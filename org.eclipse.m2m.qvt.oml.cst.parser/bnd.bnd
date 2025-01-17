@@ -1,0 +1,11 @@
+-library: enable-emf
+-buildpath: \
+	lpg.runtime.java,\
+	org.eclipse.equinox.supplement;version=latest,\
+	org.eclipse.ocl;version=snapshot,\
+	org.eclipse.ocl.common;version=snapshot
+	
+src: src,src-gen
+	
+-includeresource: \
+	model=model

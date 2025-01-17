@@ -1,0 +1,15 @@
+-library: enable-emf
+
+-buildpath: \
+	org.eclipse.equinox.common;version=latest,\
+	org.eclipse.core.runtime;version=latest,\
+	org.eclipse.equinox.registry;version=latest,\
+	org.eclipse.equinox.supplement;version=latest,\
+	lpg.runtime.java,\
+	org.eclipse.ocl.common;version=snapshot,\
+	org.eclipse.equinox.preferences;version=latest
+
+-includeresource: \
+	schema=schema,\
+	model=model,\
+	plugin.xml=_plugin.xml

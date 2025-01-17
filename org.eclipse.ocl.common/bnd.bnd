@@ -1,0 +1,12 @@
+-library: enable-emf
+
+-buildpath: \
+	org.eclipse.equinox.common;version=latest,\
+	org.eclipse.core.runtime;version=latest,\
+	org.eclipse.equinox.registry;version=latest,\
+	org.eclipse.equinox.supplement;version=latest,\
+	org.eclipse.equinox.preferences;version=latest,\
+	org.osgi.service.prefs
+	
+-includeresource: \
+	plugin.xml=_plugin.xml
