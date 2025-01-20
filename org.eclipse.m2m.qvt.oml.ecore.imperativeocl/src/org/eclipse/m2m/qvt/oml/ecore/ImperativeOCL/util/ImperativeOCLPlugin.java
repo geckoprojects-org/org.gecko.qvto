@@ -14,37 +14,92 @@
  */
 package org.eclipse.m2m.qvt.oml.ecore.ImperativeOCL.util;
 
-import org.eclipse.emf.common.EMFPlugin;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.URL;
+import java.text.MessageFormat;
+import java.util.Arrays;
+import java.util.List;
+import java.util.MissingResourceException;
+import java.util.PropertyResourceBundle;
+
 import org.eclipse.emf.common.util.ResourceLocator;
+import org.osgi.framework.Bundle;
+import org.osgi.framework.Constants;
+import org.osgi.framework.FrameworkUtil;
 
-public class ImperativeOCLPlugin extends EMFPlugin {
+public class ImperativeOCLPlugin implements ResourceLocator {
 
-	
 	/**
 	 * The singleton instance of the plugin.
 	 */
 	public static final ImperativeOCLPlugin INSTANCE = new ImperativeOCLPlugin();
-
-	private static Implementation plugin;
 	
-	/**
-	 * Creates the singleton instance.
-	 */
-	private ImperativeOCLPlugin() {
-		super(new ResourceLocator[] {});
+	private static final List<String> IMAGE_EXTENSIONS = Arrays.asList("png","gif", "bmp","ico","jpg","jpeg", "tif","tiff");
+	
+	public ResourceLocator getPluginResourceLocator() {
+		return this;
 	}
-	
 
 	@Override
-	public ResourceLocator getPluginResourceLocator() {
-		return plugin;
+	public URL getBaseURL() {
+		return FrameworkUtil.getBundle(getClass()).getEntry("/");
 	}
 
-	static public class Implementation extends EclipsePlugin {
-
-		public Implementation()	{
-			super();
-			plugin = this;
+	@Override
+	public Object getImage(String key) {
+		String path = getBaseURL() + "icons/" + key + extensionFor(key);
+		try {
+			URL url = new URL(path);
+			InputStream inputStream = url.openStream();
+			inputStream.close();
+			return url;
+		} catch (IOException exception) {
+			throw new MissingResourceException("Missing properties: " + key, getClass().getName(),
+					path);
 		}
 	}
+
+	private static String extensionFor(String key) {
+		String result = ".gif";
+		int index = key.lastIndexOf('.');
+		if (index != -1) {
+			String extension = key.substring(index + 1).toLowerCase();
+			if (IMAGE_EXTENSIONS.contains(extension)) {
+				result = "";
+			}
+		}
+		return result;
+	}
+
+	@Override
+	public String getString(String key) {
+		Bundle bundle = FrameworkUtil.getBundle(getClass());
+		String bundleLocalization = bundle.getHeaders().get(Constants.BUNDLE_LOCALIZATION);
+		String propertiesPath = bundleLocalization != null ? bundleLocalization + ".properties" : "plugin.properties";
+		String resourceName = getBaseURL().toString() + propertiesPath;
+		try (InputStream inputStream = new URL(resourceName).openStream()) {
+			return new PropertyResourceBundle(inputStream).getString(key);
+		} catch (IOException ioException) {
+			throw new MissingResourceException("Missing properties: " + resourceName, getClass().getName(),
+					propertiesPath);
+		}
+
+	}
+
+	@Override
+	public String getString(String key, boolean translate) {
+		return getString(key);
+	}
+
+	@Override
+	public String getString(String key, Object[] substitutions) {
+		return MessageFormat.format(getString(key), substitutions);
+	}
+
+	@Override
+	public String getString(String key, Object[] substitutions, boolean translate) {
+		return MessageFormat.format(getString(key), substitutions);
+	}
+
 }
