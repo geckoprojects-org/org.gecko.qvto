@@ -5,7 +5,8 @@
 	org.eclipse.core.resources;version=latest,\
 	org.eclipse.equinox.supplement;version=latest,\
 	org.eclipse.ocl.ecore;version=snapshot,\
-	org.eclipse.core.jobs;version=latest
+	org.eclipse.core.jobs;version=latest,\
+	org.eclipse.ocl;version=snapshot
 	
 -includeresource: \
 	schema=schema,\

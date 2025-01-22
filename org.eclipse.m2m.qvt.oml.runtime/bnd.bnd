@@ -7,14 +7,21 @@
 	org.eclipse.equinox.supplement;version=latest,\
 	org.eclipse.debug.core;version=latest,\
 	org.eclipse.core.jobs;version=latest,\
+	org.eclipse.core.runtime;version=latest,\
 	org.eclipse.m2m.qvt.oml;version=snapshot,\
 	org.eclipse.m2m.qvt.oml.common;version=snapshot,\
 	org.eclipse.m2m.qvt.oml.emf.util;version=snapshot,\
 	org.eclipse.m2m.qvt.oml.ecore.imperativeocl;version=snapshot,\
 	org.eclipse.ocl;version=snapshot,\
 	org.eclipse.ocl.ecore;version=snapshot,\
-	org.eclipse.m2m.qvt.oml.cst.parser;version=snapshot
+	org.eclipse.m2m.qvt.oml.cst.parser;version=snapshot,\
+	lpg.runtime.java
 	
 -includeresource: \
 	schema=schema,\
 	plugin.xml=_plugin.xml
+	
+Import-Package: \
+	org.eclipse.core.debug.*;'resolution:'=optional,\
+	org.eclipse.core.runtime.*;'resolution:'=optional,\
+	*

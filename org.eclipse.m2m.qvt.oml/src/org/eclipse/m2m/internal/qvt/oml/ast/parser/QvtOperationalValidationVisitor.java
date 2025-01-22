@@ -13,11 +13,11 @@
  *******************************************************************************/
 package org.eclipse.m2m.internal.qvt.oml.ast.parser;
 
-import java.util.Collections;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
+import org.eclipse.emf.common.util.ECollections;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EClassifier;
@@ -669,10 +669,10 @@ public class QvtOperationalValidationVisitor extends QvtOperationalAstWalker {
 	}
 	
 	private void validateUniqueParamNames(ImperativeOperation operation) {
-		List<? extends VarParameter> modelParams = getModelParamsInScope(operation);
+		EList<? extends VarParameter> modelParams = getModelParamsInScope(operation);
 		@SuppressWarnings("unchecked")
-		List<? extends VarParameter> regularParams = (List<? extends VarParameter>)operation.getEParameters();
-		List<? extends VarParameter> resultParams = operation.getResult();
+		EList<? extends EParameter> regularParams = operation.getEParameters();
+		EList<? extends VarParameter> resultParams = operation.getResult();
 		validateUniqueParamNames(regularParams, modelParams);
 		validateUniqueParamNames(regularParams, regularParams);
 		
@@ -681,9 +681,9 @@ public class QvtOperationalValidationVisitor extends QvtOperationalAstWalker {
 		validateUniqueParamNames(resultParams, resultParams);	
 	}
 	
-	private static List<ModelParameter> getModelParamsInScope(ImperativeOperation mappingOperation) {
+	private static EList<ModelParameter> getModelParamsInScope(ImperativeOperation mappingOperation) {
 		Module module = QvtOperationalParserUtil.getOwningModule(mappingOperation);
-		return (module instanceof OperationalTransformation) ? ((OperationalTransformation)module).getModelParameter() : Collections.<ModelParameter>emptyList();
+		return (module instanceof OperationalTransformation) ? ((OperationalTransformation)module).getModelParameter() : ECollections.<ModelParameter>emptyEList();
 	}
 		
 	
@@ -699,7 +699,7 @@ public class QvtOperationalValidationVisitor extends QvtOperationalAstWalker {
 		return result;
 	}
 	
-	private <T extends VarParameter> boolean validateUniqueParamNames(List<? extends T> params, List<? extends T> scopeParameters) {
+	private <T extends EParameter> boolean validateUniqueParamNames(EList<? extends T> params, EList<? extends T> scopeParameters) {
 		boolean result = true;		
 		for (T nextParam : params) {
 			if(nextParam.getName() == null) {
