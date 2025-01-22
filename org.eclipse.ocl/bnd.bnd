@@ -12,3 +12,7 @@
 	schema=schema,\
 	model=model,\
 	plugin.xml=_plugin.xml
+
+Import-Package: \
+	org.eclipse.core.runtime.*;'resolution:'=optional,\
+	*

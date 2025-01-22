@@ -9,7 +9,20 @@
 	org.apache.felix.gogo.command;version='[1.1.2,1.1.3)',\
 	org.apache.felix.gogo.runtime;version='[1.1.6,1.1.7)',\
 	org.apache.felix.gogo.shell;version='[1.1.4,1.1.5)',\
-
+	lpg.runtime.java;version='[2.0.17,2.0.18)',\
+	org.eclipse.emf.common;version='[2.29.0,2.29.1)',\
+	org.eclipse.emf.ecore;version='[2.35.0,2.35.1)',\
+	org.eclipse.emf.ecore.xmi;version='[2.36.0,2.36.1)',\
+	org.eclipse.equinox.supplement;version='[1.11.100,1.11.101)',\
+	org.eclipse.m2m.qvt.oml;version=snapshot,\
+	org.eclipse.m2m.qvt.oml.common;version=snapshot,\
+	org.eclipse.m2m.qvt.oml.cst.parser;version=snapshot,\
+	org.eclipse.m2m.qvt.oml.ecore.imperativeocl;version=snapshot,\
+	org.eclipse.m2m.qvt.oml.emf.util;version=snapshot,\
+	org.eclipse.ocl;version=snapshot,\
+	org.eclipse.ocl.common;version=snapshot,\
+	org.eclipse.ocl.ecore;version=snapshot,\
+	org.osgi.service.log;version='[1.5.0,1.5.1)'
 -runrequires: \
 	osgi.identity;filter:='(osgi.identity=org.eclipse.m2m.qvt.oml)',\
 	osgi.identity;filter:='(osgi.identity=org.eclipse.m2m.qvt.oml.common)',\

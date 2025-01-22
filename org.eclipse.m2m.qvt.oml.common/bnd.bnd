@@ -15,4 +15,5 @@
 Import-Package: \
 	org.eclipse.debug.*;'resolution:'=optional,\
 	org.eclipse.core.runtime.*;'resolution:'=optional,\
+	org.eclipse.core.resources.*;'resolution:'=optional,\
 	*

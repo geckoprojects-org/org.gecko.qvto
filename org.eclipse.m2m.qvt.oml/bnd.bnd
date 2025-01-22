@@ -14,4 +14,8 @@
 	org.eclipse.m2m.qvt.oml.cst.parser;version=snapshot,\
 	org.eclipse.m2m.qvt.oml.emf.util;version=snapshot
 src: src,src-gen
-	
+
+Import-Package: \
+	org.eclipse.core.runtime.*;'resolution:'=optional,\
+	org.eclipse.emf.codegen.*;'resolution:'=optional,\
+	*
