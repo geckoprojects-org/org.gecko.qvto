@@ -18,11 +18,7 @@ import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
-import org.eclipse.core.runtime.CoreException;
-import org.eclipse.core.runtime.IConfigurationElement;
-import org.eclipse.core.runtime.Platform;
 import org.eclipse.emf.common.EMFPlugin;
-import org.eclipse.m2m.internal.qvt.oml.QvtPlugin;
 import org.eclipse.m2m.internal.qvt.oml.ast.env.QvtOperationalModuleEnv;
 import org.eclipse.m2m.internal.qvt.oml.blackbox.java.StandaloneBlackboxProvider;
 import org.eclipse.m2m.internal.qvt.oml.expressions.ImperativeOperation;
@@ -128,26 +124,26 @@ public class BlackboxRegistry {
 		}
 
 		private void readProviders(List<BlackboxProvider> providers) {
-			IConfigurationElement[] configs = Platform.getExtensionRegistry().getConfigurationElementsFor(QvtPlugin.ID,
-					BLACKBOX_PROVIDER_EXTENSION);
-
-			for (IConfigurationElement element : configs) {
-				try {
-					if (element.getName().equals(PROVIDER_ELEMENT)) {
-						Object extension = element.createExecutableExtension(CLASS_ATTR);
-						if (extension instanceof BlackboxProvider == false) {
-							QvtPlugin.error("Provider must implement AbstractBlackboxProvider interface: " + extension); //$NON-NLS-1$
-							continue;
-						}
-
-						providers.add((BlackboxProvider) extension);
-					}
-				} catch (CoreException e) {
-					QvtPlugin.getDefault().log(e.getStatus());
-				} catch (RuntimeException e) {
-					QvtPlugin.error(e);
-				}
-			}
+//			IConfigurationElement[] configs = Platform.getExtensionRegistry().getConfigurationElementsFor(QvtPlugin.ID,
+//					BLACKBOX_PROVIDER_EXTENSION);
+//
+//			for (IConfigurationElement element : configs) {
+//				try {
+//					if (element.getName().equals(PROVIDER_ELEMENT)) {
+//						Object extension = element.createExecutableExtension(CLASS_ATTR);
+//						if (extension instanceof BlackboxProvider == false) {
+//							QvtPlugin.error("Provider must implement AbstractBlackboxProvider interface: " + extension); //$NON-NLS-1$
+//							continue;
+//						}
+//
+//						providers.add((BlackboxProvider) extension);
+//					}
+//				} catch (CoreException e) {
+//					QvtPlugin.getDefault().log(e.getStatus());
+//				} catch (RuntimeException e) {
+//					QvtPlugin.error(e);
+//				}
+//			}
 		}
 	}
 

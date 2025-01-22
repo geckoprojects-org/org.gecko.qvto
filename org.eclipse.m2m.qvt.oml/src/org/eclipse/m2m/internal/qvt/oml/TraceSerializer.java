@@ -16,29 +16,18 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.eclipse.core.resources.IFile;
-import org.eclipse.core.resources.IMarker;
-import org.eclipse.core.resources.IResource;
-import org.eclipse.core.runtime.CoreException;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
-import org.eclipse.emf.ecore.EValidator;
-import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.emf.ecore.xmi.XMLResource;
 import org.eclipse.m2m.internal.qvt.oml.ast.parser.IntermediateClassFactory;
-import org.eclipse.m2m.internal.qvt.oml.ast.parser.QvtOperationalTypesUtil;
 import org.eclipse.m2m.internal.qvt.oml.common.MdaException;
 import org.eclipse.m2m.internal.qvt.oml.common.emf.ExtendedEmfUtil;
-import org.eclipse.m2m.internal.qvt.oml.emf.util.Logger;
-import org.eclipse.m2m.internal.qvt.oml.emf.util.URIUtils;
 import org.eclipse.m2m.internal.qvt.oml.evaluator.TraceUtil;
 import org.eclipse.m2m.internal.qvt.oml.expressions.DirectionKind;
-import org.eclipse.m2m.internal.qvt.oml.trace.EDirectionKind;
 import org.eclipse.m2m.internal.qvt.oml.trace.EValue;
 import org.eclipse.m2m.internal.qvt.oml.trace.Trace;
 import org.eclipse.m2m.internal.qvt.oml.trace.TraceRecord;
 import org.eclipse.m2m.internal.qvt.oml.trace.VarParameterValue;
-import org.eclipse.osgi.util.NLS;
 
 
 public class TraceSerializer {
@@ -56,34 +45,34 @@ public class TraceSerializer {
         ExtendedEmfUtil.saveModel(myTrace, traceUri, options);
     }
     
-    public void markUnboundObjects(URI traceUri) throws CoreException {
-    	IFile ifile = URIUtils.getFile(traceUri);
-	    if (ifile == null) {
-	    	return;
-	    }
-    	ifile.deleteMarkers(IMarker.PROBLEM, true, IResource.DEPTH_INFINITE);
-		for (EObject eObj : myUnboundObjects) {
-    		createQvtMarker(ifile, eObj);
-    	}
-    }
-
-	private void createQvtMarker(IResource iresource, EObject eObj) {
-	    Map<String, Object> attributes = new HashMap<String, Object>();
-	    attributes.put(IMarker.MESSAGE, NLS.bind("Trace contains unbounded object of type ''{0}''", //$NON-NLS-1$
-	    		QvtOperationalTypesUtil.getTypeFullName(eObj.eClass())));
-	    attributes.put(IMarker.SEVERITY, IMarker.SEVERITY_WARNING);
-	    URI uri = EcoreUtil.getURI(eObj);
-	    if (uri != null) {
-	    	attributes.put(EValidator.URI_ATTRIBUTE, uri.fragment());
-	    }
-	    try {
-	        IMarker marker = iresource.createMarker(IMarker.PROBLEM);
-	        marker.setAttributes(attributes);
-	    }
-	    catch (CoreException e) {
-	        Logger.getLogger().log(Logger.WARNING, "TraceSerializer: failed to create marker", e);//$NON-NLS-1$
-	    }                   
-	}
+//    public void markUnboundObjects(URI traceUri) throws CoreException {
+//    	IFile ifile = URIUtils.getFile(traceUri);
+//	    if (ifile == null) {
+//	    	return;
+//	    }
+//    	ifile.deleteMarkers(IMarker.PROBLEM, true, IResource.DEPTH_INFINITE);
+//		for (EObject eObj : myUnboundObjects) {
+//    		createQvtMarker(ifile, eObj);
+//    	}
+//    }
+//
+//	private void createQvtMarker(IResource iresource, EObject eObj) {
+//	    Map<String, Object> attributes = new HashMap<String, Object>();
+//	    attributes.put(IMarker.MESSAGE, NLS.bind("Trace contains unbounded object of type ''{0}''", //$NON-NLS-1$
+//	    		QvtOperationalTypesUtil.getTypeFullName(eObj.eClass())));
+//	    attributes.put(IMarker.SEVERITY, IMarker.SEVERITY_WARNING);
+//	    URI uri = EcoreUtil.getURI(eObj);
+//	    if (uri != null) {
+//	    	attributes.put(EValidator.URI_ATTRIBUTE, uri.fragment());
+//	    }
+//	    try {
+//	        IMarker marker = iresource.createMarker(IMarker.PROBLEM);
+//	        marker.setAttributes(attributes);
+//	    }
+//	    catch (CoreException e) {
+//	        Logger.getLogger().log(Logger.WARNING, "TraceSerializer: failed to create marker", e);//$NON-NLS-1$
+//	    }                   
+//	}
 
 	private Trace patch(Trace trace) {
         for (TraceRecord traceRecord : trace.getTraceRecords()) {

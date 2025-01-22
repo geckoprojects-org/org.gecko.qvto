@@ -12,25 +12,14 @@
  *******************************************************************************/
 package org.eclipse.m2m.internal.qvt.oml.compiler;
 
-import java.util.HashMap;
 import java.util.Map;
 
-import org.eclipse.core.resources.IProject;
-import org.eclipse.core.resources.IResource;
-import org.eclipse.core.resources.ResourcesPlugin;
-import org.eclipse.core.runtime.IPath;
-import org.eclipse.core.runtime.Path;
-import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.impl.EPackageRegistryImpl;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
-import org.eclipse.m2m.internal.qvt.oml.emf.util.mmregistry.EmfStandaloneMetamodelProvider;
-import org.eclipse.m2m.internal.qvt.oml.emf.util.mmregistry.IMetamodelProvider;
 import org.eclipse.m2m.internal.qvt.oml.emf.util.mmregistry.IMetamodelRegistryProvider;
 import org.eclipse.m2m.internal.qvt.oml.emf.util.mmregistry.MetamodelRegistry;
-import org.eclipse.m2m.internal.qvt.oml.emf.util.mmregistry.ProjectMetamodelProvider;
-import org.eclipse.m2m.internal.qvt.oml.emf.util.urimap.MetamodelURIMappingHelper;
 
 public class ProjectMetamodelRegistryProvider implements IMetamodelRegistryProvider {
 
@@ -78,35 +67,35 @@ public class ProjectMetamodelRegistryProvider implements IMetamodelRegistryProvi
 			throw new IllegalArgumentException("Null context"); //$NON-NLS-1$
 		}
 		
-		URI uri = context.getURI();
-		if(!uri.isPlatformResource()) {
-			return delegateProvider.getRegistry(context);
-		}
-		
-		IPath wsLocation = new Path(uri.toPlatformString(true));		
-		IResource wsResource = ResourcesPlugin.getWorkspace().getRoot().findMember(wsLocation);		
-		if(wsResource == null) {
-			// not a file, could be a folder
-			wsResource = ResourcesPlugin.getWorkspace().getRoot().getContainerForLocation(wsLocation);		
-		}
-		
-		if(wsResource != null) {
-			IProject project = wsResource.getProject();
-			if(MetamodelURIMappingHelper.hasMappingResource(project)) {
-				if(perProjectRegs == null) {
-					perProjectRegs = new HashMap<String, MetamodelRegistry>();
-				}
-				
-				String projectKey = project.getFullPath().toString();
-				MetamodelRegistry reg = perProjectRegs.get(projectKey);
-				if (reg == null) {
-					IMetamodelProvider provider = new ProjectMetamodelProvider(project, new EmfStandaloneMetamodelProvider(delegateRegistry), resolutionRSet);					
-					reg = new MetamodelRegistry(provider);
-					perProjectRegs.put(projectKey, reg);
-				}
-				return reg;
-			}			
-		}
+//		URI uri = context.getURI();
+//		if(!uri.isPlatformResource()) {
+//			return delegateProvider.getRegistry(context);
+//		}
+//		
+//		IPath wsLocation = new Path(uri.toPlatformString(true));		
+//		IResource wsResource = ResourcesPlugin.getWorkspace().getRoot().findMember(wsLocation);		
+//		if(wsResource == null) {
+//			// not a file, could be a folder
+//			wsResource = ResourcesPlugin.getWorkspace().getRoot().getContainerForLocation(wsLocation);		
+//		}
+//		
+//		if(wsResource != null) {
+//			IProject project = wsResource.getProject();
+//			if(MetamodelURIMappingHelper.hasMappingResource(project)) {
+//				if(perProjectRegs == null) {
+//					perProjectRegs = new HashMap<String, MetamodelRegistry>();
+//				}
+//				
+//				String projectKey = project.getFullPath().toString();
+//				MetamodelRegistry reg = perProjectRegs.get(projectKey);
+//				if (reg == null) {
+//					IMetamodelProvider provider = new ProjectMetamodelProvider(project, new EmfStandaloneMetamodelProvider(delegateRegistry), resolutionRSet);					
+//					reg = new MetamodelRegistry(provider);
+//					perProjectRegs.put(projectKey, reg);
+//				}
+//				return reg;
+//			}			
+//		}
 		
 		return delegateProvider.getRegistry(context);
 	}

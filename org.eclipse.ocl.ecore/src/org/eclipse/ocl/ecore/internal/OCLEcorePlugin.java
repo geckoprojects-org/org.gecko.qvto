@@ -21,7 +21,6 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.impl.ResourceFactoryImpl;
 import org.eclipse.emf.ecore.resource.impl.ResourceImpl;
-import org.eclipse.ocl.ecore.util.OCLEcoreUtil;
 import org.osgi.framework.FrameworkUtil;
 
 /**

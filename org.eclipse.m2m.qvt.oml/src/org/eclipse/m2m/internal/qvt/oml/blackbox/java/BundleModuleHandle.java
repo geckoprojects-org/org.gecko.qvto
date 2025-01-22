@@ -12,10 +12,12 @@
 package org.eclipse.m2m.internal.qvt.oml.blackbox.java;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
-import org.eclipse.core.runtime.Platform;
 import org.osgi.framework.Bundle;
+import org.osgi.framework.BundleContext;
+import org.osgi.framework.FrameworkUtil;
 
 class BundleModuleHandle extends ModuleHandle {
 
@@ -42,7 +44,9 @@ class BundleModuleHandle extends ModuleHandle {
 	
 	@Override
 	public Class<?> getModuleJavaClass() throws ClassNotFoundException {
-		Bundle bundle = Platform.getBundle(bundleId);
+		BundleContext bundleContext = FrameworkUtil.getBundle(getClass()).getBundleContext();
+		Bundle bundle = Arrays.stream(bundleContext.getBundles()).filter(b -> b.getSymbolicName().equals(bundleId)).findFirst().get();
+//		Bundle bundle = Platform.getBundle(bundleId);
 		if(bundle != null) {
 			return bundle.loadClass(getJavaClassName());
 		}

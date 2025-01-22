@@ -103,6 +103,12 @@ URIUtil.getResources deaktiviert
 ### UnitResolverFactory
 ExtensionPoint handling für unitResolverFactory entfernt
 
+### BundleBlackboxProvider
+ExtensionPoint handling für javaBlackboxUnits entfernt
+
+### ProjectMetamodelRegistryProvider
+remove Workspace access
+
 ## org.eclipse.m2m.qvt.oml.runtime
 
 ### QvtRuntimePlugin

@@ -20,10 +20,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.eclipse.core.runtime.IConfigurationElement;
-import org.eclipse.core.runtime.Platform;
 import org.eclipse.emf.common.EMFPlugin;
-import org.eclipse.m2m.internal.qvt.oml.NLS;
-import org.eclipse.m2m.internal.qvt.oml.QvtPlugin;
 import org.eclipse.m2m.internal.qvt.oml.blackbox.BlackboxUnitDescriptor;
 import org.eclipse.m2m.internal.qvt.oml.blackbox.ResolutionContext;
 
@@ -49,24 +46,24 @@ public class BundleBlackboxProvider extends OSGiBlackboxProvider {
 
 	private Map<String, BlackboxUnitDescriptor> readDescriptors() {
     	Map<String, BlackboxUnitDescriptor> descriptors = new LinkedHashMap<String, BlackboxUnitDescriptor>();
-        
-        IConfigurationElement[] configs = Platform.getExtensionRegistry()
-        		.getConfigurationElementsFor(QvtPlugin.ID, EXTENSION_POINT);
-
-        for (IConfigurationElement element : configs) {
-            try {
-            	BundleDescriptor descriptor = createDescriptor(element);
-        		String id = descriptor.getQualifiedName();            	
-            	if(!descriptors.containsKey(id)) {
-					descriptors.put(id, descriptor);
-            	} else {
-            		String message = NLS.bind(JavaBlackboxMessages.UnitAlreadyRegisteredContributionIgnored, id, descriptor.getContributorId());
-					QvtPlugin.error(message);
-            	}
-            } catch (IllegalArgumentException e) {
-            	QvtPlugin.error("Failed to read java black-box definition: " + e.getMessage()); //$NON-NLS-1$
-            }
-        }
+//        
+//        IConfigurationElement[] configs = Platform.getExtensionRegistry()
+//        		.getConfigurationElementsFor(QvtPlugin.ID, EXTENSION_POINT);
+//
+//        for (IConfigurationElement element : configs) {
+//            try {
+//            	BundleDescriptor descriptor = createDescriptor(element);
+//        		String id = descriptor.getQualifiedName();            	
+//            	if(!descriptors.containsKey(id)) {
+//					descriptors.put(id, descriptor);
+//            	} else {
+//            		String message = NLS.bind(JavaBlackboxMessages.UnitAlreadyRegisteredContributionIgnored, id, descriptor.getContributorId());
+//					QvtPlugin.error(message);
+//            	}
+//            } catch (IllegalArgumentException e) {
+//            	QvtPlugin.error("Failed to read java black-box definition: " + e.getMessage()); //$NON-NLS-1$
+//            }
+//        }
 
         return descriptors;
     }

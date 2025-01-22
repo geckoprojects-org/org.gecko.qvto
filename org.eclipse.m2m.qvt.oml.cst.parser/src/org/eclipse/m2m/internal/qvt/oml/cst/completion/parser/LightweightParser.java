@@ -20,7 +20,7 @@
 *        - 300534: Removing the use of deprecated macros.
 * </copyright>
 *
-* $Id$
+* $Id: EssentialOCL.gi,v 1.5 2010/02/11 15:40:41 sboyko Exp $
 */
 /**
 * <copyright>
@@ -59,9 +59,49 @@
 
 package org.eclipse.m2m.internal.qvt.oml.cst.completion.parser;
 
-import lpg.runtime.*;
 import org.eclipse.emf.common.util.BasicEList;
 import org.eclipse.emf.common.util.EList;
+import org.eclipse.m2m.internal.qvt.oml.cst.AssertExpCS;
+import org.eclipse.m2m.internal.qvt.oml.cst.AssignStatementCS;
+import org.eclipse.m2m.internal.qvt.oml.cst.BlockExpCS;
+import org.eclipse.m2m.internal.qvt.oml.cst.CompleteSignatureCS;
+import org.eclipse.m2m.internal.qvt.oml.cst.ConstructorCS;
+import org.eclipse.m2m.internal.qvt.oml.cst.DictLiteralPartCS;
+import org.eclipse.m2m.internal.qvt.oml.cst.DirectionKindCS;
+import org.eclipse.m2m.internal.qvt.oml.cst.DirectionKindEnum;
+import org.eclipse.m2m.internal.qvt.oml.cst.ForExpCS;
+import org.eclipse.m2m.internal.qvt.oml.cst.ImperativeIterateExpCS;
+import org.eclipse.m2m.internal.qvt.oml.cst.ImportKindEnum;
+import org.eclipse.m2m.internal.qvt.oml.cst.LogExpCS;
+import org.eclipse.m2m.internal.qvt.oml.cst.MappingBodyCS;
+import org.eclipse.m2m.internal.qvt.oml.cst.MappingDeclarationCS;
+import org.eclipse.m2m.internal.qvt.oml.cst.MappingEndCS;
+import org.eclipse.m2m.internal.qvt.oml.cst.MappingExtensionCS;
+import org.eclipse.m2m.internal.qvt.oml.cst.MappingInitCS;
+import org.eclipse.m2m.internal.qvt.oml.cst.MappingModuleCS;
+import org.eclipse.m2m.internal.qvt.oml.cst.MappingQueryCS;
+import org.eclipse.m2m.internal.qvt.oml.cst.MappingRuleCS;
+import org.eclipse.m2m.internal.qvt.oml.cst.MappingSectionsCS;
+import org.eclipse.m2m.internal.qvt.oml.cst.ModelTypeCS;
+import org.eclipse.m2m.internal.qvt.oml.cst.ModuleKindCS;
+import org.eclipse.m2m.internal.qvt.oml.cst.ModuleKindEnum;
+import org.eclipse.m2m.internal.qvt.oml.cst.ModuleRefCS;
+import org.eclipse.m2m.internal.qvt.oml.cst.ModuleUsageCS;
+import org.eclipse.m2m.internal.qvt.oml.cst.MultiplicityDefCS;
+import org.eclipse.m2m.internal.qvt.oml.cst.ObjectExpCS;
+import org.eclipse.m2m.internal.qvt.oml.cst.OppositePropertyCS;
+import org.eclipse.m2m.internal.qvt.oml.cst.ParameterDeclarationCS;
+import org.eclipse.m2m.internal.qvt.oml.cst.ResolveOpArgsExpCS;
+import org.eclipse.m2m.internal.qvt.oml.cst.ReturnExpCS;
+import org.eclipse.m2m.internal.qvt.oml.cst.ScopedNameCS;
+import org.eclipse.m2m.internal.qvt.oml.cst.SimpleSignatureCS;
+import org.eclipse.m2m.internal.qvt.oml.cst.SwitchAltExpCS;
+import org.eclipse.m2m.internal.qvt.oml.cst.TransformationHeaderCS;
+import org.eclipse.m2m.internal.qvt.oml.cst.TransformationRefineCS;
+import org.eclipse.m2m.internal.qvt.oml.cst.TypeSpecCS;
+import org.eclipse.m2m.internal.qvt.oml.cst.parser.AbstractQVTParser;
+import org.eclipse.m2m.internal.qvt.oml.cst.parser.QVTOLexer;
+import org.eclipse.ocl.Environment;
 import org.eclipse.ocl.cst.BooleanLiteralExpCS;
 import org.eclipse.ocl.cst.CSTNode;
 import org.eclipse.ocl.cst.CallExpCS;
@@ -69,18 +109,20 @@ import org.eclipse.ocl.cst.CollectionLiteralExpCS;
 import org.eclipse.ocl.cst.CollectionLiteralPartCS;
 import org.eclipse.ocl.cst.CollectionTypeCS;
 import org.eclipse.ocl.cst.CollectionTypeIdentifierEnum;
+import org.eclipse.ocl.cst.DotOrArrowEnum;
 import org.eclipse.ocl.cst.FeatureCallExpCS;
-import org.eclipse.ocl.cst.IfExpCS;
 import org.eclipse.ocl.cst.IntegerLiteralExpCS;
 import org.eclipse.ocl.cst.InvalidLiteralExpCS;
 import org.eclipse.ocl.cst.IsMarkedPreCS;
 import org.eclipse.ocl.cst.IterateExpCS;
 import org.eclipse.ocl.cst.IteratorExpCS;
 import org.eclipse.ocl.cst.LetExpCS;
+import org.eclipse.ocl.cst.LiteralExpCS;
 import org.eclipse.ocl.cst.NullLiteralExpCS;
 import org.eclipse.ocl.cst.OCLExpressionCS;
 import org.eclipse.ocl.cst.OperationCallExpCS;
 import org.eclipse.ocl.cst.PathNameCS;
+import org.eclipse.ocl.cst.PrimitiveLiteralExpCS;
 import org.eclipse.ocl.cst.PrimitiveTypeCS;
 import org.eclipse.ocl.cst.RealLiteralExpCS;
 import org.eclipse.ocl.cst.SimpleNameCS;
@@ -91,83 +133,27 @@ import org.eclipse.ocl.cst.TupleTypeCS;
 import org.eclipse.ocl.cst.TypeCS;
 import org.eclipse.ocl.cst.UnlimitedNaturalLiteralExpCS;
 import org.eclipse.ocl.cst.VariableCS;
-import org.eclipse.ocl.cst.VariableExpCS;	
+import org.eclipse.ocl.cst.VariableExpCS;
 import org.eclipse.ocl.lpg.DerivedPrsStream;
+import org.eclipse.ocl.util.OCLStandardLibraryUtil;
+import org.eclipse.ocl.utilities.PredefinedType;
 
+import lpg.runtime.BacktrackingParser;
 import lpg.runtime.BadParseException;
 import lpg.runtime.BadParseSymFileException;
 import lpg.runtime.DiagnoseParser;
 import lpg.runtime.ErrorToken;
-import lpg.runtime.IToken;
 import lpg.runtime.ILexStream;
+import lpg.runtime.IToken;
 import lpg.runtime.Monitor;
+import lpg.runtime.NotBacktrackParseTableException;
 import lpg.runtime.NullExportedSymbolsException;
 import lpg.runtime.NullTerminalSymbolsException;
 import lpg.runtime.ParseTable;
 import lpg.runtime.RuleAction;
+import lpg.runtime.Token;
 import lpg.runtime.UndefinedEofSymbolException;
 import lpg.runtime.UnimplementedTerminalsException;	
-	
-import org.eclipse.ocl.ParserException;
-import lpg.runtime.Token;
-import lpg.runtime.BacktrackingParser;
-import lpg.runtime.PrsStream;
-import lpg.runtime.NotBacktrackParseTableException;
-import lpg.runtime.NullExportedSymbolsException;
-import lpg.runtime.NullTerminalSymbolsException;
-import lpg.runtime.UndefinedEofSymbolException;
-import lpg.runtime.UnimplementedTerminalsException;
-import org.eclipse.m2m.internal.qvt.oml.cst.AssertExpCS;
-import org.eclipse.m2m.internal.qvt.oml.cst.AssignStatementCS;	
-import org.eclipse.m2m.internal.qvt.oml.cst.LogExpCS;
-import org.eclipse.m2m.internal.qvt.oml.cst.BlockExpCS;	
-import org.eclipse.m2m.internal.qvt.oml.cst.ReturnExpCS;	
-import org.eclipse.m2m.internal.qvt.oml.cst.SwitchAltExpCS;
-import org.eclipse.m2m.internal.qvt.oml.cst.ScopedNameCS;
-import org.eclipse.m2m.internal.qvt.oml.cst.ForExpCS;
-import org.eclipse.m2m.internal.qvt.oml.cst.ImperativeIterateExpCS;
-import org.eclipse.m2m.internal.qvt.oml.cst.SwitchExpCS;
-	
-import org.eclipse.m2m.internal.qvt.oml.cst.CompleteSignatureCS;
-import org.eclipse.m2m.internal.qvt.oml.cst.DictLiteralPartCS;	
-import org.eclipse.m2m.internal.qvt.oml.cst.DirectionKindCS;
-import org.eclipse.m2m.internal.qvt.oml.cst.DirectionKindEnum;
-import org.eclipse.m2m.internal.qvt.oml.cst.MappingBodyCS;
-import org.eclipse.m2m.internal.qvt.oml.cst.MappingDeclarationCS;
-import org.eclipse.m2m.internal.qvt.oml.cst.MappingEndCS;
-import org.eclipse.m2m.internal.qvt.oml.cst.MappingInitCS;
-import org.eclipse.m2m.internal.qvt.oml.cst.MappingExtensionCS;
-import org.eclipse.m2m.internal.qvt.oml.cst.MappingModuleCS;
-import org.eclipse.m2m.internal.qvt.oml.cst.MappingRuleCS;	
-import org.eclipse.m2m.internal.qvt.oml.cst.MappingQueryCS;
-import org.eclipse.m2m.internal.qvt.oml.cst.ConstructorCS;
-import org.eclipse.m2m.internal.qvt.oml.cst.MappingSectionsCS;
-import org.eclipse.m2m.internal.qvt.oml.cst.ModuleUsageCS;
-import org.eclipse.m2m.internal.qvt.oml.cst.ObjectExpCS;
-import org.eclipse.m2m.internal.qvt.oml.cst.ModelTypeCS;
-import org.eclipse.m2m.internal.qvt.oml.cst.SimpleSignatureCS;
-import org.eclipse.m2m.internal.qvt.oml.cst.ResolveOpArgsExpCS;
-import org.eclipse.m2m.internal.qvt.oml.cst.ModuleKindEnum;
-import org.eclipse.m2m.internal.qvt.oml.cst.ModuleKindCS;
-import org.eclipse.m2m.internal.qvt.oml.cst.ModuleRefCS;
-import org.eclipse.m2m.internal.qvt.oml.cst.ImportKindEnum;
-import org.eclipse.m2m.internal.qvt.oml.cst.ParameterDeclarationCS;
-import org.eclipse.m2m.internal.qvt.oml.cst.TransformationRefineCS;
-import org.eclipse.m2m.internal.qvt.oml.cst.TransformationHeaderCS;
-import org.eclipse.m2m.internal.qvt.oml.cst.TypeSpecCS;
-import org.eclipse.m2m.internal.qvt.oml.cst.MultiplicityDefCS;
-import org.eclipse.m2m.internal.qvt.oml.cst.OppositePropertyCS;
-import org.eclipse.ocl.cst.PrimitiveLiteralExpCS;
-import org.eclipse.ocl.cst.LiteralExpCS;	
-import org.eclipse.ocl.cst.DotOrArrowEnum;
-import org.eclipse.ocl.util.OCLStandardLibraryUtil;
-import org.eclipse.ocl.utilities.PredefinedType;
-import org.eclipse.ocl.Environment;
-
-import org.eclipse.m2m.internal.qvt.oml.cst.parser.QVTOParserprs;
-import org.eclipse.m2m.internal.qvt.oml.cst.parser.QVTOParsersym;
-import org.eclipse.m2m.internal.qvt.oml.cst.parser.QVTOLexer;	
-import org.eclipse.m2m.internal.qvt.oml.cst.parser.AbstractQVTParser;	
 
 public class LightweightParser extends AbstractQVTParser implements RuleAction
 {

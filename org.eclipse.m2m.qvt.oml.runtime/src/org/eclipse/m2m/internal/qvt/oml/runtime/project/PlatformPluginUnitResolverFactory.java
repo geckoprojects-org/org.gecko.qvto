@@ -11,14 +11,18 @@
  *******************************************************************************/
 package org.eclipse.m2m.internal.qvt.oml.runtime.project;
 
+import java.util.Arrays;
+
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.emf.common.EMFPlugin;
 import org.eclipse.emf.common.util.URI;
+import org.eclipse.m2m.internal.qvt.oml.blackbox.java.OSGiBlackboxProvider;
 import org.eclipse.m2m.internal.qvt.oml.compiler.ResolverUtils;
 import org.eclipse.m2m.internal.qvt.oml.compiler.UnitResolver;
 import org.eclipse.m2m.internal.qvt.oml.compiler.UnitResolverFactory;
 import org.osgi.framework.Bundle;
+import org.osgi.framework.BundleContext;
 import org.osgi.framework.FrameworkUtil;
 
 public class PlatformPluginUnitResolverFactory extends UnitResolverFactory {
@@ -35,7 +39,8 @@ public class PlatformPluginUnitResolverFactory extends UnitResolverFactory {
 		}
 
 		String bundleId = uri.segment(1);
-		Bundle bundle = FrameworkUtil.getBundle(this.getClass());
+		BundleContext bundleContext = FrameworkUtil.getBundle(getClass()).getBundleContext();
+		Bundle bundle = Arrays.stream(bundleContext.getBundles()).filter(b -> b.getSymbolicName().equals(bundleId)).findFirst().get();
 //		Bundle bundle = Platform.getBundle(bundleId);
 		if (bundle == null) {
 			return null;
@@ -63,7 +68,8 @@ public class PlatformPluginUnitResolverFactory extends UnitResolverFactory {
 		}
 
 		String bundleId = uri.segment(1);
-		Bundle bundle = FrameworkUtil.getBundle(getClass());
+		BundleContext bundleContext = FrameworkUtil.getBundle(OSGiBlackboxProvider.class).getBundleContext();
+		Bundle bundle = Arrays.stream(bundleContext.getBundles()).filter(b -> b.getSymbolicName().equals(bundleId)).findFirst().get();
 //		Bundle bundle = Platform.getBundle(bundleId);
 		if (bundle == null) {
 			return null;

@@ -11,6 +11,7 @@
  *******************************************************************************/
 package org.eclipse.m2m.internal.qvt.oml.blackbox.java;
 
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
@@ -18,7 +19,6 @@ import java.util.Map;
 
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Path;
-import org.eclipse.core.runtime.Platform;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.m2m.internal.qvt.oml.blackbox.BlackboxUnitDescriptor;
 import org.eclipse.m2m.internal.qvt.oml.blackbox.ResolutionContext;
@@ -27,8 +27,10 @@ import org.eclipse.m2m.internal.qvt.oml.compiler.ResolverUtils;
 import org.eclipse.m2m.qvt.oml.blackbox.java.Module;
 import org.eclipse.osgi.util.ManifestElement;
 import org.osgi.framework.Bundle;
+import org.osgi.framework.BundleContext;
 import org.osgi.framework.BundleException;
 import org.osgi.framework.Constants;
+import org.osgi.framework.FrameworkUtil;
 import org.osgi.framework.wiring.BundleWiring;
 
 public class OSGiBlackboxProvider extends JavaBlackboxProvider {
@@ -98,9 +100,10 @@ public class OSGiBlackboxProvider extends JavaBlackboxProvider {
 	
 	private static Bundle getBundle(ResolutionContext resolutionContext) {
 		URI contextUri = reconvert(resolutionContext.getURI());
-						
-		if (contextUri.isPlatformPlugin() && contextUri.segmentCount() > 1) {	
-			return Platform.getBundle(contextUri.segment(1));
+		if (contextUri.isPlatformPlugin() && contextUri.segmentCount() > 1) {
+			BundleContext bundleContext = FrameworkUtil.getBundle(OSGiBlackboxProvider.class).getBundleContext();
+			return Arrays.stream(bundleContext.getBundles()).filter(b -> b.getSymbolicName().equals(contextUri.segment(1))).findFirst().get();
+//			return Platform.getBundle(contextUri.segment(1));
 		}
 		
 		return null;
