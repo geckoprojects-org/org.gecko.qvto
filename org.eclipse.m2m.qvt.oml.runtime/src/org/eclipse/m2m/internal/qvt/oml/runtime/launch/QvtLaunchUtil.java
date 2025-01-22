@@ -18,6 +18,8 @@ import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
@@ -44,7 +46,6 @@ import org.eclipse.m2m.internal.qvt.oml.emf.util.ModelContent;
 import org.eclipse.m2m.internal.qvt.oml.evaluator.QvtRuntimeException;
 import org.eclipse.m2m.internal.qvt.oml.runtime.QvtRuntimePlugin;
 import org.eclipse.m2m.internal.qvt.oml.runtime.project.QvtTransformation;
-import org.eclipse.m2m.internal.qvt.oml.runtime.util.MiscUtil;
 import org.eclipse.m2m.internal.qvt.oml.trace.Trace;
 import org.eclipse.m2m.qvt.oml.ExecutionContext;
 import org.eclipse.m2m.qvt.oml.ExecutionContextImpl;
@@ -54,6 +55,7 @@ import org.eclipse.osgi.util.NLS;
 
 
 public class QvtLaunchUtil {
+	private static final Logger LOGGER = Logger.getLogger( QvtLaunchUtil.class.getName() );
 
 	private QvtLaunchUtil() {}
 
@@ -178,7 +180,8 @@ public class QvtLaunchUtil {
 			map = new LinkedHashMap<String, Object>(configProps);
 		} catch (CoreException e) {
 			map = Collections.<String, Object>emptyMap();
-			QvtRuntimePlugin.getDefault().getLog().log(MiscUtil.makeErrorStatus(e));
+//			QvtRuntimePlugin.getDefault().getLog().log(MiscUtil.makeErrorStatus(e));
+			LOGGER.log(Level.SEVERE, "Error while retrieving attributes.", e);
 		}
 		return map;
 	}

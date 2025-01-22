@@ -11,11 +11,11 @@
  *******************************************************************************/
 package org.eclipse.m2m.qvt.oml.ocl.legacy.libraries;
 
-import org.eclipse.core.runtime.Plugin;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.ocl.ecore.EcoreEnvironment;
 
-class Libraries extends Plugin {
+//class Libraries extends Plugin {
+class Libraries {
 	
 	public static final String OCL_LIBRARY_PACKAGE =
 		EPackage.Registry.INSTANCE.get(EcoreEnvironment.OCL_STANDARD_LIBRARY_NS_URI) instanceof EPackage ?

@@ -11,18 +11,14 @@
  *******************************************************************************/
 package org.eclipse.m2m.internal.qvt.oml.runtime;
 
-import org.eclipse.core.resources.IResourceChangeEvent;
-import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.IStatus;
-import org.eclipse.core.runtime.Plugin;
 import org.eclipse.core.runtime.Status;
-import org.eclipse.m2m.internal.qvt.oml.runtime.launch.DeleteBuilderMarkersListener;
-import org.osgi.framework.BundleContext;
 
 /**
  * The main plugin class to be used in the desktop.
  */
-public class QvtRuntimePlugin extends Plugin {
+//public class QvtRuntimePlugin extends Plugin {
+public class QvtRuntimePlugin {
 	
     public static final String ID = "org.eclipse.m2m.qvt.oml.runtime"; //$NON-NLS-1$
     
@@ -30,34 +26,35 @@ public class QvtRuntimePlugin extends Plugin {
     
 	
 	//The shared instance.
-	private static QvtRuntimePlugin plugin;
+//    private static QvtRuntimePlugin plugin;
+	private static QvtRuntimePlugin plugin = new QvtRuntimePlugin();
 	
-	/**
-	 * The constructor.
-	 */
-	public QvtRuntimePlugin() {
-		super();
-		plugin = this;
-	}
+//	/**
+//	 * The constructor.
+//	 */
+//	public QvtRuntimePlugin() {
+//		super();
+//		plugin = this;
+//	}
 
-	/**
-	 * This method is called upon plug-in activation
-	 */
-	@Override
-	public void start(BundleContext context) throws Exception {
-		super.start(context);
-
-        ResourcesPlugin.getWorkspace().addResourceChangeListener(new DeleteBuilderMarkersListener(), IResourceChangeEvent.PRE_BUILD);
-	}
-
-	/**
-	 * This method is called when the plug-in is stopped
-	 */
-	@Override
-	public void stop(BundleContext context) throws Exception {
-		super.stop(context);
-		plugin = null;
-	}
+//	/**
+//	 * This method is called upon plug-in activation
+//	 */
+//	@Override
+//	public void start(BundleContext context) throws Exception {
+//		super.start(context);
+//
+//        ResourcesPlugin.getWorkspace().addResourceChangeListener(new DeleteBuilderMarkersListener(), IResourceChangeEvent.PRE_BUILD);
+//	}
+//
+//	/**
+//	 * This method is called when the plug-in is stopped
+//	 */
+//	@Override
+//	public void stop(BundleContext context) throws Exception {
+//		super.stop(context);
+//		plugin = null;
+//	}
 
 	/**
 	 * Returns the shared instance.
@@ -66,16 +63,16 @@ public class QvtRuntimePlugin extends Plugin {
 		return plugin;
 	}
         
-    public static void log(IStatus status) {
-    	Plugin debugPlugin = getDefault();
-		if(debugPlugin != null) {
-    		debugPlugin.getLog().log(status);
-    	}
-    }
+//    public static void log(IStatus status) {
+//    	Plugin debugPlugin = getDefault();
+//		if(debugPlugin != null) {
+//    		debugPlugin.getLog().log(status);
+//    	}
+//    }
 
-    public static void log(Throwable e) {
-        log(new Status(IStatus.ERROR, ID, "Exception caught", e)); //$NON-NLS-1$
-    }
+//    public static void log(Throwable e) {
+//        log(new Status(IStatus.ERROR, ID, "Exception caught", e)); //$NON-NLS-1$
+//    }
    
 	public static IStatus createStatus(int severity, String message, Throwable throwable) {
 		return new Status(severity, ID, message, throwable);

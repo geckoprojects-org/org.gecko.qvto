@@ -3,7 +3,6 @@
 -buildpath: \
 	org.eclipse.equinox.common;version=latest,\
 	org.eclipse.equinox.registry;version=latest,\
-	org.eclipse.core.resources;version=latest,\
 	org.eclipse.equinox.supplement;version=latest,\
 	org.gecko.emf.osgi.codegen;version=latest,\
 	lpg.runtime.java,\

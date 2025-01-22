@@ -17,9 +17,8 @@ import java.util.LinkedHashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
+import java.util.logging.Level;
 
-import org.eclipse.core.runtime.IConfigurationElement;
-import org.eclipse.core.runtime.Platform;
 import org.eclipse.emf.common.EMFPlugin;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.common.util.UniqueEList;
@@ -28,6 +27,7 @@ import org.eclipse.emf.ecore.impl.EPackageRegistryImpl;
 import org.eclipse.m2m.internal.qvt.oml.emf.util.EmfException;
 import org.eclipse.m2m.internal.qvt.oml.emf.util.EmfUtil;
 import org.eclipse.m2m.internal.qvt.oml.emf.util.EmfUtilPlugin;
+import org.eclipse.m2m.internal.qvt.oml.emf.util.Logger;
 import org.eclipse.ocl.ecore.EcoreEnvironment;
 import org.eclipse.osgi.util.NLS;
 
@@ -120,7 +120,8 @@ public class MetamodelRegistry {
         		pack = registry.getEPackage(nextNsURI);
         	}
         	catch(Throwable t) {
-        		EmfUtilPlugin.log(t);
+        		Logger.getLogger().log(Level.SEVERE, t, () -> "Error while getting EPackage from " + nsURI);
+//        		EmfUtilPlugin.log(t);
         	}
         	
         	if (pack != null) {
@@ -214,7 +215,8 @@ public class MetamodelRegistry {
     			registeredPack = registry.getEPackage(rootPack.getNsURI());
     		}
     		catch(Throwable t) {
-    			EmfUtilPlugin.log(t);
+        		Logger.getLogger().log(Level.SEVERE, t, () -> "Error while getting EPackage from " + rootPack.getNsURI());
+//				EmfUtilPlugin.log(t);
     		}
     		
 			if(registeredPack == rootPack) {
@@ -237,7 +239,8 @@ public class MetamodelRegistry {
         		pack = registry.getEPackage(nsURI);
         	}
         	catch(Throwable t) {
-        		EmfUtilPlugin.log(t);
+        		Logger.getLogger().log(Level.SEVERE, t, () -> "Error while getting EPackage from " + nsURI);
+//        		EmfUtilPlugin.log(t);
         	}
         	
         	if (pack == null || pack.getESuperPackage() != null) {
@@ -268,15 +271,15 @@ public class MetamodelRegistry {
 			 			
 			IMetamodelProvider metamodelProvider = base;
 							
-			IConfigurationElement[] configElements = Platform.getExtensionRegistry().getConfigurationElementsFor(EmfUtilPlugin.getDefault().getBundle().getSymbolicName(), MM_POINT_ID);
-			
-			for (IConfigurationElement configElement : configElements) {
-				IMetamodelProvider provider = EclipseMetamodelProvider.Factory.create(configElement, metamodelProvider);
-				if (provider != null) {
-					metamodelProvider = provider;
-				}
-			}
-					
+//			IConfigurationElement[] configElements = Platform.getExtensionRegistry().getConfigurationElementsFor(EmfUtilPlugin.getDefault().getBundle().getSymbolicName(), MM_POINT_ID);
+//			
+//			for (IConfigurationElement configElement : configElements) {
+//				IMetamodelProvider provider = EclipseMetamodelProvider.Factory.create(configElement, metamodelProvider);
+//				if (provider != null) {
+//					metamodelProvider = provider;
+//				}
+//			}
+//					
 			return metamodelProvider;
 		}		
 	}

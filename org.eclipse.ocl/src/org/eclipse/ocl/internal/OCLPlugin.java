@@ -12,20 +12,16 @@
  *******************************************************************************/
 package org.eclipse.ocl.internal;
 
-import org.eclipse.core.runtime.Platform;
-import org.eclipse.core.runtime.Status;
 import org.eclipse.emf.common.EMFPlugin;
 import org.eclipse.emf.common.util.Diagnostic;
 import org.eclipse.emf.common.util.ResourceLocator;
 import org.eclipse.ocl.Environment;
 import org.eclipse.ocl.util.OCLUtil;
-import org.osgi.framework.BundleContext;
 
 /**
  * The activator class controls the plug-in life cycle
  */
-public class OCLPlugin
-		extends EMFPlugin {
+public class OCLPlugin extends EMFPlugin {
 
 	public static final String EMPTY_STRING = ""; //$NON-NLS-1$
 
@@ -44,9 +40,6 @@ public class OCLPlugin
 	//The shared instance.
 	public static OCLPlugin INSTANCE = new OCLPlugin();
 
-	//The shared Eclipse plug-in instance
-	private static Implementation plugin;
-
 	/**
 	 * In stand-alone use, whether all tracing is turned on.
 	 * This is compatible with the usage of 1.2 and earlier.
@@ -60,28 +53,32 @@ public class OCLPlugin
 	 */
 	public OCLPlugin() {
 		super(new ResourceLocator[0]);
+		EnvironmentRegistryImpl envreg = ((EnvironmentRegistryImpl) Environment.Registry.INSTANCE);
+		envreg.new RegistryReader(getInstance()).readRegistry();
 	}
 
 	public static String getPluginId() {
-		return (getPlugin() != null)
-			? getPlugin().getBundle().getSymbolicName()
-			: OCLUtil.PLUGIN_ID; // last known bundle ID
+//		return (getPlugin() != null)
+//			? getPlugin().getBundle().getSymbolicName()
+//			: OCLUtil.PLUGIN_ID; // last known bundle ID
+		return OCLUtil.PLUGIN_ID;
 	}
-
+	
 	// implements the inherited method
 	@Override
 	public ResourceLocator getPluginResourceLocator() {
-		return plugin;
+		return this;
+//		return plugin;
 	}
-
-	/**
-	 * Obtains the Eclipse plug-in that I implement.
-	 * 
-	 * @return my Eclipse plug-in self
-	 */
-	public static Implementation getPlugin() {
-		return plugin;
-	}
+	
+//	/**
+//	 * Obtains the Eclipse plug-in that I implement.
+//	 * 
+//	 * @return my Eclipse plug-in self
+//	 */
+//	public static Implementation getPlugin() {
+//		return plugin;
+//	}
 
 	/**
 	 * Returns the shared instance.
@@ -90,34 +87,34 @@ public class OCLPlugin
 		return INSTANCE;
 	}
 
-	/**
-	 * The definition of the Eclipse plug-in flavour of this EMF plug-in.
-	 * 
-	 * @author Christian W. Damus (cdamus)
-	 */
-	public static class Implementation
-			extends EMFPlugin.EclipsePlugin {
-
-		/**
-		 * Initializes me with my Eclipse plug-in descriptor.
-		 */
-		public Implementation() {
-			super();
-
-			// Remember the static instance.
-			//
-			OCLPlugin.plugin = this;
-		}
-
-		@Override
-		public void start(BundleContext context)
-				throws Exception {
-			super.start(context);
-
-			EnvironmentRegistryImpl envreg = ((EnvironmentRegistryImpl) Environment.Registry.INSTANCE);
-			envreg.new RegistryReader(getInstance()).readRegistry();
-		}
-	}
+//	/**
+//	 * The definition of the Eclipse plug-in flavour of this EMF plug-in.
+//	 * 
+//	 * @author Christian W. Damus (cdamus)
+//	 */
+//	public static class Implementation
+//			extends EMFPlugin.EclipsePlugin {
+//
+//		/**
+//		 * Initializes me with my Eclipse plug-in descriptor.
+//		 */
+//		public Implementation() {
+//			super();
+//
+//			// Remember the static instance.
+//			//
+//			OCLPlugin.plugin = this;
+//		}
+//
+//		@Override
+//		public void start(BundleContext context)
+//				throws Exception {
+//			super.start(context);
+//
+//			EnvironmentRegistryImpl envreg = ((EnvironmentRegistryImpl) Environment.Registry.INSTANCE);
+//			envreg.new RegistryReader(getInstance()).readRegistry();
+//		}
+//	}
 
 	/**
 	 * Traces the catching of the specified throwable in the specified method of
@@ -152,14 +149,14 @@ public class OCLPlugin
 	}
 
 	public static boolean shouldTrace(String option) {
-		if (getPlugin() != null) {
-			if (getPlugin().isDebugging()) {
-				return Boolean.TRUE.toString()
-					.equalsIgnoreCase(Platform.getDebugOption(option));
-			}
-
-			return false;
-		}
+//		if (getPlugin() != null) {
+//			if (getPlugin().isDebugging()) {
+//				return Boolean.TRUE.toString()
+//					.equalsIgnoreCase(Platform.getDebugOption(option));
+//			}
+//
+//			return false;
+//		}
 
 		return traceAll || Boolean.getBoolean(option);
 	}
@@ -283,16 +280,16 @@ public class OCLPlugin
 			Throwable throwable) {
 		//
 		// Status ctor requires a non-null message
-		String msg = message == null
-			? "" //$NON-NLS-1$
-			: message;
+//		String msg = message == null
+//			? "" //$NON-NLS-1$
+//			: message;
 
 		try {
-			if (getPlugin() != null) {
-				// Eclipse environment
-				getPlugin().log(
-					new Status(severity, getPluginId(), code, msg, throwable));
-			} else {
+//			if (getPlugin() != null) {
+//				// Eclipse environment
+//				getPlugin().log(
+//					new Status(severity, getPluginId(), code, msg, throwable));
+//			} else {
 				// not in the Eclipse environment
 				if (shouldTrace(OCLDebugOptions.DEBUG)) {
 					switch (code) {
@@ -316,7 +313,7 @@ public class OCLPlugin
 						throwable.printStackTrace(System.err);
 					}
 				}
-			}
+//			}
 		} catch (IllegalArgumentException iae) {
 			catching(OCLPlugin.class, "log", iae);//$NON-NLS-1$
 		}

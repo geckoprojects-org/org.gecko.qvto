@@ -12,8 +12,7 @@
 package org.eclipse.m2m.internal.qvt.oml.common.io;
 
 import java.io.File;
-
-import org.eclipse.core.resources.ResourcesPlugin;
+import java.nio.charset.Charset;
 
 public class IOResource implements CResource {
 	public IOResource(File file) {
@@ -63,7 +62,8 @@ public class IOResource implements CResource {
 	}
 
     public static String getWorkspaceCharset() {
-		return ResourcesPlugin.getEncoding();
+		return Charset.defaultCharset().name();
+//		return ResourcesPlugin.getEncoding();
     }
     
 	protected final File myFile;

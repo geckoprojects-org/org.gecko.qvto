@@ -100,13 +100,13 @@ public class CompilerUtils {
     }
     
     public static void addMappingsToResourceSet(ResourceSet resourceSet, URI context) {
-    	IResource contextResource = URIUtils.getResource(context);
-		if (contextResource != null) {
-			EPackage.Registry packageRegistry = MetamodelURIMappingHelper.mappingsToEPackageRegistry(contextResource.getProject(), resourceSet);
-			if (packageRegistry != null) {
-				resourceSet.setPackageRegistry(packageRegistry);
-			}
-		}
+//    	IResource contextResource = URIUtils.getResource(context);
+//		if (contextResource != null) {
+//			EPackage.Registry packageRegistry = MetamodelURIMappingHelper.mappingsToEPackageRegistry(contextResource.getProject(), resourceSet);
+//			if (packageRegistry != null) {
+//				resourceSet.setPackageRegistry(packageRegistry);
+//			}
+//		}
 	}
         
     static class Eclipse { 	

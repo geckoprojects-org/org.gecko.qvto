@@ -11,9 +11,11 @@
  *******************************************************************************/
 package org.eclipse.m2m.internal.qvt.oml.emf.util.mmregistry;
 
+import java.util.logging.Level;
+
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IConfigurationElement;
-import org.eclipse.m2m.internal.qvt.oml.emf.util.EmfUtilPlugin;
+import org.eclipse.m2m.internal.qvt.oml.emf.util.Logger;
 
 public abstract class EclipseMetamodelProvider extends DelegatingMetamodelProvider {
 
@@ -34,7 +36,8 @@ public abstract class EclipseMetamodelProvider extends DelegatingMetamodelProvid
 				}
 			}
 			catch(CoreException e) {
-				EmfUtilPlugin.getDefault().getLog().log(e.getStatus());
+				Logger.getLogger().log(Level.SEVERE,"Error while creating EclipseMetamodelProvider.", e);
+//				EmfUtilPlugin.getDefault().getLog().log(e.getStatus());
 			}
 			finally {
 				delegate = null;

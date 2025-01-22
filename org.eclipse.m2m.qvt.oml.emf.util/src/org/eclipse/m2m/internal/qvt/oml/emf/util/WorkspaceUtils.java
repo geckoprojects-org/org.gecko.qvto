@@ -13,45 +13,41 @@ package org.eclipse.m2m.internal.qvt.oml.emf.util;
 
 import org.eclipse.core.resources.IContainer;
 import org.eclipse.core.resources.IFile;
-import org.eclipse.core.resources.IWorkspace;
-import org.eclipse.core.resources.ResourcesPlugin;
-import org.eclipse.core.runtime.IPath;
-import org.eclipse.core.runtime.Path;
 import org.eclipse.emf.common.util.URI;
 
 /** @author pkobiakov */
 public class WorkspaceUtils {
-	private WorkspaceUtils() {}
-	
-    public static IFile getIFile(String fileUnderWorkspace) {
-		IPath location = new Path(fileUnderWorkspace);
-		IFile ifile = ResourcesPlugin.getWorkspace().getRoot().getFileForLocation(location);
-		return ifile;
+	private WorkspaceUtils() {
 	}
-    
-    public static IFile getWorkspaceFile(String name) {
-        try {
-            IFile file = ResourcesPlugin.getWorkspace().getRoot().getFile(new Path(name));
-            return file;
-        }
-        catch(Exception e) {
-            return null;
-        }
-    }
-    
-    public static IFile getWorkspaceFile(URI uri) {
+
+	public static IFile getIFile(String fileUnderWorkspace) {
+//		IPath location = new Path(fileUnderWorkspace);
+//		IFile ifile = ResourcesPlugin.getWorkspace().getRoot().getFileForLocation(location);
+//		return ifile;
+		return null;
+	}
+
+	public static IFile getWorkspaceFile(String name) {
+//        try {
+//            IFile file = ResourcesPlugin.getWorkspace().getRoot().getFile(new Path(name));
+//            return file;
+//        }
+//        catch(Exception e) {
+		return null;
+//        }
+	}
+
+	public static IFile getWorkspaceFile(URI uri) {
 		String uriPath;
 		if (uri.isFile()) {
 			uriPath = uri.toFileString();
-		}
-		else if (uri.isPlatformResource()) {
+		} else if (uri.isPlatformResource()) {
 			uriPath = uri.toPlatformString(true);
-		}
-		else {
+		} else {
 			uriPath = uri.toString();
 		}
 		IFile ifile = getWorkspaceFile(uriPath);
-		
+
 		if (ifile == null || !ifile.exists()) {
 			if (uri.isFile()) {
 				IFile wsfile = getIFile(uriPath);
@@ -61,13 +57,14 @@ public class WorkspaceUtils {
 			}
 		}
 		return ifile;
-    }
-    
-    public static IContainer getIContainer(String folderUnderWorkspace) {
-        IWorkspace workspace = ResourcesPlugin.getWorkspace();
-        IPath location = new Path(folderUnderWorkspace);
-        IContainer cont = workspace.getRoot().getContainerForLocation(location);
-        return cont;
-    }
-    
+	}
+
+	public static IContainer getIContainer(String folderUnderWorkspace) {
+//        IWorkspace workspace = ResourcesPlugin.getWorkspace();
+//        IPath location = new Path(folderUnderWorkspace);
+//        IContainer cont = workspace.getRoot().getContainerForLocation(location);
+//        return cont;
+		return null;
+	}
+
 }

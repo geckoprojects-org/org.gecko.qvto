@@ -13,13 +13,13 @@ package org.eclipse.m2m.internal.qvt.oml.runtime.project;
 
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Path;
-import org.eclipse.core.runtime.Platform;
 import org.eclipse.emf.common.EMFPlugin;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.m2m.internal.qvt.oml.compiler.ResolverUtils;
 import org.eclipse.m2m.internal.qvt.oml.compiler.UnitResolver;
 import org.eclipse.m2m.internal.qvt.oml.compiler.UnitResolverFactory;
 import org.osgi.framework.Bundle;
+import org.osgi.framework.FrameworkUtil;
 
 public class PlatformPluginUnitResolverFactory extends UnitResolverFactory {
 
@@ -35,7 +35,8 @@ public class PlatformPluginUnitResolverFactory extends UnitResolverFactory {
 		}
 
 		String bundleId = uri.segment(1);
-		Bundle bundle = Platform.getBundle(bundleId);
+		Bundle bundle = FrameworkUtil.getBundle(this.getClass());
+//		Bundle bundle = Platform.getBundle(bundleId);
 		if (bundle == null) {
 			return null;
 		}
@@ -62,7 +63,8 @@ public class PlatformPluginUnitResolverFactory extends UnitResolverFactory {
 		}
 
 		String bundleId = uri.segment(1);
-		Bundle bundle = Platform.getBundle(bundleId);
+		Bundle bundle = FrameworkUtil.getBundle(getClass());
+//		Bundle bundle = Platform.getBundle(bundleId);
 		if (bundle == null) {
 			return null;
 		}

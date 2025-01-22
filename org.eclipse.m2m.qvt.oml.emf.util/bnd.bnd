@@ -1,11 +1,11 @@
 -library: enable-emf
 -buildpath: \
 	org.eclipse.equinox.common;version=latest,\
-	org.eclipse.core.runtime;version=latest,\
 	org.eclipse.equinox.registry;version=latest,\
 	org.eclipse.core.resources;version=latest,\
 	org.eclipse.equinox.supplement;version=latest,\
-	org.eclipse.ocl.ecore;version=snapshot
+	org.eclipse.ocl.ecore;version=snapshot,\
+	org.eclipse.core.jobs;version=latest
 	
 -includeresource: \
 	schema=schema,\

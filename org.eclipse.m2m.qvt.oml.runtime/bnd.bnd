@@ -1,6 +1,5 @@
 -library: enable-emf
 -buildpath: \
-	org.eclipse.core.runtime;version=latest,\
 	org.eclipse.core.resources;version=latest,\
 	org.eclipse.core.variables;version=latest,\
 	org.eclipse.equinox.common;version=latest,\

@@ -1,9 +1,9 @@
 -library: enable-emf
 -buildpath: \
 	lpg.runtime.java,\
-	org.eclipse.equinox.supplement;version=latest,\
 	org.eclipse.ocl;version=snapshot,\
-	org.eclipse.ocl.common;version=snapshot
+	org.eclipse.ocl.common;version=snapshot,\
+	org.eclipse.equinox.supplement
 	
 src: src,src-gen
 	

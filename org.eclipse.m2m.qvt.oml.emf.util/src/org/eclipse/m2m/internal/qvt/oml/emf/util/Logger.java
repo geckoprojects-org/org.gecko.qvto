@@ -14,10 +14,7 @@ package org.eclipse.m2m.internal.qvt.oml.emf.util;
 import java.util.logging.Level;
 import java.util.logging.LogRecord;
 
-import org.eclipse.core.runtime.ILog;
 import org.eclipse.core.runtime.IStatus;
-import org.eclipse.core.runtime.Status;
-import org.eclipse.emf.common.EMFPlugin;
 
 /**
  * @author pkobiakov
@@ -38,13 +35,13 @@ public class Logger {
         return new java.util.logging.Logger(id, null) {
             @Override
 			public void log(LogRecord record) {
-            	if(EMFPlugin.IS_ECLIPSE_RUNNING) {
-	                ILog pluginLog = EmfUtilPlugin.getDefault().getLog();
-	                IStatus status = new Status(getStatusSeverity(record.getLevel()), EmfUtilPlugin.ID, 1, record.getMessage(), record.getThrown());
-	                pluginLog.log(status);
-            	} else {
+//            	if(EMFPlugin.IS_ECLIPSE_RUNNING) {
+//	                ILog pluginLog = EmfUtilPlugin.getDefault().getLog();
+//	                IStatus status = new Status(getStatusSeverity(record.getLevel()), EmfUtilPlugin.ID, 1, record.getMessage(), record.getThrown());
+//	                pluginLog.log(status);
+//            	} else {
             		System.err.println(record.getLevel() + " - " + record.getMessage()); //$NON-NLS-1$
-            	}
+//            	}
             }
         };
 	}

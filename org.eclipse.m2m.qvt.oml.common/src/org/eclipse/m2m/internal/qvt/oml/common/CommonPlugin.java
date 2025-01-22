@@ -11,32 +11,27 @@
  *******************************************************************************/
 package org.eclipse.m2m.internal.qvt.oml.common;
 
-import java.text.MessageFormat;
 import java.util.MissingResourceException;
 import java.util.ResourceBundle;
 
 import org.eclipse.core.runtime.IStatus;
-import org.eclipse.core.runtime.Plugin;
 import org.eclipse.core.runtime.Status;
-import org.osgi.framework.BundleContext;
 
 
 /**
  * The main plugin class to be used in the desktop.
  */
-public class CommonPlugin extends Plugin {
+//public class CommonPlugin extends Plugin {
+public class CommonPlugin {
 	//The shared instance.
-	private static CommonPlugin plugin;
+	private static CommonPlugin plugin = new CommonPlugin();
 	//Resource bundle.
 	private ResourceBundle resourceBundle;
 	
 	public static final String ID = "org.eclipse.m2m.qvt.oml.common";//$NON-NLS-1$
-	/**
-	 * The constructor.
-	 */
-	public CommonPlugin() {
-		super();
-		plugin = this;
+
+	private CommonPlugin() {
+//		super();
 		try {
 			resourceBundle = ResourceBundle.getBundle("org.eclipse.m2m.internal.qvt.oml.common.common");//$NON-NLS-1$
 		} catch (MissingResourceException x) {
@@ -44,21 +39,21 @@ public class CommonPlugin extends Plugin {
 		}
 	}
 
-	/**
-	 * This method is called upon plug-in activation
-	 */
-	@Override
-	public void start(BundleContext context) throws Exception {
-		super.start(context);
-	}
-
-	/**
-	 * This method is called when the plug-in is stopped
-	 */
-	@Override
-	public void stop(BundleContext context) throws Exception {
-		super.stop(context);
-	}
+//	/**
+//	 * This method is called upon plug-in activation
+//	 */
+//	@Override
+//	public void start(BundleContext context) throws Exception {
+//		super.start(context);
+//	}
+//
+//	/**
+//	 * This method is called when the plug-in is stopped
+//	 */
+//	@Override
+//	public void stop(BundleContext context) throws Exception {
+//		super.stop(context);
+//	}
 
 	/**
 	 * Returns the shared instance.
@@ -66,29 +61,29 @@ public class CommonPlugin extends Plugin {
 	public static CommonPlugin getDefault() {
 		return plugin;
 	}
-
-	/**
-	 * Returns the string from the plugin's resource bundle,
-	 * or 'key' if not found.
-	 */
-	public static String getResourceString(String key) {
-		ResourceBundle bundle = CommonPlugin.getDefault().getResourceBundle();
-		try {
-			return (bundle != null) ? bundle.getString(key) : key;
-		} catch (MissingResourceException e) {
-			return "!" + key + "!";  //$NON-NLS-1$//$NON-NLS-2$
-		}
-	}
-	
-    public static String getResourceString(String key, Object [] substitutions) {
-        String pattern = getResourceString(key);
-        try {
-            return MessageFormat.format(pattern, substitutions);
-        }
-        catch(Exception e) {
-            return "!" + pattern + "!";  //$NON-NLS-1$//$NON-NLS-2$
-        }
-    }
+//
+//	/**
+//	 * Returns the string from the plugin's resource bundle,
+//	 * or 'key' if not found.
+//	 */
+//	public static String getResourceString(String key) {
+//		ResourceBundle bundle = CommonPlugin.getDefault().getResourceBundle();
+//		try {
+//			return (bundle != null) ? bundle.getString(key) : key;
+//		} catch (MissingResourceException e) {
+//			return "!" + key + "!";  //$NON-NLS-1$//$NON-NLS-2$
+//		}
+//	}
+//	
+//    public static String getResourceString(String key, Object [] substitutions) {
+//        String pattern = getResourceString(key);
+//        try {
+//            return MessageFormat.format(pattern, substitutions);
+//        }
+//        catch(Exception e) {
+//            return "!" + pattern + "!";  //$NON-NLS-1$//$NON-NLS-2$
+//        }
+//    }
 
 	/**
 	 * Returns the plugin's resource bundle,
@@ -97,15 +92,16 @@ public class CommonPlugin extends Plugin {
 		return resourceBundle;
 	}
 	
-	public static void log(IStatus status) {
-        getDefault().getLog().log(status);
-    }
+//	public static void log(IStatus status) {
+//        getDefault().getLog().log(status);
+//    }
     
-    public static void log(Throwable e) {
-        log(createStatus(IStatus.ERROR, "Caught exception", e)); //$NON-NLS-1$
-    }
+//    public static void log(Throwable e) {
+//        log(createStatus(IStatus.ERROR, "Caught exception", e)); //$NON-NLS-1$
+//    }
     
 	public static IStatus createStatus(int severity, String message, Throwable throwable) {
-		return new Status(severity, getDefault().getBundle().getSymbolicName(), message != null ? message : "", throwable); //$NON-NLS-1$
+//		return new Status(severity, getDefault().getBundle().getSymbolicName(), message != null ? message : "", throwable); //$NON-NLS-1$
+		return new Status(severity, ID, message != null ? message : "", throwable); //$NON-NLS-1$
 	}    
 }

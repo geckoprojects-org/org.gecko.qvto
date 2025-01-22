@@ -21,9 +21,7 @@ import org.eclipse.debug.core.DebugPlugin;
 import org.eclipse.debug.core.ILaunch;
 import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.debug.core.IStatusHandler;
-import org.eclipse.m2m.internal.qvt.oml.common.MDAConstants;
 import org.eclipse.m2m.internal.qvt.oml.common.MdaException;
-import org.eclipse.m2m.internal.qvt.oml.common.launch.EmptyDebugTarget;
 import org.eclipse.m2m.internal.qvt.oml.common.launch.IQvtLaunchConstants;
 import org.eclipse.m2m.internal.qvt.oml.common.launch.ProcessJob;
 import org.eclipse.m2m.internal.qvt.oml.common.launch.StreamsProxy;
@@ -108,9 +106,9 @@ public class InMemoryQvtLaunchConfigurationDelegate extends QvtLaunchConfigurati
 
 		launch.addProcess(processJob);
 
-		final EmptyDebugTarget debugTarget = new EmptyDebugTarget(launch, processJob, QvtRuntimePlugin.ID, MDAConstants.QVTO_LAUNCH_CONFIGURATION_NAME);
-
-		launch.addDebugTarget(debugTarget);
+//		final EmptyDebugTarget debugTarget = new EmptyDebugTarget(launch, processJob, QvtRuntimePlugin.ID, MDAConstants.QVTO_LAUNCH_CONFIGURATION_NAME);
+//
+//		launch.addDebugTarget(debugTarget);
 
 		boolean isLaunchInBackground = true;
 		try {

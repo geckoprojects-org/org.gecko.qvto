@@ -22,13 +22,13 @@ import java.util.List;
 
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IConfigurationElement;
-import org.eclipse.core.runtime.Platform;
 import org.eclipse.emf.ecore.impl.EObjectImpl;
 import org.eclipse.m2m.internal.qvt.oml.ocl.Logger;
 import org.eclipse.m2m.internal.qvt.oml.ocl.metainfo.OclMetainfo;
 import org.eclipse.m2m.internal.qvt.oml.ocl.metainfo.OclMetainfoClassLazyLoader;
 import org.eclipse.m2m.internal.qvt.oml.ocl.metainfo.OclMetainfoOperation;
 import org.osgi.framework.Bundle;
+import org.osgi.framework.FrameworkUtil;
 
 
 public class LibraryImpl extends EObjectImpl implements Library {
@@ -94,8 +94,9 @@ public class LibraryImpl extends EObjectImpl implements Library {
 
     public Class<?> getLibraryClass() throws LibraryCreationException {
         if (myLibraryClass == null) {
-            String namespace = myConfiguration.getNamespaceIdentifier();
-            Bundle bundle = Platform.getBundle(namespace);
+        	Bundle bundle = FrameworkUtil.getBundle(myLibraryClass);
+//            String namespace = myConfiguration.getNamespaceIdentifier();
+//            Bundle bundle = Platform.getBundle(namespace);
             try {
                 myLibraryClass = bundle.loadClass(getLibraryClassName());
             } catch (ClassNotFoundException e) {

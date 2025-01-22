@@ -12,21 +12,11 @@ package org.eclipse.ocl.common;
 
 import java.util.List;
 
-import org.eclipse.core.runtime.IConfigurationElement;
-import org.eclipse.core.runtime.IExtensionPoint;
-import org.eclipse.core.runtime.IExtensionRegistry;
-import org.eclipse.core.runtime.Platform;
-import org.eclipse.core.runtime.preferences.IEclipsePreferences.IPreferenceChangeListener;
-import org.eclipse.core.runtime.preferences.IEclipsePreferences.PreferenceChangeEvent;
-import org.eclipse.core.runtime.preferences.IPreferencesService;
 import org.eclipse.core.runtime.preferences.IScopeContext;
-import org.eclipse.core.runtime.preferences.InstanceScope;
 import org.eclipse.emf.common.EMFPlugin;
 import org.eclipse.emf.ecore.EAnnotation;
 import org.eclipse.emf.ecore.EModelElement;
-import org.eclipse.emf.ecore.plugin.EcorePlugin;
 import org.eclipse.ocl.common.preferences.PreferenceableOption;
-import org.eclipse.ocl.common.preferences.PreferenceableOption.PreferenceableOption2;
 
 /**
  * The Facade for common Eclipse OCL facilities.
@@ -44,50 +34,50 @@ public class OCLCommon implements OCLConstants
 	private static final class DefaultDefaultDelegationMode
 	{
 		public String run() {
-			IExtensionRegistry pluginRegistry = Platform.getExtensionRegistry();
-			String pluginID = EcorePlugin.getPlugin().getBundle().getSymbolicName();
-			IExtensionPoint point = pluginRegistry.getExtensionPoint(pluginID, EcorePlugin.VALIDATION_DELEGATE_PPID);
-			if (point != null) {
-				String pivotURI = OCLConstants.OCL_DELEGATE_URI_PIVOT;
-				IConfigurationElement[] elements = point.getConfigurationElements();
-				for (int i = 0; i < elements.length; i++) {
-					String uri = elements[i].getAttribute("uri");						//$NON-NLS-1$
-					if (pivotURI.equals(uri)) {
-						return pivotURI;
-					}
-				}
-			}
+//			IExtensionRegistry pluginRegistry = Platform.getExtensionRegistry();
+//			String pluginID = EcorePlugin.getPlugin().getBundle().getSymbolicName();
+//			IExtensionPoint point = pluginRegistry.getExtensionPoint(pluginID, EcorePlugin.VALIDATION_DELEGATE_PPID);
+//			if (point != null) {
+//				String pivotURI = OCLConstants.OCL_DELEGATE_URI_PIVOT;
+//				IConfigurationElement[] elements = point.getConfigurationElements();
+//				for (int i = 0; i < elements.length; i++) {
+//					String uri = elements[i].getAttribute("uri");						//$NON-NLS-1$
+//					if (pivotURI.equals(uri)) {
+//						return pivotURI;
+//					}
+//				}
+//			}
 			return null;
 		}
 	}
 
-	/**
-	 * A PreferenceListenerInstaller installs itself as a IPreferenceChangeListener on an option
-	 * so that PreferenceableOption2.fireChanged is invoked for any change.
-	 *
-	 * This code is factored into a separate static class to ensure that classes that are not
-	 * available standalone are not loaded before EMFPlugin.IS_ECLIPSE_RUNNING is checked.
-	 */
-	private static final class PreferenceListenerInstaller implements IPreferenceChangeListener
-	{
-		@SuppressWarnings("deprecation")
-		private static final InstanceScope INSTANCE_SCOPE_INSTANCE = new InstanceScope();	// InstanceScope.INSTANCE not available for Galileo
-		private final PreferenceableOption2<?> option;
-
-		private PreferenceListenerInstaller(PreferenceableOption2<?> option) {
-			this.option = option;
-			String qualifier = option.getPluginId();
-			INSTANCE_SCOPE_INSTANCE.getNode(qualifier).addPreferenceChangeListener(this);
-		}
-
-		@Override
-		public void preferenceChange(PreferenceChangeEvent event) {
-			String key = event.getKey();
-			if (key != null){
-				option.fireChanged(key, event.getOldValue(), event.getNewValue());
-			}
-		}
-	}
+//	/**
+//	 * A PreferenceListenerInstaller installs itself as a IPreferenceChangeListener on an option
+//	 * so that PreferenceableOption2.fireChanged is invoked for any change.
+//	 *
+//	 * This code is factored into a separate static class to ensure that classes that are not
+//	 * available standalone are not loaded before EMFPlugin.IS_ECLIPSE_RUNNING is checked.
+//	 */
+//	private static final class PreferenceListenerInstaller implements IPreferenceChangeListener
+//	{
+//		@SuppressWarnings("deprecation")
+//		private static final InstanceScope INSTANCE_SCOPE_INSTANCE = new InstanceScope();	// InstanceScope.INSTANCE not available for Galileo
+//		private final PreferenceableOption2<?> option;
+//
+//		private PreferenceListenerInstaller(PreferenceableOption2<?> option) {
+//			this.option = option;
+//			String qualifier = option.getPluginId();
+//			INSTANCE_SCOPE_INSTANCE.getNode(qualifier).addPreferenceChangeListener(this);
+//		}
+//
+//		@Override
+//		public void preferenceChange(PreferenceChangeEvent event) {
+//			String key = event.getKey();
+//			if (key != null){
+//				option.fireChanged(key, event.getOldValue(), event.getNewValue());
+//			}
+//		}
+//	}
 
 	public static final String PLUGIN_ID = "org.eclipse.ocl.common"; //$NON-NLS-1$
 
@@ -158,16 +148,16 @@ public class OCLCommon implements OCLConstants
 	 * @param contexts
 	 */
 	public static <T> T getPreference(PreferenceableOption<T> option, IScopeContext[] contexts) {
-		if (EMFPlugin.IS_ECLIPSE_RUNNING) {
-			IPreferencesService preferencesService = Platform.getPreferencesService();
-			if (preferencesService != null) {
-				String qualifier = option.getPluginId();
-				String key = option.getKey();
-				T defaultValue = option.getDefaultValue();
-				String string = preferencesService.getString(qualifier, key, defaultValue != null ? defaultValue.toString() : "", contexts); //$NON-NLS-1$
-				return option.getValueOf(string);
-			}
-		}
+//		if (EMFPlugin.IS_ECLIPSE_RUNNING) {
+//			IPreferencesService preferencesService = Platform.getPreferencesService();
+//			if (preferencesService != null) {
+//				String qualifier = option.getPluginId();
+//				String key = option.getKey();
+//				T defaultValue = option.getDefaultValue();
+//				String string = preferencesService.getString(qualifier, key, defaultValue != null ? defaultValue.toString() : "", contexts); //$NON-NLS-1$
+//				return option.getValueOf(string);
+//			}
+//		}
 		return option.getDefaultValue(); // Standalone or Eclipse not running
 	}
 
@@ -176,12 +166,12 @@ public class OCLCommon implements OCLConstants
 	 * @since 1.1
 	 */
 	public static <T> void installListener(PreferenceableOption<T> option) {
-		if (EMFPlugin.IS_ECLIPSE_RUNNING) {
-			IPreferencesService preferencesService = Platform.getPreferencesService();
-			if ((preferencesService != null) && (option instanceof PreferenceableOption.PreferenceableOption2)) {
-				new PreferenceListenerInstaller((PreferenceableOption.PreferenceableOption2<?>)option);
-			}
-		}
+//		if (EMFPlugin.IS_ECLIPSE_RUNNING) {
+//			IPreferencesService preferencesService = Platform.getPreferencesService();
+//			if ((preferencesService != null) && (option instanceof PreferenceableOption.PreferenceableOption2)) {
+//				new PreferenceListenerInstaller((PreferenceableOption.PreferenceableOption2<?>)option);
+//			}
+//		}
 	}
 
 	/**

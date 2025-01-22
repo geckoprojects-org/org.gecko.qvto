@@ -29,7 +29,6 @@ import java.util.Set;
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Path;
-import org.eclipse.core.runtime.Platform;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.m2m.internal.qvt.oml.compiler.BlackboxUnitResolver;
 import org.eclipse.m2m.internal.qvt.oml.compiler.CompositeUnitResolver;
@@ -117,24 +116,24 @@ public class PlatformPluginUnitResolver extends DelegatingUnitResolver {
 	
 	private static Map<String, Set<IPath>> loadPluginSourceContainers() {
 		Map<String, Set<IPath>> sourceContainers = new HashMap<String, Set<IPath>>();
-	    IConfigurationElement[] configurationElements = Platform.getExtensionRegistry().getConfigurationElementsFor(SOURCE_CONTAINER_POINT);
-	    for (int i = 0; i < configurationElements.length; i++) {
-	        IConfigurationElement element = configurationElements[i];
-	        
-	        if (SOURCE_CONTAINER.equals(element.getName())) {
-		        String namespace = element.getNamespaceIdentifier();
-		        String containerPath = element.getAttribute(CONTAINER_PATH);
-		        if (containerPath == null || containerPath.trim().length() == 0) {
-		        	continue;
-		        }
-		        Set<IPath> containers = sourceContainers.get(namespace);
-		        if (containers == null) {
-		        	containers = new HashSet<IPath>();
-		        	sourceContainers.put(namespace, containers);
-		        }
-	        	containers.add(new Path(containerPath));
-	        }
-	    }
+//	    IConfigurationElement[] configurationElements = Platform.getExtensionRegistry().getConfigurationElementsFor(SOURCE_CONTAINER_POINT);
+//	    for (int i = 0; i < configurationElements.length; i++) {
+//	        IConfigurationElement element = configurationElements[i];
+//	        
+//	        if (SOURCE_CONTAINER.equals(element.getName())) {
+//		        String namespace = element.getNamespaceIdentifier();
+//		        String containerPath = element.getAttribute(CONTAINER_PATH);
+//		        if (containerPath == null || containerPath.trim().length() == 0) {
+//		        	continue;
+//		        }
+//		        Set<IPath> containers = sourceContainers.get(namespace);
+//		        if (containers == null) {
+//		        	containers = new HashSet<IPath>();
+//		        	sourceContainers.put(namespace, containers);
+//		        }
+//	        	containers.add(new Path(containerPath));
+//	        }
+//	    }
 	    return Collections.unmodifiableMap(sourceContainers);
 	}
 	

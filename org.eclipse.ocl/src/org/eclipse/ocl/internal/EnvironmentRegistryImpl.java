@@ -21,7 +21,7 @@ import org.eclipse.core.runtime.IExtensionDelta;
 import org.eclipse.core.runtime.IExtensionRegistry;
 import org.eclipse.core.runtime.IRegistryChangeEvent;
 import org.eclipse.core.runtime.IRegistryChangeListener;
-import org.eclipse.core.runtime.Platform;
+import org.eclipse.core.runtime.RegistryFactory;
 import org.eclipse.emf.common.util.BasicEList;
 import org.eclipse.emf.common.util.Diagnostic;
 import org.eclipse.emf.common.util.EList;
@@ -132,7 +132,7 @@ public class EnvironmentRegistryImpl implements Registry {
 		
 		void readRegistry() {
 			if (extensionRegistry == null) {
-				extensionRegistry = Platform.getExtensionRegistry();
+				extensionRegistry = RegistryFactory.getRegistry();
 				readRegistryImpl();
 			}
 		}

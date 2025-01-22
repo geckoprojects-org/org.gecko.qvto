@@ -14,8 +14,6 @@
 package org.eclipse.ocl.ecore.internal;
 
 import org.eclipse.core.runtime.IStatus;
-import org.eclipse.core.runtime.Platform;
-import org.eclipse.core.runtime.Status;
 import org.eclipse.emf.common.EMFPlugin;
 import org.eclipse.emf.common.util.ResourceLocator;
 import org.eclipse.emf.common.util.URI;
@@ -24,6 +22,7 @@ import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.impl.ResourceFactoryImpl;
 import org.eclipse.emf.ecore.resource.impl.ResourceImpl;
 import org.eclipse.ocl.ecore.util.OCLEcoreUtil;
+import org.osgi.framework.FrameworkUtil;
 
 /**
  * The activator class controls the plug-in life cycle
@@ -48,8 +47,8 @@ public class OCLEcorePlugin
 	//The shared instance.
 	public static OCLEcorePlugin INSTANCE = new OCLEcorePlugin();
 
-	//The shared Eclipse plug-in instance
-	private static Implementation plugin;
+//	//The shared Eclipse plug-in instance
+//	private static Implementation plugin;
 
 	/**
 	 * The constructor.
@@ -59,25 +58,27 @@ public class OCLEcorePlugin
 	}
 
 	public static String getPluginId() {
-		return (getPlugin() != null)
-			? getPlugin().getBundle().getSymbolicName()
-			: OCLEcoreUtil.PLUGIN_ID; // last known bundle ID
+//		return (getPlugin() != null)
+//			? getPlugin().getBundle().getSymbolicName()
+//			: OCLEcoreUtil.PLUGIN_ID; // last known bundle ID
+		return FrameworkUtil.getBundle(INSTANCE.getClass()).getSymbolicName();
 	}
 
 	// implements the inherited method
 	@Override
 	public ResourceLocator getPluginResourceLocator() {
-		return plugin;
+		return this;
+//		return plugin;
 	}
 
-	/**
-	 * Obtains the Eclipse plug-in that I implement.
-	 * 
-	 * @return my Eclipse plug-in self
-	 */
-	public static Implementation getPlugin() {
-		return plugin;
-	}
+//	/**
+//	 * Obtains the Eclipse plug-in that I implement.
+//	 * 
+//	 * @return my Eclipse plug-in self
+//	 */
+//	public static Implementation getPlugin() {
+//		return plugin;
+//	}
 
 	/**
 	 * Returns the shared instance.
@@ -86,25 +87,25 @@ public class OCLEcorePlugin
 		return INSTANCE;
 	}
 
-	/**
-	 * The definition of the Eclipse plug-in flavour of this EMF plug-in.
-	 * 
-	 * @author Christian W. Damus (cdamus)
-	 */
-	public static class Implementation
-			extends EMFPlugin.EclipsePlugin {
-
-		/**
-		 * Initializes me with my Eclipse plug-in descriptor.
-		 */
-		public Implementation() {
-			super();
-
-			// Remember the static instance.
-			//
-			OCLEcorePlugin.plugin = this;
-		}
-	}
+//	/**
+//	 * The definition of the Eclipse plug-in flavour of this EMF plug-in.
+//	 * 
+//	 * @author Christian W. Damus (cdamus)
+//	 */
+//	public static class Implementation
+//			extends EMFPlugin.EclipsePlugin {
+//
+//		/**
+//		 * Initializes me with my Eclipse plug-in descriptor.
+//		 */
+//		public Implementation() {
+//			super();
+//
+//			// Remember the static instance.
+//			//
+//			OCLEcorePlugin.plugin = this;
+//		}
+//	}
 
 	/**
 	 * Traces the catching of the specified throwable in the specified method of
@@ -139,14 +140,14 @@ public class OCLEcorePlugin
 	}
 
 	public static boolean shouldTrace(String option) {
-		if (getPlugin() != null) {
-			if (getPlugin().isDebugging()) {
-				return Boolean.TRUE.toString()
-					.equalsIgnoreCase(Platform.getDebugOption(option));
-			}
-
-			return false;
-		}
+//		if (getPlugin() != null) {
+//			if (getPlugin().isDebugging()) {
+//				return Boolean.TRUE.toString()
+//					.equalsIgnoreCase(Platform.getDebugOption(option));
+//			}
+//
+//			return false;
+//		}
 
 		return Boolean.getBoolean("org.eclipse.ocl.ecore.debug"); //$NON-NLS-1$
 	}
@@ -257,16 +258,16 @@ public class OCLEcorePlugin
 			Throwable throwable) {
 		//
 		// Status ctor requires a non-null message
-		String msg = message == null
-			? "" //$NON-NLS-1$
-			: message;
+//		String msg = message == null
+//			? "" //$NON-NLS-1$
+//			: message;
 
 		try {
-			if (getPlugin() != null) {
-				// Eclipse environment
-				getPlugin().log(
-					new Status(severity, getPluginId(), code, msg, throwable));
-			} else {
+//			if (getPlugin() != null) {
+//				// Eclipse environment
+//				getPlugin().log(
+//					new Status(severity, getPluginId(), code, msg, throwable));
+//			} else {
 				// not in the Eclipse environment
 				if (shouldTrace(OCLDebugOptions.DEBUG)) {
 					switch (code) {
@@ -290,7 +291,7 @@ public class OCLEcorePlugin
 						throwable.printStackTrace(System.err);
 					}
 				}
-			}
+//			}
 		} catch (IllegalArgumentException iae) {
 			catching(OCLEcorePlugin.class, "log", iae);//$NON-NLS-1$
 		}
