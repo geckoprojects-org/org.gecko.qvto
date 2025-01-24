@@ -14,8 +14,14 @@ pipeline  {
                 branch 'main' 
             }
             steps {
-                echo "I am building on ${env.BRANCH_NAME}"
-                sh "./gradlew clean build release -Drelease.dir=$JENKINS_HOME/repo.gecko/release/org.gecko.qvto --info --stacktrace -Dmaven.repo.local=${WORKSPACE}/.m2"
+                script {
+                    echo "I am building on ${env.BRANCH_NAME}"
+                    try {
+                        sh "./gradlew clean build release -Drelease.dir=$JENKINS_HOME/repo.gecko/release/org.gecko.qvto --info --stacktrace -Dmaven.repo.local=${WORKSPACE}/.m2"
+                    } finally {
+                        junit testResults: '**/generated/test-reports/**/TEST-*.xml', skipPublishingChecks: true
+                    }
+                }
             }
         }
         stage('Snapshot branch release') {
