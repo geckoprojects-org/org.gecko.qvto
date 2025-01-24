@@ -14,8 +14,6 @@
 package org.eclipse.m2m.internal.qvt.oml.runtime.project;
 
 import org.eclipse.core.resources.IFile;
-import org.eclipse.core.runtime.IProgressMonitor;
-import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.m2m.internal.qvt.oml.common.MdaException;
 import org.eclipse.m2m.internal.qvt.oml.compiler.CompiledUnit;
@@ -38,18 +36,13 @@ public class QvtCompilerFacade {
 	private QvtCompilerFacade() {
 	}
 
-	public static CompilationResult getCompiledModule(URI uriTransf, QvtCompilerOptions compilerOptions, IProgressMonitor monitor) throws MdaException {
+	public static CompilationResult getCompiledModule(URI uriTransf, QvtCompilerOptions compilerOptions) throws MdaException {
 		// FIXME - why is that relied on being it an IFile?
 		IFile ifile = WorkspaceUtils.getWorkspaceFile(uriTransf);
-		return getCompiledModule(ifile, compilerOptions, monitor);
+		return getCompiledModule(ifile, compilerOptions);
 	}
 	
-	static CompilationResult getCompiledModule(IFile ifile, QvtCompilerOptions compilerOptions, IProgressMonitor monitor) throws MdaException {
-        if (monitor == null) {
-            monitor = new NullProgressMonitor();
-        }
-
-        try {
+	static CompilationResult getCompiledModule(IFile ifile, QvtCompilerOptions compilerOptions) throws MdaException {
         	URI resourceURI = URIUtils.getResourceURI(ifile);
 			UnitProxy sourceUnit = UnitResolverFactory.Registry.INSTANCE.getUnit(resourceURI);
 						
@@ -58,7 +51,7 @@ public class QvtCompilerFacade {
 			}			
 
 			final QVTOCompiler compiler = new QVTOCompiler();
-			final CompiledUnit module = compiler.compile(sourceUnit, compilerOptions, monitor);
+			final CompiledUnit module = compiler.compile(sourceUnit, compilerOptions);
 			
 			return new CompilationResult() {
 				public CompiledUnit getCompiledModule() {
@@ -68,9 +61,5 @@ public class QvtCompilerFacade {
 					return compiler;
 				}				
 			};
-        }
-        finally {
-            monitor.done();
-        }
 	}
 }

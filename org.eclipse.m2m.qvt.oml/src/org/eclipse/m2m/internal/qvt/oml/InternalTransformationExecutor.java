@@ -16,9 +16,6 @@ import static org.eclipse.m2m.internal.qvt.oml.emf.util.EmfUtilPlugin.isSuccess;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.eclipse.core.runtime.IProgressMonitor;
-import org.eclipse.core.runtime.NullProgressMonitor;
-import org.eclipse.core.runtime.SubMonitor;
 import org.eclipse.emf.common.util.Diagnostic;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.common.util.URI;
@@ -115,16 +112,11 @@ public class InternalTransformationExecutor {
 	 *
 	 * @return the diagnostic indicating possible problems of the load action
 	 */
-	public Diagnostic loadTransformation(IProgressMonitor monitor) {
-		try {
+	public Diagnostic loadTransformation() {
 			if (fLoadDiagnostic == null) {
-				doLoad(monitor);
+				doLoad();
 			}
 			return fLoadDiagnostic;
-		}
-		finally {
-			monitor.done();
-		}
 	}
 
 	/**
@@ -162,33 +154,23 @@ public class InternalTransformationExecutor {
 			throw new IllegalArgumentException();
 		}
 
-		IProgressMonitor monitor = executionContext.getProgressMonitor();
-
-		try {
-			SubMonitor progress = SubMonitor.convert(monitor, NLS.bind(Messages.Executor_Executing, getURI().toString()), 2);
-
 			checkLegalModelParams(modelParameters);
 
 			// ensure transformation unit is loaded
-			loadTransformation(progress.split(1));
+			loadTransformation();
 
 			// check if we have successfully loaded the transformation unit
 			if (!isSuccess(fLoadDiagnostic)) {
 				return fLoadDiagnostic;
 			}
 			
-			IContext context = new Context(executionContext, progress.split(1));
+			IContext context = new Context(executionContext);
 			
 			try {
 				return doExecute(modelParameters, context);
 			} catch (QvtRuntimeException e) {
 				return createExecutionFailure(e, context);
 			}
-		} finally {
-			if (monitor != null) {
-				monitor.done();
-			}
-		}
 	}
 
 	private ExecutionDiagnostic doExecute(ModelExtent[] args, IContext context) {
@@ -254,8 +236,8 @@ public class InternalTransformationExecutor {
 		// nothing interesting here
 	}
 
-	private void doLoad(IProgressMonitor monitor) {
-		fOperationalTransformation = fTransformation.getTransformation(monitor);
+	private void doLoad() {
+		fOperationalTransformation = fTransformation.getTransformation();
 
 		fLoadDiagnostic = fTransformation.getDiagnostic();
 	}
@@ -298,7 +280,7 @@ public class InternalTransformationExecutor {
 	}
 
 	public OperationalTransformation getTransformation() {
-		loadTransformation(new NullProgressMonitor());
+		loadTransformation();
 		return fOperationalTransformation;
 	}
 

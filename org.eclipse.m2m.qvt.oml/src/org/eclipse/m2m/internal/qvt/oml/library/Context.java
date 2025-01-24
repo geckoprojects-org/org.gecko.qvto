@@ -16,8 +16,6 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.eclipse.core.runtime.IProgressMonitor;
-import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.emf.common.util.Diagnostic;
 import org.eclipse.m2m.internal.qvt.oml.ExecutionDiagnosticImpl;
 import org.eclipse.m2m.internal.qvt.oml.Messages;
@@ -25,7 +23,6 @@ import org.eclipse.m2m.internal.qvt.oml.NLS;
 import org.eclipse.m2m.internal.qvt.oml.evaluator.QVTEvaluationOptions;
 import org.eclipse.m2m.qvt.oml.ExecutionContext;
 import org.eclipse.m2m.qvt.oml.ExecutionDiagnostic;
-import org.eclipse.m2m.qvt.oml.util.EvaluationMonitor;
 import org.eclipse.m2m.qvt.oml.util.IContext;
 import org.eclipse.m2m.qvt.oml.util.ISessionData;
 import org.eclipse.m2m.qvt.oml.util.Log;
@@ -34,28 +31,22 @@ import org.eclipse.m2m.qvt.oml.util.Trace;
 /**
  * @noextend
  */
-@SuppressWarnings("deprecation")
 public class Context implements IContext {
 
     private final Map<String, Object>  myConfiguration;
     private SessionDataImpl myData;
 
     private Log myLog;
-    private IProgressMonitor myMonitor;
     private Trace myTrace;
     private final ExecutionDiagnostic myDiagnostic = new ExecutionDiagnosticImpl(
 			Diagnostic.OK, 0, NLS.bind(Messages.TransformationExecutionCompleted, null));
     
     public Context() {
-    	this(Log.NULL_LOG, new NullProgressMonitor());
+    	this(Log.NULL_LOG);
     }
     
-    public Context(ExecutionContext context) {
-    	this(context, context.getProgressMonitor());
-    }
-    
-    public Context(ExecutionContext executionContext, IProgressMonitor monitor) {
-    	this(executionContext.getLog(), monitor);
+    public Context(ExecutionContext executionContext) {
+    	this(executionContext.getLog());
 		
 		for (String key : executionContext.getConfigPropertyNames()) {
 			Object value = executionContext.getConfigProperty(key);
@@ -72,33 +63,14 @@ public class Context implements IContext {
 		}
     }
     
-    private Context(Log log, IProgressMonitor monitor) {
+    private Context(Log log) {
     	myLog = log;
-		myMonitor = monitor;
 		myConfiguration = new HashMap<String, Object>();
 		myData = new SessionDataImpl();		
 		myTrace = Trace.createEmptyTrace();
     }
 
-    public void setProgressMonitor(IProgressMonitor monitor) {
-    	if(monitor == null) {
-    		throw new IllegalArgumentException("Non-null monitor required"); //$NON-NLS-1$
-    	}
-
-		this.myMonitor = monitor;
-	}
-    
-    public IProgressMonitor getProgressMonitor() {    
-    	return myMonitor;
-    }
-    
-    /**
-     * @deprecated Use getProgressMonitor() method
-     */
-    public EvaluationMonitor getMonitor() {    
-    	return EvaluationMonitor.EvaluationMonitorWrapper.convert(myMonitor);
-    }
-    
+   
     public void setLog(Log log) {
     	if(log == null) {
     		throw new IllegalArgumentException("Non-null logger required"); //$NON-NLS-1$

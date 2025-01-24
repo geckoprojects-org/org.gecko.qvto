@@ -13,3 +13,7 @@
 -includeresource: \
 	schema=schema,\
 	plugin.xml=_plugin.xml
+	
+Import-Package: \
+	org.eclipse.core.runtime.*;'resolution:'=optional,\
+	*

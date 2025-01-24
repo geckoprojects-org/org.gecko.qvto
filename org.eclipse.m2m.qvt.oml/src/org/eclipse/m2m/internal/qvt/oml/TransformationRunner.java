@@ -15,7 +15,6 @@ import static org.eclipse.m2m.internal.qvt.oml.emf.util.EmfUtilPlugin.isSuccess;
 
 import java.util.List;
 
-import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.emf.common.util.BasicDiagnostic;
 import org.eclipse.emf.common.util.Diagnostic;
 import org.eclipse.emf.common.util.DiagnosticException;
@@ -95,7 +94,7 @@ public class TransformationRunner  {
 		
 		fDiagnostic = QvtPlugin.createDiagnostic("Transformation runner initialize"); //$NON-NLS-1$
 		
-		Diagnostic loadDiagnostic = fExecutor.loadTransformation(new NullProgressMonitor());
+		Diagnostic loadDiagnostic = fExecutor.loadTransformation();
 		if(!isSuccess(loadDiagnostic)) {
 			fDiagnostic.add(loadDiagnostic);
 		}

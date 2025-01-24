@@ -14,8 +14,6 @@ package org.eclipse.m2m.qvt.oml;
 
 import java.util.Collections;
 
-import org.eclipse.core.runtime.IProgressMonitor;
-import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.emf.common.util.Diagnostic;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EPackage;
@@ -113,23 +111,7 @@ public final class TransformationExecutor {
 	 * @return the diagnostic indicating possible problems of the load action
 	 */
 	public Diagnostic loadTransformation() {
-		return loadTransformation(new NullProgressMonitor());
-	}
-	
-	/**
-	 * Attempts to load the transformation referred by this executor and checks
-	 * if it is valid for execution.
-	 * <p>
-	 * <b>Remark:</b></br> Only the first performs the actual transformation
-	 * loading, subsequent calls to this method will return the existing
-	 * diagnostic.
-	 * 
-	 * @since 3.4
-	 * @param the monitor indicating load progress and cancellation
-	 * @return the diagnostic indicating possible problems of the load action
-	 */
-	public Diagnostic loadTransformation(IProgressMonitor monitor) {
-		return fExector.loadTransformation(monitor);
+		return fExector.loadTransformation();
 	}
 
 	/**

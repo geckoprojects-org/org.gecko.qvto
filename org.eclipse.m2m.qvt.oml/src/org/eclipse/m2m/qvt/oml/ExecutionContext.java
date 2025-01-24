@@ -15,8 +15,6 @@ package org.eclipse.m2m.qvt.oml;
 import java.util.Collection;
 import java.util.Set;
 
-import org.eclipse.core.runtime.IProgressMonitor;
-import org.eclipse.m2m.qvt.oml.util.EvaluationMonitor;
 import org.eclipse.m2m.qvt.oml.util.ISessionData;
 import org.eclipse.m2m.qvt.oml.util.Log;
 
@@ -28,7 +26,6 @@ import org.eclipse.m2m.qvt.oml.util.Log;
  * 
  * @noimplement This interface is not intended to be implemented by clients.
  */
-@SuppressWarnings("deprecation")
 public interface ExecutionContext {
 
 	/**
@@ -62,26 +59,6 @@ public interface ExecutionContext {
 	 */
 	Log getLog();
 
-	/**
-	 * Gets the evaluation monitor assigned to this context. The execution
-	 * engine will query the monitor the check for the user interruption
-	 * request.
-	 * 
-	 * @return the monitor implementation, never <code>null</code>
-	 * @deprecated Use getProgressMonitor() method
-	 */
-	EvaluationMonitor getMonitor();
-	
-	/**
-	 * Gets the evaluation monitor assigned to this context. The execution
-	 * engine will query the monitor the check for the user interruption
-	 * request.
-	 * 
-	 * @return the monitor implementation, never <code>null</code>
-	 * @since 3.4
-	 */
-	IProgressMonitor getProgressMonitor();
-	
     /**
      * Returns execution specific settings like QVTEvaluationOptions.EVALUATION_MAX_STACK_DEPTH
      * 

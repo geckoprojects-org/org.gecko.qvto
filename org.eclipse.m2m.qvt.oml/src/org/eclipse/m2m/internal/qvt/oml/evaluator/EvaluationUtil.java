@@ -204,7 +204,6 @@ public class EvaluationUtil {
 		
 		Context nestedContext = new Context();
 		nestedContext.setLog(parentContext.getLog());
-		nestedContext.setProgressMonitor(parentContext.getProgressMonitor());
 		nestedContext.getTrace().setTraceContent(parentContext.getTrace().getTraceContent());
 		
 		nestedContext.setSessionData(parentContext.getSessionData());

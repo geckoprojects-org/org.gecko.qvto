@@ -30,15 +30,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import org.eclipse.core.runtime.IProgressMonitor;
-import org.eclipse.core.runtime.NullProgressMonitor;
-import org.eclipse.core.runtime.OperationCanceledException;
-import org.eclipse.core.runtime.SubMonitor;
 import org.eclipse.emf.common.util.BasicEMap;
-import org.eclipse.emf.common.util.BasicMonitor;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.common.util.EMap;
-import org.eclipse.emf.common.util.Monitor;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EAnnotation;
 import org.eclipse.emf.ecore.EAttribute;
@@ -53,7 +47,6 @@ import org.eclipse.emf.ecore.EParameter;
 import org.eclipse.emf.ecore.EReference;
 import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.resource.ResourceSet;
-import org.eclipse.m2m.internal.qvt.oml.Messages;
 import org.eclipse.m2m.internal.qvt.oml.NLS;
 import org.eclipse.m2m.internal.qvt.oml.QvtPlugin;
 import org.eclipse.m2m.internal.qvt.oml.ast.binding.ASTBindingHelper;
@@ -68,7 +61,6 @@ import org.eclipse.m2m.internal.qvt.oml.ast.env.QvtOperationalModuleEnv;
 import org.eclipse.m2m.internal.qvt.oml.ast.env.QvtOperationalStdLibrary;
 import org.eclipse.m2m.internal.qvt.oml.blackbox.BlackboxRegistry;
 import org.eclipse.m2m.internal.qvt.oml.compiler.CompilerMessages;
-import org.eclipse.m2m.internal.qvt.oml.compiler.CompilerUtils;
 import org.eclipse.m2m.internal.qvt.oml.compiler.QvtCompilerOptions;
 import org.eclipse.m2m.internal.qvt.oml.compiler.UnitProxy;
 import org.eclipse.m2m.internal.qvt.oml.cst.AssertExpCS;
@@ -274,14 +266,8 @@ CallOperationAction, SendSignalAction, Constraint, EClass, EObject> { 	// FIXME 
 	 */
 	private List<ResolveExp> myLateResolveExps;
 
-	private final IProgressMonitor myMonitor;
-
 	public QvtOperationalVisitorCS(OCLLexer lexStream, QvtCompilerOptions options) {
 		this(new OCLParser(lexStream), options);
-	}
-
-	public QvtOperationalVisitorCS(AbstractOCLParser parser, QvtCompilerOptions options) {
-		this(parser, options, new NullProgressMonitor());
 	}
 
 	/* obsolete method re-instated to avoid GMF Tooling breakage */
@@ -291,17 +277,9 @@ CallOperationAction, SendSignalAction, Constraint, EClass, EObject> { 	// FIXME 
 		this((AbstractOCLParser)parser, options);
 	}
 
-	public QvtOperationalVisitorCS(AbstractOCLParser parser, QvtCompilerOptions options, IProgressMonitor monitor) {
+	public QvtOperationalVisitorCS(AbstractOCLParser parser, QvtCompilerOptions options) {
 		super(parser);
 		myCompilerOptions = options;
-		myMonitor = monitor;
-	}
-
-	/* obsolete method re-instated to avoid GMF Tooling breakage */
-	/* @deprecated use AbstractOCLParser and IProgressMonitor */
-	@Deprecated
-	public QvtOperationalVisitorCS(AbstractQVTParser parser, QvtCompilerOptions options, Monitor monitor) {
-		this(parser, options, BasicMonitor.toIProgressMonitor(monitor));
 	}
 
 	public QvtCompilerOptions getCompilerOptions() {
@@ -756,10 +734,6 @@ CallOperationAction, SendSignalAction, Constraint, EClass, EObject> { 	// FIXME 
 			EEnumLiteral, EParameter, EObject, CallOperationAction, SendSignalAction,
 			Constraint, EClass, EObject> env) {
 
-		if (myMonitor.isCanceled()) {
-			CompilerUtils.throwOperationCanceled();
-		}
-
 		try {
 			if (oclExpressionCS instanceof BlockExpCS) {
 				return visitBlockExpCS((BlockExpCS) oclExpressionCS, env);
@@ -868,9 +842,6 @@ CallOperationAction, SendSignalAction, Constraint, EClass, EObject> { 	// FIXME 
 		catch (NullPointerException ex) {
 			QvtPlugin.error(ex);
 			QvtOperationalUtil.reportError(env, ValidationMessages.QvtOperationalVisitorCS_oclParseNPE, oclExpressionCS);
-		}
-		catch (OperationCanceledException ex) {
-			throw ex;
 		}
 		catch (RuntimeException ex) {
 			//QvtPlugin.log(ex);
@@ -2041,8 +2012,6 @@ CallOperationAction, SendSignalAction, Constraint, EClass, EObject> { 	// FIXME 
 
 
     public List<QvtOperationalModuleEnv> visitUnitCS(UnitCS unitCS, UnitProxy unit, QvtOperationalFileEnv fileEnv, ExternalUnitElementsProvider importResolver, ResourceSet resSet) throws SemanticException {
-    	SubMonitor subMonitor = SubMonitor.convert(myMonitor, NLS.bind(Messages.Visitor_Visit, unit.getQualifiedName()), 6 * unitCS.getModules().size());
-
     	List<QvtOperationalModuleEnv> moduleEnvs = new LinkedList<QvtOperationalModuleEnv>();
     	Map<MappingModuleCS, QvtOperationalModuleEnv> moduleEnvsMap = new HashMap<MappingModuleCS, QvtOperationalModuleEnv>(2);
     	Set<String> moduleNames = new HashSet<String>(unitCS.getModules().size());
@@ -2064,14 +2033,12 @@ CallOperationAction, SendSignalAction, Constraint, EClass, EObject> { 	// FIXME 
 
 			}
 			moduleNames.add(module.getName());
-			subMonitor.worked(1);
 		}
 
 		// 2nd pass: imports and usages
 		for(MappingModuleCS moduleCS : unitCS.getModules()) {
 			Module module = (Module) moduleCS.getAst();
 			importsCS(moduleCS, unit, module, moduleEnvsMap.get(moduleCS), importResolver);
-			subMonitor.worked(1);
 		}
 		List<MappingModuleCS> sortedModuless = checkModuleLoops(unitCS, fileEnv);
 
@@ -2086,7 +2053,6 @@ CallOperationAction, SendSignalAction, Constraint, EClass, EObject> { 	// FIXME 
 			for (RenameCS renameCS : moduleCS.getRenamings()) {
 				legacyRenameCS(renameCS, moduleEnv);
 			}
-			subMonitor.worked(1);
 		}
 
 		// 4th pass: method headers
@@ -2094,20 +2060,17 @@ CallOperationAction, SendSignalAction, Constraint, EClass, EObject> { 	// FIXME 
 		for(MappingModuleCS moduleCS : sortedModuless) {
 			HashMap<MappingMethodCS, ImperativeOperation> methodMap = visitMethodHeaders(moduleCS, moduleEnvsMap.get(moduleCS));
 			methodMaps.put(moduleCS, methodMap);
-			subMonitor.worked(1);
 		}
 
 		// 5rd pass: properties
 		for(MappingModuleCS moduleCS : sortedModuless) {
 			Module module = (Module) moduleCS.getAst();
 			createModuleProperties(module, moduleCS, moduleEnvsMap.get(moduleCS));
-			subMonitor.worked(1);
 		}
 
 		// 6th pass: method bodies
 		for(MappingModuleCS moduleCS : sortedModuless) {
 			visitMethodBodies(moduleCS, methodMaps.get(moduleCS), moduleEnvsMap.get(moduleCS));
-			subMonitor.worked(1);
 		}
 
 		return moduleEnvs;
@@ -2440,8 +2403,6 @@ CallOperationAction, SendSignalAction, Constraint, EClass, EObject> { 	// FIXME 
 		if(myErrorNodes != null) {
 			myErrorNodes.clear();
 		}
-
-		SubMonitor.done(myMonitor);
 	}
 
 	private void visitTagCS(QvtOperationalEnv env, TagCS ownedTagCS, Module module, EClassifier tagContextType) throws SemanticException {

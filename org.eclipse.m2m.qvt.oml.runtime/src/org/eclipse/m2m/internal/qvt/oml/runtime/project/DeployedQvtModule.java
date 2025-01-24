@@ -13,7 +13,6 @@
 package org.eclipse.m2m.internal.qvt.oml.runtime.project;
 
 
-import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.resource.ResourceSet;
@@ -70,7 +69,7 @@ public class DeployedQvtModule extends QvtModule {
 				options.setGenerateCompletionData(false);
 			}
 
-			myUnit = qvtCompiler.compile(srcUnit, options, (IProgressMonitor)null);
+			myUnit = qvtCompiler.compile(srcUnit, options);
 
 			if (!options.isModuleWithErrorAllowed()) {
 				checkModuleErrors(myUnit);

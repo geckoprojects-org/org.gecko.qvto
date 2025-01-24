@@ -14,7 +14,6 @@ package org.eclipse.m2m.qvt.oml.util;
 
 import java.util.Map;
 
-import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.m2m.qvt.oml.ExecutionDiagnostic;
 
 
@@ -36,28 +35,12 @@ public interface IContext {
 	Log getLog();
 
 	/**
-	 * Retrieve the monitor associated with this context.
-	 * <p>
-	 * It can be used to interrupt execution from another thread than the
-	 * execution thread.
-	 * 
-	 * @return the monitor object, never <code>null</code>
-	 * @since 3.4
-	 */
-    IProgressMonitor getProgressMonitor();
-    
-	/**
 	 * Retrieve the Trace object used for incremental update execution associated with this context.
 	 * 
 	 * @return the trace object, never <code>null</code>
 	 * @since 3.5
 	 */
     Trace getTrace();
-    
-    /**
-     * @deprecated Use getProgressMonitor() method
-     */
-    EvaluationMonitor getMonitor();
 		
     Map<String, Object> getConfigProperties();
     

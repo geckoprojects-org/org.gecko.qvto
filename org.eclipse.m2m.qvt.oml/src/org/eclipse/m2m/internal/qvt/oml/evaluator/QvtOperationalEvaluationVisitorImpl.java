@@ -29,7 +29,6 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.ListIterator;
 
-import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.emf.common.util.Diagnostic;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EClass;
@@ -2594,7 +2593,6 @@ implements QvtOperationalEvaluationVisitor, InternalEvaluator, DeferredAssignmen
     }
     
     protected InternalEvaluator createInterruptibleVisitor() {
-    	final IProgressMonitor monitor = getContext().getProgressMonitor();
     	    
     	class InterruptVisitor extends QvtGenericVisitorDecorator.Any {
     		
@@ -2604,10 +2602,6 @@ implements QvtOperationalEvaluationVisitor, InternalEvaluator, DeferredAssignmen
     		
     		@Override
     		protected Object genericVisitAny(Object object) {
-    			if(monitor != null && monitor.isCanceled()) {    				
-    				throwQVTException(new QvtInterruptedExecutionException());    				
-    			}
-    			
     			// set the current instruction pointer
     			if(object instanceof EObject) {
     				InternalEvaluationEnv evalEnv = getOperationalEvaluationEnv().getAdapter(InternalEvaluationEnv.class);

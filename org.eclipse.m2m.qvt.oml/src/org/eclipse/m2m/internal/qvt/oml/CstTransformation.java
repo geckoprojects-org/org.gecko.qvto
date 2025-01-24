@@ -14,8 +14,6 @@ import static org.eclipse.m2m.internal.qvt.oml.emf.util.EmfUtilPlugin.isSuccess;
 
 import java.util.List;
 
-import org.eclipse.core.runtime.IProgressMonitor;
-import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.emf.common.util.BasicDiagnostic;
 import org.eclipse.emf.common.util.Diagnostic;
 import org.eclipse.emf.common.util.EList;
@@ -57,7 +55,7 @@ public class CstTransformation implements Transformation {
 		fPackageRegistry = packageRegistry == null ? EPackage.Registry.INSTANCE : packageRegistry;
 	}
 	
-	protected CompiledUnit getCompiledUnit(IProgressMonitor monitor) throws MdaException {			
+	protected CompiledUnit getCompiledUnit() throws MdaException {			
 		if (ExeXMISerializer.COMPILED_XMI_FILE_EXTENSION.equals(fURI.fileExtension())) {		
 			return new CompiledUnit(fURI, getCompiler().getResourceSet());
 		}
@@ -71,7 +69,7 @@ public class CstTransformation implements Transformation {
 		}
 		
 		QVTOCompiler compiler = getCompiler();
-		return compiler.compile(proxy, null, monitor);		
+		return compiler.compile(proxy, null);		
 	}
 	
 	private QVTOCompiler getCompiler() {
@@ -90,11 +88,11 @@ public class CstTransformation implements Transformation {
 		return new QVTOCompiler(fPackageRegistry);
 	}
 	
-	private void doLoad(IProgressMonitor monitor) {
+	private void doLoad() {
 		fLoadDiagnostic = ExecutionDiagnosticImpl.createOkInstance();
 		
 		try {
-			fCompiledUnit = getCompiledUnit(monitor);
+			fCompiledUnit = getCompiledUnit();
 		} catch (MdaException e) {
 			fLoadDiagnostic = new ExecutionDiagnosticImpl(Diagnostic.ERROR,
 					ExecutionDiagnostic.TRANSFORMATION_LOAD_FAILED, NLS.bind(
@@ -185,8 +183,8 @@ public class CstTransformation implements Transformation {
 		return mainDiagnostic;
 	}
 		
-	public OperationalTransformation getTransformation(IProgressMonitor monitor) {
-		loadTransformation(monitor);
+	public OperationalTransformation getTransformation() {
+		loadTransformation();
 		
 		return fTransformation;
 	}
@@ -222,20 +220,15 @@ public class CstTransformation implements Transformation {
 	 * 
 	 * @return the diagnostic indicating possible problems of the load action
 	 */
-	private Diagnostic loadTransformation(IProgressMonitor monitor) {
-		try {
+	private Diagnostic loadTransformation() {
 			if (fLoadDiagnostic == null) {
-				doLoad(monitor);
+				doLoad();
 			}
 			return fLoadDiagnostic;
-		} 
-		finally {
-			monitor.done();
-		}
 	}
 	
 	public ExecutionDiagnostic getDiagnostic() {
-		loadTransformation(new NullProgressMonitor());
+		loadTransformation();
 		
 		return fLoadDiagnostic;
 	}
@@ -249,7 +242,7 @@ public class CstTransformation implements Transformation {
 	}
 	
 	public CompiledUnit getUnit() {
-		loadTransformation(new NullProgressMonitor());
+		loadTransformation();
 		return fCompiledUnit;
 	}
 	

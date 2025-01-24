@@ -27,15 +27,11 @@ import java.util.Map;
 import java.util.Set;
 import java.util.Stack;
 
-import org.eclipse.core.runtime.IProgressMonitor;
-import org.eclipse.core.runtime.SubMonitor;
 import org.eclipse.emf.common.EMFPlugin;
 import org.eclipse.emf.common.util.BasicEList;
-import org.eclipse.emf.common.util.BasicMonitor;
 import org.eclipse.emf.common.util.Diagnostic;
 import org.eclipse.emf.common.util.DiagnosticChain;
 import org.eclipse.emf.common.util.EList;
-import org.eclipse.emf.common.util.Monitor;
 import org.eclipse.emf.common.util.TreeIterator;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.common.util.UniqueEList;
@@ -46,7 +42,6 @@ import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.URIConverter;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
-import org.eclipse.m2m.internal.qvt.oml.Messages;
 import org.eclipse.m2m.internal.qvt.oml.NLS;
 import org.eclipse.m2m.internal.qvt.oml.ast.binding.ASTBindingHelper;
 import org.eclipse.m2m.internal.qvt.oml.ast.env.QVTParsingOptions;
@@ -134,7 +129,7 @@ public class QVTOCompiler {
 
 			QvtCompilerOptions options = new QvtCompilerOptions();
 			options.setGenerateCompletionData(true);
-			return compiler.compile(unitProxies.toArray(new UnitProxy[unitProxies.size()]), options, (IProgressMonitor)null);
+			return compiler.compiles(unitProxies.toArray(new UnitProxy[unitProxies.size()]), options);
 		}
 
 		return new CompiledUnit[0];
@@ -168,25 +163,22 @@ public class QVTOCompiler {
 		fUseCompiledXMI = flag;
 	}
 
-	public CompiledUnit[] compile(UnitProxy[] sources, QvtCompilerOptions options, IProgressMonitor monitor) throws MdaException {
+	public CompiledUnit[] compiles(UnitProxy[] sources, QvtCompilerOptions options) throws MdaException {
 		if(options == null) {
 			options = getDefaultOptions();
 		}
-
-		SubMonitor subMonitor = SubMonitor.convert(monitor, Messages.Compiler_CompileSources, sources.length);
 
 		CompiledUnit[] result = new CompiledUnit[sources.length];
 
 		try {
 			int i = 0;
 			for (UnitProxy nextSource : sources) {
-				result[i++] = compileSingleFile(nextSource, options, subMonitor.split(1));
+				result[i++] = compileSingleFile(nextSource, options);
 			}
 		} finally {
 			fDependencyWalkPath.clear();
 			afterCompileCleanup();
 
-			SubMonitor.done(monitor);
 		}
 
 		return result;
@@ -195,19 +187,12 @@ public class QVTOCompiler {
 	/* obsolete method re-instated to avoid GMF Tooling breakage - see Bug 540971 */
 	/* @deprecated use IProgressMonitor */
 	@Deprecated
-	public CompiledUnit compile(UnitProxy[] sources, QvtCompilerOptions options, Monitor monitor) throws MdaException {
-		return compile(sources, options, monitor != null ? BasicMonitor.toIProgressMonitor(monitor) : (IProgressMonitor)null)[0];
+	public CompiledUnit compile(UnitProxy[] sources, QvtCompilerOptions options) throws MdaException {
+		return compiles(sources, options)[0];
 	}
 
-	public CompiledUnit compile(UnitProxy source, QvtCompilerOptions options, IProgressMonitor monitor) throws MdaException {
-		return compile(new UnitProxy[] { source }, options, monitor)[0];
-	}
-
-	/* obsolete method re-instated to avoid GMF Tooling breakage - see Bug 540971 */
-	/* @deprecated use IProgressMonitor */
-	@Deprecated
-	public CompiledUnit compile(UnitProxy source, QvtCompilerOptions options, Monitor monitor) throws MdaException {
-		return compile(new UnitProxy[] { source }, options, monitor != null ? BasicMonitor.toIProgressMonitor(monitor) : (IProgressMonitor)null)[0];
+	public CompiledUnit compile(UnitProxy source, QvtCompilerOptions options) throws MdaException {
+		return compiles(new UnitProxy[] { source }, options)[0];
 	}
 
 	protected CSTParseResult parse(UnitProxy source, QvtCompilerOptions options) throws ParserException {
@@ -263,16 +248,13 @@ public class QVTOCompiler {
 	}
 
 	private CSTAnalysisResult analyze(CSTParseResult parseResult, UnitProxy unit,
-			ExternalUnitElementsProvider externalUnitElementsProvider, QvtCompilerOptions options, IProgressMonitor monitor) {
+			ExternalUnitElementsProvider externalUnitElementsProvider, QvtCompilerOptions options) {
 
-		SubMonitor subMonitor = SubMonitor.convert(monitor, NLS.bind(Messages.Compiler_Analyze, unit.getQualifiedName()), 10);
-
-		try {
 			QvtOperationalFileEnv env = parseResult.env;
 			env.setQvtCompilerOptions(options);
 
 			CSTAnalysisResult result = new CSTAnalysisResult();
-			QvtOperationalVisitorCS visitor = createAnalyzer(parseResult.parser, options, subMonitor.split(9));
+			QvtOperationalVisitorCS visitor = createAnalyzer(parseResult.parser, options);
 			try {
 				UnitCS unitCS = parseResult.unitCS;
 				if(unitCS != null && !unitCS.getModules().isEmpty()) {
@@ -286,27 +268,20 @@ public class QVTOCompiler {
 			}
 
 			if (options.isReportErrors()) {
-				subMonitor.setWorkRemaining(result.moduleEnvs.size());
 
 				for(QvtOperationalModuleEnv moduleEnv : result.moduleEnvs) {
 	                moduleEnv.setCheckForDuplicateErrors(true);
 					QvtOperationalValidationVisitor validation = new QvtOperationalValidationVisitor(moduleEnv);
 					validation.visitModule(moduleEnv.getModuleContextType());
 					moduleEnv.setCheckForDuplicateErrors(false);
-
-					subMonitor.worked(1);
 				}
 			}
 
 			return result;
-		}
-		finally {
-			SubMonitor.done(monitor);
-		}
 	}
 
-    protected QvtOperationalVisitorCS createAnalyzer(AbstractQVTParser parser, QvtCompilerOptions options, IProgressMonitor monitor) {
-    	return new QvtOperationalVisitorCS(parser, options, monitor);
+    protected QvtOperationalVisitorCS createAnalyzer(AbstractQVTParser parser, QvtCompilerOptions options) {
+    	return new QvtOperationalVisitorCS(parser, options);
     }
 
     protected void afterCompileCleanup() {
@@ -318,11 +293,11 @@ public class QVTOCompiler {
 	/**
 	 * The main compilation method - the common entry point to the compilation
 	 */
-	private CompiledUnit compileSingleFile(UnitProxy source, QvtCompilerOptions options, IProgressMonitor monitor) throws MdaException {
+	private CompiledUnit compileSingleFile(UnitProxy source, QvtCompilerOptions options) throws MdaException {
 
 		CompiledUnit nextResult = null;
 		try {
-			nextResult = doCompile(source, options, monitor);
+			nextResult = doCompile(source, options);
 		}
 		catch (ParserException e) {
 			Throwable cause = e.getCause() != null ? e.getCause() : e;
@@ -332,7 +307,7 @@ public class QVTOCompiler {
 		return nextResult;
 	}
 
-	private CompiledUnit doCompile(final UnitProxy source, QvtCompilerOptions options, IProgressMonitor monitor) throws ParserException {
+	private CompiledUnit doCompile(final UnitProxy source, QvtCompilerOptions options) throws ParserException {
 		try {
 			List<CompiledUnit> compiledImports = null;
 			DependencyPathElement dependencyElement = new DependencyPathElement(source);
@@ -358,12 +333,9 @@ public class QVTOCompiler {
 				return blackbox;
         	}
 
-        	SubMonitor subMonitor = SubMonitor.convert(monitor, NLS.bind(Messages.Compiler_Compile, source.getURI().toString()), 3);
 
         	// perform to syntax parsing
-        	subMonitor.subTask(NLS.bind(CompilerMessages.parsingTaskName, source.getURI()));
 	    	CSTParseResult parseResult = parse(source, options);
-	    	subMonitor.worked(1);
 
 			QvtOperationalFileEnv env = parseResult.env;
 			dependencyElement.importerEnv = env;
@@ -372,13 +344,11 @@ public class QVTOCompiler {
 			UnitResolverImpl unitResolver = new UnitResolverImpl(source);
 			List<ImportCS> allUnitImportsCS = parseResult.getImports();
 
-	    	subMonitor.setWorkRemaining(allUnitImportsCS.size() + 1);
 
 			for (ImportCS nextImportCS : allUnitImportsCS) {
 				String importQNameStr = getQualifiedName(nextImportCS);
 				if(importQNameStr == null || importQNameStr.length() == 0) {
 					// nothing reasonable to look for, syntax error should have been reported
-					subMonitor.worked(1);
 					continue;
 				}
 
@@ -389,7 +359,6 @@ public class QVTOCompiler {
 							QvtOperationalParserUtil.getStringRepresentation(nextImportCS.getPathNameCS(), NAMESPACE_SEP));
 					env.reportError(notFoundMessage, nextImportCS.getPathNameCS());
 
-					subMonitor.worked(1);
 					continue;
 				}
 
@@ -408,11 +377,10 @@ public class QVTOCompiler {
 	            	// report the cyclic problem in the opposite direction
 	            	reportCyclicImportError(source.getURI(), importedUnit.getURI(), nextImportCS.getPathNameCS(), env);
 	            	// skip addition to the list of imports
-	            	subMonitor.worked(1);
 	            	continue;
         		}
 
-        		CompiledUnit compiledImport = doCompile(importedUnit, options, subMonitor.split(1));
+        		CompiledUnit compiledImport = doCompile(importedUnit, options);
 
     			if(!compiledImport.getErrors().isEmpty()) {
 
@@ -439,9 +407,8 @@ public class QVTOCompiler {
 			} // end of imports processing
 
 	    	// perform CST analysis
-			subMonitor.subTask(NLS.bind(CompilerMessages.analyzingTaskName, source.getQualifiedName()));
 
-			CSTAnalysisResult analysisResult = analyze(parseResult, source, unitResolver, options, subMonitor.split(1));
+			CSTAnalysisResult analysisResult = analyze(parseResult, source, unitResolver, options);
 
 			if(options.isSourceLineNumbersEnabled()) {
 				addSourceLineNumberInfo(parseResult.parser, analysisResult, source);
@@ -477,8 +444,6 @@ public class QVTOCompiler {
     		if (!fDependencyWalkPath.empty()) {
     			fDependencyWalkPath.pop();
     		}
-
-    		SubMonitor.done(monitor);
     	}
 	}
 

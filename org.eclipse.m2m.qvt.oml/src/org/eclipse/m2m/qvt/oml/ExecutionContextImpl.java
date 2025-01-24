@@ -18,10 +18,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
-import org.eclipse.core.runtime.IProgressMonitor;
-import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.m2m.internal.qvt.oml.library.Context;
-import org.eclipse.m2m.qvt.oml.util.EvaluationMonitor;
 import org.eclipse.m2m.qvt.oml.util.ISessionData;
 import org.eclipse.m2m.qvt.oml.util.Log;
 
@@ -33,12 +30,10 @@ import org.eclipse.m2m.qvt.oml.util.Log;
  * @noextend This class is not intended to be subclassed by clients.
  * @see TransformationExecutor
  */
-@SuppressWarnings("deprecation")
 public final class ExecutionContextImpl implements ExecutionContext {
 
 	private final Map<String, Object> fConfigProperties = new HashMap<String, Object>(5);
 
-	private IProgressMonitor fMonitor;
 
 	private Log fLog;
 	
@@ -50,7 +45,6 @@ public final class ExecutionContextImpl implements ExecutionContext {
 	 */
 	public ExecutionContextImpl() {
 		fLog = Log.NULL_LOG;
-		fMonitor = createDefaultMonitor();
 		fSessionData = new Context.SessionDataImpl(fSessionStorage);
 	}
 
@@ -116,52 +110,6 @@ public final class ExecutionContextImpl implements ExecutionContext {
 		return fLog;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.eclipse.m2m.qvt.oml.ExecutionContext#getMonitor()
-	 */
-	public EvaluationMonitor getMonitor() {
-		return EvaluationMonitor.EvaluationMonitorWrapper.convert(fMonitor);
-	}
-
-	/**
-	 * @since 3.4
-	 */
-	public IProgressMonitor getProgressMonitor() {
-		return fMonitor;
-	}
-
-	/**
-	 * Set evaluation monitor to this context
-	 * 
-	 * @param monitor
-	 *            the monitor implementation, never <code>null</code>
-	 * @deprecated
-	 */
-	public void setMonitor(EvaluationMonitor monitor) {
-		if (monitor == null) {
-			throw new IllegalArgumentException("null monitor"); //$NON-NLS-1$
-		}
-
-		setProgressMonitor(EvaluationMonitor.EvaluationMonitorWrapper.convert(monitor));
-	}
-
-	/**
-	 * Set evaluation monitor to this context
-	 * 
-	 * @param monitor
-	 *            the monitor implementation, never <code>null</code>
-	 * @since 3.4
-	 */
-	public void setProgressMonitor(IProgressMonitor monitor) {
-		if (monitor == null) {
-			throw new IllegalArgumentException("null monitor"); //$NON-NLS-1$
-		}
-
-		fMonitor = monitor;
-	}
-	
 	/**
 	 * @since 3.4
 	 */
@@ -174,9 +122,5 @@ public final class ExecutionContextImpl implements ExecutionContext {
 	 */
 	public Collection<ISessionData.Entry<Object>> getSessionDataEntries() {
 		return fSessionStorage.keySet();
-	}
-	
-	private static IProgressMonitor createDefaultMonitor() {
-		return new NullProgressMonitor();
 	}
 }
