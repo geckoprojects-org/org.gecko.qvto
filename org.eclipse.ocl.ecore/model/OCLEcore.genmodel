@@ -7,7 +7,7 @@
     updateClasspath="false" nonNLSMarkers="true" codeFormatting="true" booleanFlagsReservedBits="8"
     importerID="org.eclipse.emf.importer.ecore" bundleManifest="false" complianceLevel="5.0"
     copyrightFields="false" usedGenPackages="platform:/plugin/org.eclipse.emf.ecore/model/Ecore.genmodel#//ecore ../../org.eclipse.ocl/model/OCL.genmodel#//ocl"
-    pluginKey="">
+    pluginKey="" oSGiCompatible="true">
   <foreignModel>OCLEcore.ecore</foreignModel>
   <genPackages prefix="OCL" basePackage="org.eclipse" disposableProviderFactory="true"
       contentTypeIdentifier="org.eclipse.ocl" fileExtensions="oclxmi" ecorePackage="OCLEcore.ecore#/">
