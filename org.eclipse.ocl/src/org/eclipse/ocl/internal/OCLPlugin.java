@@ -15,7 +15,6 @@ package org.eclipse.ocl.internal;
 import org.eclipse.emf.common.EMFPlugin;
 import org.eclipse.emf.common.util.Diagnostic;
 import org.eclipse.emf.common.util.ResourceLocator;
-import org.eclipse.ocl.Environment;
 import org.eclipse.ocl.util.OCLUtil;
 
 /**
@@ -53,8 +52,8 @@ public class OCLPlugin extends EMFPlugin {
 	 */
 	public OCLPlugin() {
 		super(new ResourceLocator[0]);
-		EnvironmentRegistryImpl envreg = ((EnvironmentRegistryImpl) Environment.Registry.INSTANCE);
-		envreg.new RegistryReader(getInstance()).readRegistry();
+//		EnvironmentRegistryImpl envreg = ((EnvironmentRegistryImpl) Environment.Registry.INSTANCE);
+//		envreg.new RegistryReader(getInstance()).readRegistry();
 	}
 
 	public static String getPluginId() {
