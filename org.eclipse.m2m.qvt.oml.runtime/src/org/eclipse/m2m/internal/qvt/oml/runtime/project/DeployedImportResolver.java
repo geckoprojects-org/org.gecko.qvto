@@ -15,7 +15,7 @@ package org.eclipse.m2m.internal.qvt.oml.runtime.project;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.resource.URIConverter;
 import org.eclipse.m2m.internal.qvt.oml.common.project.DeployedTransformation;
-import org.eclipse.m2m.internal.qvt.oml.common.project.TransformationRegistry;
+import org.eclipse.m2m.internal.qvt.oml.common.eclipse.TransformationRegistry;
 import org.eclipse.m2m.internal.qvt.oml.compiler.BlackboxUnitResolver;
 import org.eclipse.m2m.internal.qvt.oml.compiler.DelegatingUnitResolver;
 import org.eclipse.m2m.internal.qvt.oml.compiler.UnitProxy;

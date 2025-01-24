@@ -1,19 +1,12 @@
 -library: enable-emf
 -buildpath: \
 	org.eclipse.equinox.common;version=latest,\
-	org.eclipse.equinox.registry;version=latest,\
-	org.eclipse.equinox.supplement;version='1.11',\
-	org.eclipse.debug.core,\
 	org.eclipse.core.resources,\
 	org.eclipse.core.jobs,\
-	org.eclipse.m2m.qvt.oml.emf.util;version=snapshot
-	
--includeresource: \
-	schema=schema,\
-	plugin.xml=_plugin.xml
+	org.eclipse.m2m.qvt.oml.emf.util;version=snapshot,\
+	org.eclipse.equinox.supplement
 	
 Import-Package: \
-	org.eclipse.debug.*;'resolution:'=optional,\
 	org.eclipse.core.runtime.*;'resolution:'=optional,\
 	org.eclipse.core.resources.*;'resolution:'=optional,\
 	*

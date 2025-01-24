@@ -10,3 +10,11 @@
 -includeresource: \
 	model=model,\
 	plugin.xml=_plugin.xml
+	
+src: src,src-gen
+	
+#-generate:\
+#	model/OCLEcore.genmodel;\
+#		generate=geckoEMF;\
+#		genmodel=model/OCLEcore.genmodel;\
+#		output=src-gen

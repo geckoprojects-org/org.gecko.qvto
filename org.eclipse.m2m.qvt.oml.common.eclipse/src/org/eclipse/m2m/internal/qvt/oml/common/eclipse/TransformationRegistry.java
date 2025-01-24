@@ -9,7 +9,7 @@
  * Contributors:
  *     Borland Software Corporation - initial API and implementation
  *******************************************************************************/
-package org.eclipse.m2m.internal.qvt.oml.common.project;
+package org.eclipse.m2m.internal.qvt.oml.common.eclipse;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,9 +20,13 @@ import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.m2m.internal.qvt.oml.common.MdaException;
 import org.eclipse.m2m.internal.qvt.oml.common.Messages;
+import org.eclipse.m2m.internal.qvt.oml.common.project.DeployedTransformation;
+import org.eclipse.m2m.internal.qvt.oml.common.project.Pair;
 import org.eclipse.m2m.internal.qvt.oml.emf.util.EmfException;
 import org.eclipse.m2m.internal.qvt.oml.emf.util.EmfUtil;
+import org.eclipse.m2m.internal.qvt.oml.emf.util.Logger;
 import org.eclipse.osgi.util.NLS;
+import org.eclipse.core.runtime.Platform;
 
 
 public abstract class TransformationRegistry {
@@ -79,20 +83,20 @@ public abstract class TransformationRegistry {
     public List<DeployedTransformation> getTransformations(Filter filter) {
         List<DeployedTransformation> transformations = new ArrayList<DeployedTransformation>();
         
-//        IConfigurationElement[] configurationElements = Platform.getExtensionRegistry().getConfigurationElementsFor(myPoint);
-//        for (int i = 0; i < configurationElements.length; i++) {
-//            IConfigurationElement element = configurationElements[i];
-//            try { 
-//                if(filter == null || filter.accept(element)) {
-//                    DeployedTransformation transformation = makeTransformation(element);
-//                    transformations.add(transformation);
-//                }
-//            }
-//            catch(MdaException e) {
-//                Logger.getLogger().log(Logger.SEVERE, "Failed to parse extension " + element, e); //$NON-NLS-1$
-//            }
-//        }
-//
+        IConfigurationElement[] configurationElements = Platform.getExtensionRegistry().getConfigurationElementsFor(myPoint);
+        for (int i = 0; i < configurationElements.length; i++) {
+            IConfigurationElement element = configurationElements[i];
+            try { 
+                if(filter == null || filter.accept(element)) {
+                    DeployedTransformation transformation = makeTransformation(element);
+                    transformations.add(transformation);
+                }
+            }
+            catch(MdaException e) {
+                Logger.getLogger().log(Logger.SEVERE, "Failed to parse extension " + element, e); //$NON-NLS-1$
+            }
+        }
+
         return transformations;
     }
     

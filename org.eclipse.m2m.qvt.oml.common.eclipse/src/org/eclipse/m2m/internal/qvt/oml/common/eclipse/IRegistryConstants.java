@@ -9,7 +9,7 @@
  * Contributors:
  *     Borland Software Corporation - initial API and implementation
  *******************************************************************************/
-package org.eclipse.m2m.internal.qvt.oml.common.project;
+package org.eclipse.m2m.internal.qvt.oml.common.eclipse;
 
 public interface IRegistryConstants {
     public static final String TRANSFORMATION = "transformation"; //$NON-NLS-1$

@@ -119,3 +119,10 @@ extensionpoint handling für qvtTransformationContainer
 
 ### ProjectDependencyTracker
 extensionpoint handling für org.eclipse.m2m.qvt.oml.runtime.qvtProjectDependencyTracker
+
+# removed functionality
+* IProgressMonitor
+* ILaunch and ILaunchConfiguration
+
+# moving eclipse specific 
+qvt.oml.common -> qvt.oml.common.eclipse

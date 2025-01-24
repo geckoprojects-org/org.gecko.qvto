@@ -13,8 +13,8 @@ package org.eclipse.m2m.internal.qvt.oml.runtime.project;
 
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.m2m.internal.qvt.oml.common.project.DeployedTransformation;
-import org.eclipse.m2m.internal.qvt.oml.common.project.IRegistryConstants;
-import org.eclipse.m2m.internal.qvt.oml.common.project.TransformationRegistry;
+import org.eclipse.m2m.internal.qvt.oml.common.eclipse.IRegistryConstants;
+import org.eclipse.m2m.internal.qvt.oml.common.eclipse.TransformationRegistry;
 import org.eclipse.m2m.internal.qvt.oml.runtime.QvtRuntimePlugin;
 
 public class QvtTransformationRegistry extends TransformationRegistry { 

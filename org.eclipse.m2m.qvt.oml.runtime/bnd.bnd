@@ -10,6 +10,7 @@
 	org.eclipse.core.runtime;version=latest,\
 	org.eclipse.m2m.qvt.oml;version=snapshot,\
 	org.eclipse.m2m.qvt.oml.common;version=snapshot,\
+	org.eclipse.m2m.qvt.oml.common.eclipse;version=snapshot,\
 	org.eclipse.m2m.qvt.oml.emf.util;version=snapshot,\
 	org.eclipse.m2m.qvt.oml.ecore.imperativeocl;version=snapshot,\
 	org.eclipse.ocl;version=snapshot,\
@@ -20,8 +21,3 @@
 -includeresource: \
 	schema=schema,\
 	plugin.xml=_plugin.xml
-	
-Import-Package: \
-	org.eclipse.core.debug.*;'resolution:'=optional,\
-	org.eclipse.core.runtime.*;'resolution:'=optional,\
-	*
