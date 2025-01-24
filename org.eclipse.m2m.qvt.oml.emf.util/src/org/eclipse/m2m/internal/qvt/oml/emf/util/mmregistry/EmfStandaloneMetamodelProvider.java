@@ -45,7 +45,8 @@ public class EmfStandaloneMetamodelProvider implements IMetamodelProvider {
     	
    		final ResourceSet resourceSet = new ResourceSetImpl();
 		resourceSet.setPackageRegistry(fRegistry);
-		resourceSet.getURIConverter().getURIMap().putAll(EcorePlugin.computePlatformURIMap(true));
+//		TODO: investigate if needed
+//		resourceSet.getURIConverter().getURIMap().putAll(EcorePlugin.computePlatformURIMap(true));
 		
 		@SuppressWarnings("serial")
 		EPackage.Registry registry = new EPackageRegistryImpl(fRegistry) {
