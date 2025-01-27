@@ -141,8 +141,8 @@ public class QVTOCompiler {
 
 	public QVTOCompiler(EPackage.Registry packageRegistry) {
 		this(
-				EMFPlugin.IS_ECLIPSE_RUNNING && EMFPlugin.IS_RESOURCES_BUNDLE_AVAILABLE ?
-						new ProjectMetamodelRegistryProvider(packageRegistry) :
+//				EMFPlugin.IS_ECLIPSE_RUNNING && EMFPlugin.IS_RESOURCES_BUNDLE_AVAILABLE ?
+//						new ProjectMetamodelRegistryProvider(packageRegistry) :
 							new EmfStandaloneMetamodelRegistryProvider(packageRegistry)
 				);
 	}
@@ -666,9 +666,9 @@ public class QVTOCompiler {
 	}
 
 	private static IMetamodelRegistryProvider createMetamodelRegistryProvider(ResourceSet metamodelResourceSet) {
-		if(EMFPlugin.IS_ECLIPSE_RUNNING && EMFPlugin.IS_RESOURCES_BUNDLE_AVAILABLE) {
-			return new ProjectMetamodelRegistryProvider(metamodelResourceSet);
-		}
+//		if(EMFPlugin.IS_ECLIPSE_RUNNING && EMFPlugin.IS_RESOURCES_BUNDLE_AVAILABLE) {
+//			return new ProjectMetamodelRegistryProvider(metamodelResourceSet);
+//		}
 
 		return new EmfStandaloneMetamodelRegistryProvider(metamodelResourceSet.getPackageRegistry());
 	}

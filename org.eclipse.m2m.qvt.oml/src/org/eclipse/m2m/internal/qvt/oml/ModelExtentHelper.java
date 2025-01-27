@@ -34,7 +34,6 @@ import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.m2m.internal.qvt.oml.emf.util.EmfException;
 import org.eclipse.m2m.internal.qvt.oml.emf.util.EmfUtil;
-import org.eclipse.m2m.internal.qvt.oml.emf.util.URIUtils;
 import org.eclipse.m2m.internal.qvt.oml.evaluator.QVTEvaluationOptions;
 import org.eclipse.m2m.internal.qvt.oml.expressions.DirectionKind;
 import org.eclipse.m2m.internal.qvt.oml.expressions.ModelParameter;
@@ -77,7 +76,7 @@ public class ModelExtentHelper {
 
 	public ResourceSet getResourceSet() {
 		return fResourceSet;
-	};
+	}
 
 	public Diagnostic saveExtents(Boolean isQvtoUnparseEnabled) {
 		BasicDiagnostic diagnostic = QvtPlugin.createDiagnostic("Save model param extents diagnostic");
@@ -102,7 +101,7 @@ public class ModelExtentHelper {
 				diagnostic.add(BasicDiagnostic.toDiagnostic(e));
 			}
 
-			URIUtils.refresh(outExtent.getURI());
+//			URIUtils.refresh(outExtent.getURI());
 		}
 
 		return diagnostic;

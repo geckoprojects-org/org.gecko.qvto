@@ -48,6 +48,8 @@ import org.eclipse.osgi.util.NLS;
  * @author pkobiakov
  */
 public class EmfUtil {
+	public static final String ID = "org.eclipse.m2m.qvt.oml.emf.util"; //$NON-NLS-1$
+
 	private EmfUtil() {}
 
 	public static final String PATH_SEPARATOR = "::"; //$NON-NLS-1$

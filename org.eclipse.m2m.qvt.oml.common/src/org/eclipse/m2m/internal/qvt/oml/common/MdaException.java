@@ -26,7 +26,7 @@ public class MdaException extends Exception {
 	}
 	
 	public MdaException(String message) {
-		this(new Status(IStatus.ERROR, CommonPlugin.ID, message));
+		this(new Status(IStatus.ERROR, CommonPluginConstants.ID, message));
 	}
 	
 	public MdaException(String message, Throwable cause) {

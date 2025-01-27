@@ -30,9 +30,9 @@ import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.emf.ecore.util.EcoreUtil;
-import org.eclipse.m2m.internal.qvt.oml.emf.util.EmfUtilPlugin;
+import org.eclipse.m2m.internal.qvt.oml.emf.util.EmfUtil;
+import org.eclipse.m2m.internal.qvt.oml.emf.util.mmregistry.BaseMetamodelRegistry;
 import org.eclipse.m2m.internal.qvt.oml.emf.util.mmregistry.IMetamodelProvider;
-import org.eclipse.m2m.internal.qvt.oml.emf.util.mmregistry.MetamodelRegistry;
 import org.eclipse.m2m.internal.qvt.oml.emf.util.mmregistry.ProjectMetamodelProvider;
 
 public class MetamodelURIMappingHelper {
@@ -97,7 +97,7 @@ public class MetamodelURIMappingHelper {
 			resource.save(null);
 			
 		} catch (IOException e) {
-			return new Status(IStatus.ERROR, EmfUtilPlugin.ID, "Failed to save metamodel URI mappings", e); //$NON-NLS-1$
+			return new Status(IStatus.ERROR, EmfUtil.ID, "Failed to save metamodel URI mappings", e); //$NON-NLS-1$
 		} finally {
 			try {
 				project.refreshLocal(IResource.DEPTH_INFINITE, null);
@@ -160,7 +160,7 @@ public class MetamodelURIMappingHelper {
 			return null;
 		}
 
-		IMetamodelProvider provider = new ProjectMetamodelProvider(project, MetamodelRegistry.getDefaultMetamodelProvider(),
+		IMetamodelProvider provider = new ProjectMetamodelProvider(project, BaseMetamodelRegistry.getDefaultMetamodelProvider(),
 				resourceSet);
 
 		return provider.getPackageRegistry();

@@ -133,7 +133,6 @@ import org.eclipse.m2m.internal.qvt.oml.cst.VariableInitializationCS;
 import org.eclipse.m2m.internal.qvt.oml.cst.WhileExpCS;
 import org.eclipse.m2m.internal.qvt.oml.cst.parser.AbstractQVTParser;
 import org.eclipse.m2m.internal.qvt.oml.emf.util.EmfUtil;
-import org.eclipse.m2m.internal.qvt.oml.emf.util.mmregistry.MetamodelRegistry;
 import org.eclipse.m2m.internal.qvt.oml.expressions.Constructor;
 import org.eclipse.m2m.internal.qvt.oml.expressions.ConstructorBody;
 import org.eclipse.m2m.internal.qvt.oml.expressions.ContextualProperty;
@@ -3525,7 +3524,7 @@ CallOperationAction, SendSignalAction, Constraint, EClass, EObject> { 	// FIXME 
 
 		EList<SimpleNameCS> path = pathNameCS.getSimpleNames();
 		// lookup nested package started from package specified by URI
-		EPackage localPackage = MetamodelRegistry.lookupPackage(resolvedMetamodel, QvtOperationalParserUtil.getSequenceOfNames(path));
+		EPackage localPackage = MetamodelResolutionHelper.lookupPackage(resolvedMetamodel, QvtOperationalParserUtil.getSequenceOfNames(path));
 		if (localPackage != null) {
 			return localPackage;
 		}
@@ -3534,7 +3533,7 @@ CallOperationAction, SendSignalAction, Constraint, EClass, EObject> { 	// FIXME 
 		EPackage rootMetamodel = EmfUtil.getRootPackage(resolvedMetamodel);
 
 		if (rootMetamodel != resolvedMetamodel) {
-			localPackage = MetamodelRegistry.lookupPackage(rootMetamodel, QvtOperationalParserUtil.getSequenceOfNames(path));
+			localPackage = MetamodelResolutionHelper.lookupPackage(rootMetamodel, QvtOperationalParserUtil.getSequenceOfNames(path));
 
 			boolean isContainedBy = false;
 			EPackage curPkg = localPackage;

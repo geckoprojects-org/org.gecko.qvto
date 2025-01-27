@@ -57,7 +57,7 @@ public class EmfStandaloneMetamodelProvider implements IMetamodelProvider {
 				EPackage ePackage = super.getEPackage(nsURI);
 				
 				if (ePackage == null) {
-					if (nsURI != null && MetamodelRegistry.isMetamodelFileName(nsURI)) {
+					if (nsURI != null && BaseMetamodelRegistry.isMetamodelFileName(nsURI)) {
 				
 						URI uri = URI.createURI(nsURI);
 											

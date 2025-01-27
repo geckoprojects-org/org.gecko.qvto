@@ -17,7 +17,7 @@ import java.util.List;
 
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.impl.EPackageRegistryImpl;
-import org.eclipse.m2m.internal.qvt.oml.emf.util.EmfUtilPlugin;
+import org.eclipse.m2m.internal.qvt.oml.emf.util.EmfUtilDiagnostic;
 
 public abstract class DelegatingMetamodelProvider implements IMetamodelProvider {
 	
@@ -43,10 +43,10 @@ public abstract class DelegatingMetamodelProvider implements IMetamodelProvider 
 	public final IMetamodelDesc getMetamodel(String id) {
 		IMetamodelDesc desc = getLocalMetamodel(id);
 		
-		if (desc == null || !EmfUtilPlugin.isSuccess(desc.getLoadStatus())) {
+		if (desc == null || !EmfUtilDiagnostic.isSuccess(desc.getLoadStatus())) {
 			IMetamodelDesc delegateDesc = delegate.getMetamodel(id);
 			
-			if (desc == null || (delegateDesc != null && EmfUtilPlugin.isSuccess(delegateDesc.getLoadStatus()))) {
+			if (desc == null || (delegateDesc != null && EmfUtilDiagnostic.isSuccess(delegateDesc.getLoadStatus()))) {
 				desc = delegateDesc;
 			}
 			
@@ -76,7 +76,7 @@ public abstract class DelegatingMetamodelProvider implements IMetamodelProvider 
 		
 		for(IMetamodelDesc desc : getLocalMetamodels()) {
 			
-			if (EmfUtilPlugin.isSuccess(desc.getLoadStatus())) {
+			if (EmfUtilDiagnostic.isSuccess(desc.getLoadStatus())) {
 				registry.put(desc.getId(), desc.getModel());
 			}
 		}

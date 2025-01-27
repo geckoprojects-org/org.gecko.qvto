@@ -9,7 +9,7 @@
  * Contributors:
  *     Borland Software Corporation - initial API and implementation
  *******************************************************************************/
-package org.eclipse.m2m.internal.qvt.oml.emf.util;
+package org.eclipse.m2m.internal.qvt.oml.emf.util.eclipse;
 
 import org.eclipse.core.resources.IContainer;
 import org.eclipse.core.resources.IFile;

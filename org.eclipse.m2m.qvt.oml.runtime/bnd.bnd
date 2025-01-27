@@ -16,7 +16,8 @@
 	org.eclipse.ocl;version=snapshot,\
 	org.eclipse.ocl.ecore;version=snapshot,\
 	org.eclipse.m2m.qvt.oml.cst.parser;version=snapshot,\
-	lpg.runtime.java
+	lpg.runtime.java,\
+	org.eclipse.m2m.qvt.oml.emf.util.eclipse;version=snapshot
 	
 -includeresource: \
 	schema=schema,\

@@ -10,8 +10,6 @@
  *******************************************************************************/
 package org.eclipse.m2m.internal.qvt.oml;
 
-import static org.eclipse.m2m.internal.qvt.oml.emf.util.EmfUtilPlugin.isSuccess;
-
 import java.util.List;
 
 import org.eclipse.emf.common.util.BasicDiagnostic;
@@ -29,6 +27,7 @@ import org.eclipse.m2m.internal.qvt.oml.compiler.QVTOCompiler;
 import org.eclipse.m2m.internal.qvt.oml.compiler.UnitProxy;
 import org.eclipse.m2m.internal.qvt.oml.compiler.UnitResolverFactory;
 import org.eclipse.m2m.internal.qvt.oml.emf.util.EmfUtil;
+import org.eclipse.m2m.internal.qvt.oml.emf.util.EmfUtilDiagnostic;
 import org.eclipse.m2m.internal.qvt.oml.expressions.ImperativeOperation;
 import org.eclipse.m2m.internal.qvt.oml.expressions.Module;
 import org.eclipse.m2m.internal.qvt.oml.expressions.OperationalTransformation;
@@ -101,11 +100,11 @@ public class CstTransformation implements Transformation {
 			fLoadDiagnostic.merge(BasicDiagnostic.toDiagnostic(e.getStatus()));
 		}
 		
-		if (fCompiledUnit != null && isSuccess(fLoadDiagnostic)) {
+		if (fCompiledUnit != null && EmfUtilDiagnostic.isSuccess(fLoadDiagnostic)) {
 			
 			ExecutionDiagnostic compilationDiagnostic = createCompilationDiagnostic(fCompiledUnit);
 			
-			if (isSuccess(compilationDiagnostic)) {
+			if (EmfUtilDiagnostic.isSuccess(compilationDiagnostic)) {
 				fLoadDiagnostic.addAll(compilationDiagnostic);
 			}
 			else {
@@ -132,7 +131,7 @@ public class CstTransformation implements Transformation {
 			
 			ExecutionDiagnostic executabilityDiagnostic = checkIsExecutable(fTransformation);
 			
-			if (isSuccess(executabilityDiagnostic)) {
+			if (EmfUtilDiagnostic.isSuccess(executabilityDiagnostic)) {
 				fLoadDiagnostic.addAll(executabilityDiagnostic);
 			}
 			else {

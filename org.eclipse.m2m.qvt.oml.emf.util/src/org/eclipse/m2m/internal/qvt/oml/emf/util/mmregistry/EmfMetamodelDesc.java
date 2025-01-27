@@ -17,7 +17,7 @@ import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.EcoreFactory;
 import org.eclipse.emf.ecore.xmi.impl.XMIResourceImpl;
-import org.eclipse.m2m.internal.qvt.oml.emf.util.EmfUtilPlugin;
+import org.eclipse.m2m.internal.qvt.oml.emf.util.EmfUtilDiagnostic;
 import org.eclipse.osgi.util.NLS;
 
 
@@ -64,7 +64,7 @@ public class EmfMetamodelDesc implements IMetamodelDesc {
     		catch (Throwable ex) {
     			String errMessage = NLS.bind(Messages.MetamodelRegistry_LoadError, getId(), ex.getClass().getName());    			
     			//this.status = new Status(IStatus.ERROR, EmfUtilPlugin.ID, errMessage, ex);
-    			this.status = EmfUtilPlugin.createErrorDiagnostic(errMessage, ex);
+    			this.status = EmfUtilDiagnostic.createErrorDiagnostic(errMessage, ex);
     			// create empty package representation
     			myPackage = EcoreFactory.eINSTANCE.createEPackage();
     			myPackage.setNsURI(getId());

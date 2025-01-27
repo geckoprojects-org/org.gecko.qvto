@@ -15,9 +15,10 @@ import java.util.StringTokenizer;
 
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
-import org.eclipse.m2m.internal.qvt.oml.common.CommonPlugin;
 import org.eclipse.m2m.internal.qvt.oml.common.MDAConstants;
+import org.eclipse.m2m.internal.qvt.oml.common.eclipse.CommonPlugin;
 import org.eclipse.m2m.internal.qvt.oml.cst.parser.QvtKeywords;
+import org.eclipse.osgi.util.NLS;
 
 /**
  * Provides validation functionality for QVT elements identifiers.

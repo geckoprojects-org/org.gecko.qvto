@@ -39,7 +39,7 @@ import org.eclipse.m2m.internal.qvt.oml.blackbox.LoadContext;
 import org.eclipse.m2m.internal.qvt.oml.blackbox.OperationMatcher;
 import org.eclipse.m2m.internal.qvt.oml.common.util.StringLineNumberProvider;
 import org.eclipse.m2m.internal.qvt.oml.cst.CSTFactory;
-import org.eclipse.m2m.internal.qvt.oml.emf.util.EmfUtilPlugin;
+import org.eclipse.m2m.internal.qvt.oml.emf.util.EmfUtilDiagnostic;
 import org.eclipse.m2m.internal.qvt.oml.expressions.ImperativeOperation;
 import org.eclipse.m2m.internal.qvt.oml.expressions.Module;
 import org.eclipse.m2m.internal.qvt.oml.expressions.OperationalTransformation;
@@ -196,7 +196,7 @@ public abstract class JavaBlackboxProvider extends BlackboxProvider {
 			for (Map.Entry<ModuleHandle, Map<String, List<EOperation>>> nextEntry : fModules.entrySet()) {
 				Diagnostic diagnostic = javaModuleLoader.loadModule(nextEntry.getKey(), nextEntry.getValue(), context);
 
-				if (EmfUtilPlugin.isSuccess(diagnostic)) {
+				if (EmfUtilDiagnostic.isSuccess(diagnostic)) {
 					QvtOperationalModuleEnv nextModuleEnv = javaModuleLoader.getLoadedModule();
 					nextModuleEnv.getTypeResolver().getResource().setURI(getURI());
 					ASTBindingHelper.createModuleSourceBinding(nextModuleEnv.getModuleContextType(), getURI(),

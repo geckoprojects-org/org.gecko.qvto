@@ -29,7 +29,7 @@ import org.eclipse.m2m.internal.qvt.oml.ast.env.QvtOperationalEnvFactory;
 import org.eclipse.m2m.internal.qvt.oml.ast.env.QvtOperationalModuleEnv;
 import org.eclipse.m2m.internal.qvt.oml.ast.env.QvtOperationalStdLibrary;
 import org.eclipse.m2m.internal.qvt.oml.blackbox.LoadContext;
-import org.eclipse.m2m.internal.qvt.oml.emf.util.EmfUtilPlugin;
+import org.eclipse.m2m.internal.qvt.oml.emf.util.EmfUtilDiagnostic;
 import org.eclipse.m2m.internal.qvt.oml.expressions.Library;
 
 abstract class JavaModuleLoader {
@@ -89,7 +89,7 @@ abstract class JavaModuleLoader {
 								
 				EOperation operation = fOperBuilder.buildOperation(method);
 				Diagnostic operationStatus = fOperBuilder.getDiagnostics();
-				if(EmfUtilPlugin.isSuccess(operationStatus)) {
+				if(EmfUtilDiagnostic.isSuccess(operationStatus)) {
 					loadOperation(operation, method);
 					
 					List<EOperation> listOp = definedOperations.get(operation.getName());

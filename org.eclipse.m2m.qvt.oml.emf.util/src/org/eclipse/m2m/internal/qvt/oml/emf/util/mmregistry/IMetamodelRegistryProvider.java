@@ -12,7 +12,6 @@
  *******************************************************************************/
 package org.eclipse.m2m.internal.qvt.oml.emf.util.mmregistry;
 
-import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 
 /**
@@ -23,27 +22,13 @@ import org.eclipse.emf.ecore.resource.ResourceSet;
 public interface IMetamodelRegistryProvider { 
 	
 	/**
-	 * Represents a context in which to look for available metamodels
-	 */
-	interface IRepositoryContext {
-		/**
-		 * Gets the URI of this context.
-		 * <p>
-		 * Note: The URI is required to be <code>file</code> or <code>platform:/resource</code> kind. 
-		 * 
-		 * @return the URI object, never <code>null</code>
-		 */
-		URI getURI();
-	}
-
-	/**
 	 * Gets metamodel registry providing metamodels available in the given context.
 	 * <p>
 	 * @param context the context in which to lookup available metamodels
 	 * 
 	 * @return the metamodel registry, never <code>null</code>
 	 */
-	MetamodelRegistry getRegistry(IRepositoryContext context);
+	IMetamodelRegistry getRegistry(IRepositoryContext context);
 	
 	/**
 	 * Retrieves a resource set used by this provider to load metamodel resources.

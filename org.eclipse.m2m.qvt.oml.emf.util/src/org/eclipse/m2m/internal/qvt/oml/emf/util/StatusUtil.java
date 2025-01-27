@@ -61,7 +61,7 @@ public class StatusUtil {
             message = ""; //$NON-NLS-1$
         }
         
-        return new Status(severity, EmfUtilPlugin.ID, 1, message, e);
+        return new Status(severity, EmfUtil.ID, 1, message, e);
     }
     
 

@@ -8,11 +8,6 @@
 	org.eclipse.core.jobs;version=latest,\
 	org.eclipse.ocl;version=snapshot
 	
--includeresource: \
-	schema=schema,\
-	model=model,\
-	plugin.xml=_plugin.xml
-	
 Import-Package: \
 	org.eclipse.core.resources.*;'resolution:'=optional,\
 	org.eclipse.core.runtime.*;'resolution:'=optional,\

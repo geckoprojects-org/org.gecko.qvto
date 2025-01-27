@@ -15,6 +15,7 @@ package org.eclipse.m2m.internal.qvt.oml.compiler;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.OperationCanceledException;
 import org.eclipse.emf.common.EMFPlugin;
 import org.eclipse.emf.common.util.BasicDiagnostic;
@@ -27,8 +28,8 @@ import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.m2m.internal.qvt.oml.NLS;
 import org.eclipse.m2m.internal.qvt.oml.QvtMessage;
 import org.eclipse.m2m.internal.qvt.oml.emf.util.mmregistry.IMetamodelRegistryProvider;
-import org.eclipse.m2m.internal.qvt.oml.emf.util.mmregistry.IMetamodelRegistryProvider.IRepositoryContext;
-import org.eclipse.m2m.internal.qvt.oml.emf.util.mmregistry.MetamodelRegistry;
+import org.eclipse.m2m.internal.qvt.oml.emf.util.mmregistry.IRepositoryContext;
+import org.eclipse.m2m.internal.qvt.oml.emf.util.mmregistry.IMetamodelRegistry;
 
 public class CompilerUtils {
 
@@ -67,7 +68,7 @@ public class CompilerUtils {
 	}
 		
     static EPackage.Registry getEPackageRegistry(URI uri, IMetamodelRegistryProvider metamodelRegistryProvider) {
-    	MetamodelRegistry metamodelRegistry = metamodelRegistryProvider.getRegistry(createContext(uri));
+    	IMetamodelRegistry metamodelRegistry = metamodelRegistryProvider.getRegistry(createContext(uri));
     	EPackage.Registry packageRegistry;
 
     	if(metamodelRegistry != null) {
@@ -96,7 +97,7 @@ public class CompilerUtils {
 		return resSet;
     }
     
-    public static void addMappingsToResourceSet(ResourceSet resourceSet, URI context) {
+//    public static void addMappingsToResourceSet(ResourceSet resourceSet, URI context) {
 //    	IResource contextResource = URIUtils.getResource(context);
 //		if (contextResource != null) {
 //			EPackage.Registry packageRegistry = MetamodelURIMappingHelper.mappingsToEPackageRegistry(contextResource.getProject(), resourceSet);
@@ -104,7 +105,7 @@ public class CompilerUtils {
 //				resourceSet.setPackageRegistry(packageRegistry);
 //			}
 //		}
-	}
+//	}
         
     static class Eclipse { 	
         

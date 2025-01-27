@@ -19,7 +19,6 @@ import org.eclipse.m2m.internal.qvt.oml.common.MdaException;
 import org.eclipse.m2m.internal.qvt.oml.common.Messages;
 import org.eclipse.m2m.internal.qvt.oml.emf.util.EmfException;
 import org.eclipse.m2m.internal.qvt.oml.emf.util.EmfUtil;
-import org.eclipse.m2m.internal.qvt.oml.emf.util.URIUtils;
 import org.eclipse.osgi.util.NLS;
 
 
@@ -38,6 +37,6 @@ public class ExtendedEmfUtil {
 			throw new MdaException(NLS.bind(Messages.InvalidFilePath, new Object[] {uri}), e);
 		}
         
-       	URIUtils.refresh(uri);
+//       	URIUti	ls.refresh(uri);
     }
 }

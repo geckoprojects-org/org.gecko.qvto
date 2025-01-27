@@ -24,7 +24,7 @@ import org.eclipse.m2m.internal.qvt.oml.common.project.DeployedTransformation;
 import org.eclipse.m2m.internal.qvt.oml.common.project.Pair;
 import org.eclipse.m2m.internal.qvt.oml.emf.util.EmfException;
 import org.eclipse.m2m.internal.qvt.oml.emf.util.EmfUtil;
-import org.eclipse.m2m.internal.qvt.oml.emf.util.Logger;
+import org.eclipse.m2m.internal.qvt.oml.emf.util.eclipse.Logger;
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.core.runtime.Platform;
 

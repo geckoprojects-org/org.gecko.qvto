@@ -15,7 +15,7 @@ import java.util.logging.Level;
 
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IConfigurationElement;
-import org.eclipse.m2m.internal.qvt.oml.emf.util.Logger;
+import org.eclipse.m2m.internal.qvt.oml.emf.util.eclipse.Logger;
 
 public abstract class EclipseMetamodelProvider extends DelegatingMetamodelProvider {
 

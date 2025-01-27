@@ -11,8 +11,6 @@
  *******************************************************************************/
 package org.eclipse.m2m.internal.qvt.oml;
 
-import static org.eclipse.m2m.internal.qvt.oml.emf.util.EmfUtilPlugin.isSuccess;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -37,6 +35,7 @@ import org.eclipse.m2m.internal.qvt.oml.ast.env.QvtOperationalEvaluationEnv;
 import org.eclipse.m2m.internal.qvt.oml.ast.env.QvtOperationalFileEnv;
 import org.eclipse.m2m.internal.qvt.oml.ast.env.QvtOperationalStdLibrary;
 import org.eclipse.m2m.internal.qvt.oml.compiler.CompiledUnit;
+import org.eclipse.m2m.internal.qvt.oml.emf.util.EmfUtilDiagnostic;
 import org.eclipse.m2m.internal.qvt.oml.evaluator.InternalEvaluator;
 import org.eclipse.m2m.internal.qvt.oml.evaluator.ModelInstance;
 import org.eclipse.m2m.internal.qvt.oml.evaluator.ModelParameterHelper;
@@ -160,7 +159,7 @@ public class InternalTransformationExecutor {
 			loadTransformation();
 
 			// check if we have successfully loaded the transformation unit
-			if (!isSuccess(fLoadDiagnostic)) {
+			if (!EmfUtilDiagnostic.isSuccess(fLoadDiagnostic)) {
 				return fLoadDiagnostic;
 			}
 			
@@ -179,7 +178,7 @@ public class InternalTransformationExecutor {
 				.createEvaluationEnvironment(context, null);
 
 		ExecutionDiagnostic modelParamsDiagnostic = initArguments(evaluationEnv, fOperationalTransformation, args);
-		if (!isSuccess(modelParamsDiagnostic)) {
+		if (!EmfUtilDiagnostic.isSuccess(modelParamsDiagnostic)) {
 			return modelParamsDiagnostic;
 		}
 

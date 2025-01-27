@@ -38,16 +38,6 @@ public class Messages extends NLS {
 	
 	public static String TransformationExecutionCompleted;
 
-	public static String QvtNamesChecker_blankIdentifierError;
-	public static String QvtNamesChecker_illegalCharInIdentifierError;
-
-	public static String QvtNamesChecker_InvalidCUnitName;
-	public static String QvtNamesChecker_invalidQualifiedIdentifierError;
-	public static String QvtNamesChecker_moduleIndentifierKindName;
-	public static String QvtNamesChecker_namespaceIndentifierKindName;
-
-	public static String QvtNamesChecker_reservedQVTWord;
-
 	public static String InvalidSourceForOperationCall;
 
 	public static String FailToLoadTraceForIncrementalUpdateExecution;

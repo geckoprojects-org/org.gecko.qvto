@@ -8,7 +8,9 @@
 	org.eclipse.equinox.common,\
 	org.eclipse.equinox.registry,\
 	org.eclipse.m2m.qvt.oml.emf.util;version=snapshot,\
-	org.eclipse.core.runtime
+	org.eclipse.core.runtime,\
+	org.eclipse.m2m.qvt.oml.cst.parser;version=snapshot,\
+	org.eclipse.m2m.qvt.oml.emf.util.eclipse;version=snapshot
 
 -includeresource: \
 	schema=schema,\

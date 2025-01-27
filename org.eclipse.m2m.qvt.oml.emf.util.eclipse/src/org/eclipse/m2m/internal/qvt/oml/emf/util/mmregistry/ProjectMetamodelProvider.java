@@ -15,14 +15,16 @@ package org.eclipse.m2m.internal.qvt.oml.emf.util.mmregistry;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
 
 import org.eclipse.core.resources.IProject;
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
-import org.eclipse.m2m.internal.qvt.oml.emf.util.Logger;
+import org.eclipse.m2m.internal.qvt.oml.emf.util.EmfUtil;
+import org.eclipse.m2m.internal.qvt.oml.emf.util.eclipse.EmfUtilPlugin;
 import org.eclipse.m2m.internal.qvt.oml.emf.util.urimap.MappingContainer;
 import org.eclipse.m2m.internal.qvt.oml.emf.util.urimap.MetamodelURIMappingHelper;
 import org.eclipse.m2m.internal.qvt.oml.emf.util.urimap.URIMapping;
@@ -34,7 +36,7 @@ public class ProjectMetamodelProvider extends DelegatingMetamodelProvider {
 	private List<IMetamodelDesc> metamodels;
 	
 	public ProjectMetamodelProvider(IProject project) {
-		this(project, MetamodelRegistry.getDefaultMetamodelProvider(), new ResourceSetImpl());
+		this(project, BaseMetamodelRegistry.getDefaultMetamodelProvider(), new ResourceSetImpl());
 	}
 				
 	public ProjectMetamodelProvider(IProject project, IMetamodelProvider delegate, ResourceSet resolutionRSet) {
@@ -64,17 +66,14 @@ public class ProjectMetamodelProvider extends DelegatingMetamodelProvider {
 					IMetamodelDesc desc = new EmfMetamodelDesc(ePackageDesc, nextMapping.getSourceURI());
 					metamodels.add(desc);
 				} else {
-					Logger.getLogger().log(Level.SEVERE, error, () -> NLS.bind("Invalid metamodel uri mapping. nsUri:''{0}'' modelUri:''{1}''", //$NON-NLS-1$
-							nextMapping.getSourceURI(), nextMapping.getTargetURI()));
-//	        		String message = NLS.bind("Invalid metamodel uri mapping. nsUri:''{0}'' modelUri:''{1}''", //$NON-NLS-1$
-//	        				nextMapping.getSourceURI(), nextMapping.getTargetURI());
-//					EmfUtilPlugin.getDefault().getLog().log(new Status(IStatus.ERROR, EmfUtilPlugin.ID, message, error));
+	        		String message = NLS.bind("Invalid metamodel uri mapping. nsUri:''{0}'' modelUri:''{1}''", //$NON-NLS-1$
+	        				nextMapping.getSourceURI(), nextMapping.getTargetURI());
+					EmfUtilPlugin.getDefault().getLog().log(new Status(IStatus.ERROR, EmfUtil.ID, message, error));
 	
 				}
 			} 
 		} catch (IOException e) {
-    		Logger.getLogger().log(Level.SEVERE, e, () -> "Error while loading metamodel mappings ");
-//			EmfUtilPlugin.log(e);
+			EmfUtilPlugin.log(e);
 		}	
 	}
 	

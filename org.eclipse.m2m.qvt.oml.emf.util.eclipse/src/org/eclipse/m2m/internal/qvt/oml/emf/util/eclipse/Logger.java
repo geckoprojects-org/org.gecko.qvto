@@ -9,7 +9,7 @@
  * Contributors:
  *     Borland Software Corporation - initial API and implementation
  *******************************************************************************/
-package org.eclipse.m2m.internal.qvt.oml.emf.util;
+package org.eclipse.m2m.internal.qvt.oml.emf.util.eclipse;
 
 import java.util.logging.Level;
 import java.util.logging.LogRecord;

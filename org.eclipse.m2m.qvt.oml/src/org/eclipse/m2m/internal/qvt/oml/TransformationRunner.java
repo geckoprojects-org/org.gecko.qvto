@@ -11,7 +11,7 @@
  *******************************************************************************/
 package org.eclipse.m2m.internal.qvt.oml;
 
-import static org.eclipse.m2m.internal.qvt.oml.emf.util.EmfUtilPlugin.isSuccess;
+import static org.eclipse.m2m.internal.qvt.oml.emf.util.EmfUtilDiagnostic.isSuccess;
 
 import java.util.List;
 

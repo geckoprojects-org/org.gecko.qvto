@@ -75,25 +75,25 @@ EMFPlugin durch ResourceLocator ersetzt
 
 ## org.eclipse.m2m.qvt.oml.common
 
-### CommonPlugin
+### CommonPlugin --
 Plugin, ResourceBundle und Logging entfernt
 
-### IOResource
+### IOResource 
 ResourcesPlugin.getEncoding() auf Charset.defaultCharset().name()
 
-### EmptyDebugTarget
+### EmptyDebugTarget --
 entfernt
 
-### ProcessJob
+### ProcessJob --
 JobChangeListener und Plugin.log entfernt
 
-### ShallowProcess
+### ShallowProcess --
 enfernt
 
-### TransformationRegistry
+### TransformationRegistry --
 ExtensionPoint handling für DeployedTransformation entfernt
 
-### ResourceSetProviderRegistry
+### ResourceSetProviderRegistry ---
 ExtensionRegistry change listener und refresh entfernt
 
 ## org.eclipse.m2m.qvt.oml
