@@ -10,6 +10,7 @@
 	org.eclipse.m2m.qvt.oml.common;version=snapshot,\
 	org.eclipse.ocl;version=snapshot,\
 	org.eclipse.core.runtime,\
+	org.eclipse.core.jobs,\
 	org.eclipse.equinox.common,\
 	org.eclipse.m2m.qvt.oml.emf.util.eclipse;version=snapshot,\
 	lpg.runtime.java
