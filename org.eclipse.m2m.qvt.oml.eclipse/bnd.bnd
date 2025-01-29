@@ -13,3 +13,7 @@
 	org.eclipse.equinox.common,\
 	org.eclipse.m2m.qvt.oml.emf.util.eclipse;version=snapshot,\
 	lpg.runtime.java
+
+-includeresource: \
+	schema=schema,\
+	plugin.xml=_plugin.xml

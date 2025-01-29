@@ -37,10 +37,10 @@ import org.osgi.service.condition.Condition;
  * @generated
  */
 @Component(name = "EcoreConfigurator")
-@Capability( namespace = "osgi.service", attribute = { "objectClass:List<String>=\"de.jena.Ecore.sensinact.model.Ecore.util.EcoreResourceFactoryImpl, org.eclipse.emf.ecore.resource.Resource$Factory\"" , "uses:=\"org.eclipse.emf.ecore.resource,de.jena.Ecore.sensinact.model.Ecore.util\"" })
-@Capability( namespace = "osgi.service", attribute = { "objectClass:List<String>=\"de.jena.Ecore.sensinact.model.Ecore.EcoreFactory, org.eclipse.emf.ecore.EFactory\"" , "uses:=\"org.eclipse.emf.ecore,de.jena.Ecore.sensinact.model.Ecore\"" })
-@Capability( namespace = "osgi.service", attribute = { "objectClass:List<String>=\"de.jena.Ecore.sensinact.model.Ecore.EcorePackage, org.eclipse.emf.ecore.EPackage\"" , "uses:=\"org.eclipse.emf.ecore,de.jena.Ecore.sensinact.model.Ecore\"" })
-@Capability( namespace = "osgi.service", attribute = { "objectClass:List<String>=\"org.gecko.emf.osgi.configurator.EPackageConfigurator\"" , "uses:=\"org.eclipse.emf.ecore,de.jena.Ecore.sensinact.model.Ecore\"" })
+@Capability( namespace = "osgi.service", attribute = { "objectClass:List<String>=\"de.jena.Ecore.sensinact.model.Ecore.util.EcoreResourceFactoryImpl, org.eclipse.emf.ecore.resource.Resource$Factory\"" , "uses:=\"org.eclipse.emf.ecore.resource,org.eclipse.ocl.ecore.util\"" })
+@Capability( namespace = "osgi.service", attribute = { "objectClass:List<String>=\"org.eclipse.ocl.ecore.EcoreFactory, org.eclipse.emf.ecore.EFactory\"" , "uses:=\"org.eclipse.emf.ecore,org.eclipse.ocl.ecore\"" })
+@Capability( namespace = "osgi.service", attribute = { "objectClass:List<String>=\"org.eclipse.ocl.ecore.EcorePackage, org.eclipse.emf.ecore.EPackage\"" , "uses:=\"org.eclipse.emf.ecore,org.eclipse.ocl.ecore\"" })
+@Capability( namespace = "osgi.service", attribute = { "objectClass:List<String>=\"org.gecko.emf.osgi.configurator.EPackageConfigurator\"" , "uses:=\"org.eclipse.emf.ecore,org.eclipse.ocl.ecore\"" })
 @Capability( namespace = "osgi.service", attribute = { "objectClass:List<String>=\"org.osgi.service.condition.Condition\"" , "uses:=org.osgi.service.condition" })
 public class EcoreConfigurationComponent {
 	

@@ -15,9 +15,6 @@ package org.eclipse.m2m.internal.qvt.oml.compiler;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.eclipse.core.resources.IResource;
-import org.eclipse.core.runtime.OperationCanceledException;
-import org.eclipse.emf.common.EMFPlugin;
 import org.eclipse.emf.common.util.BasicDiagnostic;
 import org.eclipse.emf.common.util.Diagnostic;
 import org.eclipse.emf.common.util.URI;
@@ -27,9 +24,9 @@ import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.m2m.internal.qvt.oml.NLS;
 import org.eclipse.m2m.internal.qvt.oml.QvtMessage;
+import org.eclipse.m2m.internal.qvt.oml.emf.util.mmregistry.IMetamodelRegistry;
 import org.eclipse.m2m.internal.qvt.oml.emf.util.mmregistry.IMetamodelRegistryProvider;
 import org.eclipse.m2m.internal.qvt.oml.emf.util.mmregistry.IRepositoryContext;
-import org.eclipse.m2m.internal.qvt.oml.emf.util.mmregistry.IMetamodelRegistry;
 
 public class CompilerUtils {
 
@@ -57,14 +54,6 @@ public class CompilerUtils {
 		String mainMessage = NLS.bind(CompilerMessages.unitDiagnostic, errorCount, warnCount);
 		BasicDiagnostic unitDiagnostic = new BasicDiagnostic(uri.toString(), 0, children, mainMessage, null);
 		return unitDiagnostic;
-	}
-		
-	public static void throwOperationCanceled() throws RuntimeException {
-		if(EMFPlugin.IS_ECLIPSE_RUNNING) {
-			Eclipse.throwOperationCanceled();
-		} else {
-			throw new RuntimeException("Operation canceled"); //$NON-NLS-1$
-		}
 	}
 		
     static EPackage.Registry getEPackageRegistry(URI uri, IMetamodelRegistryProvider metamodelRegistryProvider) {
@@ -97,22 +86,6 @@ public class CompilerUtils {
 		return resSet;
     }
     
-//    public static void addMappingsToResourceSet(ResourceSet resourceSet, URI context) {
-//    	IResource contextResource = URIUtils.getResource(context);
-//		if (contextResource != null) {
-//			EPackage.Registry packageRegistry = MetamodelURIMappingHelper.mappingsToEPackageRegistry(contextResource.getProject(), resourceSet);
-//			if (packageRegistry != null) {
-//				resourceSet.setPackageRegistry(packageRegistry);
-//			}
-//		}
-//	}
-        
-    static class Eclipse { 	
-        
-    	static void throwOperationCanceled() throws RuntimeException {
-    		throw new OperationCanceledException();
-    	}   	
-    }
 
 	public static IRepositoryContext createContext(final URI uri) {
 		if (uri == null) {

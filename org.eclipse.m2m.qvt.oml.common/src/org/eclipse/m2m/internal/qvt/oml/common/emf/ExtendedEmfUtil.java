@@ -37,6 +37,6 @@ public class ExtendedEmfUtil {
 			throw new MdaException(NLS.bind(Messages.InvalidFilePath, new Object[] {uri}), e);
 		}
         
-//       	URIUti	ls.refresh(uri);
+//       	URIUtils.refresh(uri);
     }
 }
