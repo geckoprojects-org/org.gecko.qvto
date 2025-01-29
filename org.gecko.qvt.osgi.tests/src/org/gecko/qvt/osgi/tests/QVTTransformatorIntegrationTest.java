@@ -11,7 +11,6 @@
  */
 package org.gecko.qvt.osgi.tests;
 
-
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -52,34 +51,33 @@ import org.osgi.test.junit5.service.ServiceExtension;
 
 /**
  * Test QVT Mapping
+ * 
  * @author mark
  * @since 20.10.2017
  */
 @ExtendWith(BundleContextExtension.class)
 @ExtendWith(ServiceExtension.class)
 @ExtendWith(ConfigurationExtension.class)
-public class QVTTransformatorIntegrationTest  {
+public class QVTTransformatorIntegrationTest {
 
 	@InjectBundleContext
 	BundleContext context;
-	
+
 	@Test
 	@WithFactoryConfiguration(name = "testSimple", factoryPid = ModelTransformationConstants.TRANSFORMATOR_COMPONENT_NAME, location = "?", properties = @Property(key = ModelTransformationConstants.TEMPLATE_PATH, value = "org.gecko.qvt.osgi.tests/PersonTransformation.qvto"))
-	public void testSimple(
-			@InjectService ResourceSet rs, 
-			@InjectService BasicFactory factory,
-			@InjectService(cardinality = 0) ServiceAware<ModelTransformator> transformatorAware
-			) throws InterruptedException{
+	public void testSimple(@InjectService ResourceSet rs, @InjectService BasicFactory factory,
+			@InjectService(cardinality = 0) ServiceAware<ModelTransformator> transformatorAware)
+			throws InterruptedException {
 		Resource r1 = rs.createResource(URI.createURI("tmp.test"));
 		Person p1 = BasicFactory.eINSTANCE.createPerson();
 		p1.setFirstName("Mark");
 		p1.setLastName("Hoffmann");
 		p1.setGender(GenderType.MALE);
 		r1.getContents().add(p1);
-		
+
 		ModelTransformator transformator = transformatorAware.waitForService(500);
 		assertNotNull(transformator);
-		
+
 		EObject result = transformator.doTransformation(p1);
 		assertNotNull(result);
 		assertTrue(result instanceof Person);
@@ -91,21 +89,20 @@ public class QVTTransformatorIntegrationTest  {
 
 	@Test
 	@WithFactoryConfiguration(name = "testWithRemoteTemplate", factoryPid = ModelTransformationConstants.TRANSFORMATOR_COMPONENT_NAME, location = "?", properties = @Property(key = ModelTransformationConstants.TEMPLATE_URI, value = "https://raw.githubusercontent.com/geckoprojects-org/org.gecko.emf.utils/main/org.gecko.qvt.osgi.tests/transforms/PersonTransformation.qvto"))
-	public void testWithRemoteTemplate(
-			@InjectService ResourceSet rs, 
-			@InjectService BasicFactory factory,
-			@InjectService(cardinality = 0) ServiceAware<ModelTransformator> transformatorAware
-			) throws InterruptedException{
+	public void testWithRemoteTemplate(@InjectService ResourceSet rs, //
+			@InjectService BasicFactory factory, //
+			@InjectService(cardinality = 0) ServiceAware<ModelTransformator> transformatorAware)
+			throws InterruptedException {
 		Resource r1 = rs.createResource(URI.createURI("tmp.test"));
 		Person p1 = BasicFactory.eINSTANCE.createPerson();
 		p1.setFirstName("Mark");
 		p1.setLastName("Hoffmann");
 		p1.setGender(GenderType.MALE);
 		r1.getContents().add(p1);
-		
+
 		ModelTransformator transformator = transformatorAware.waitForService(500);
 		assertNotNull(transformator);
-		
+
 		EObject result = transformator.doTransformation(p1);
 		assertNotNull(result);
 		assertTrue(result instanceof Person);
@@ -116,12 +113,12 @@ public class QVTTransformatorIntegrationTest  {
 	}
 
 	@Test
-	@WithFactoryConfiguration(name = "testExampleWithDeps",  factoryPid = ModelTransformationConstants.TRANSFORMATOR_COMPONENT_NAME, location = "?", properties = @Property(key = ModelTransformationConstants.TEMPLATE_PATH, value = "org.gecko.qvt.osgi.tests/PersonTransformationWithDeps.qvto"))
-	public void testExampleWithDeps(
-			@InjectService ResourceSet rs, 
-			@InjectService BasicFactory factory,
-			@InjectService(cardinality = 0) ServiceAware<ModelTransformator> transformatorAware
-			) throws InterruptedException{
+	@WithFactoryConfiguration(name = "testExampleWithDeps", factoryPid = ModelTransformationConstants.TRANSFORMATOR_COMPONENT_NAME, location = "?", //
+			properties = @Property(key = ModelTransformationConstants.TEMPLATE_PATH, value = "org.gecko.qvt.osgi.tests/PersonTransformationWithDeps.qvto"))
+	public void testExampleWithDeps(@InjectService ResourceSet rs, //
+			@InjectService BasicFactory factory, //
+			@InjectService(cardinality = 0) ServiceAware<ModelTransformator> transformatorAware)
+			throws InterruptedException {
 		Resource r1 = rs.createResource(URI.createURI("tmp.test"));
 		Person p1 = BasicFactory.eINSTANCE.createPerson();
 		p1.setFirstName("Mark");
@@ -131,12 +128,12 @@ public class QVTTransformatorIntegrationTest  {
 		address.setCity("Gera");
 		address.setStreet("Kurt-Keicher");
 		p1.setAddress(address);
-		
+
 		r1.getContents().add(p1);
-		
+
 		ModelTransformator transformator = transformatorAware.waitForService(500);
 		assertNotNull(transformator);
-		
+
 		EObject result = transformator.doTransformation(p1);
 		assertNotNull(result);
 		assertTrue(result instanceof Person);
@@ -149,14 +146,13 @@ public class QVTTransformatorIntegrationTest  {
 		assertEquals("SesamKurt-Keicher", resultAddress.getStreet());
 		assertEquals("MyBeautifulGera", resultAddress.getCity());
 	}
-	
+
 	@Test
-	@WithFactoryConfiguration(name = "testExampleWithDepsLibrary",  factoryPid = ModelTransformationConstants.TRANSFORMATOR_COMPONENT_NAME, location = "?", properties = @Property(key = ModelTransformationConstants.TEMPLATE_PATH, value = "org.gecko.qvt.osgi.tests/PersonTransformationWithDepsLib.qvto"))
-	public void testExampleWithDepsLibrary(
-			@InjectService ResourceSet rs, 
-			@InjectService BasicFactory factory,
-			@InjectService(cardinality = 0) ServiceAware<ModelTransformator> transformatorAware
-			) throws InterruptedException{
+	@WithFactoryConfiguration(name = "testExampleWithDepsLibrary", factoryPid = ModelTransformationConstants.TRANSFORMATOR_COMPONENT_NAME, location = "?", properties = @Property(key = ModelTransformationConstants.TEMPLATE_PATH, value = "org.gecko.qvt.osgi.tests/PersonTransformationWithDepsLib.qvto"))
+	public void testExampleWithDepsLibrary(@InjectService ResourceSet rs, //
+			@InjectService BasicFactory factory, //
+			@InjectService(cardinality = 0) ServiceAware<ModelTransformator> transformatorAware)
+			throws InterruptedException {
 		Resource r1 = rs.createResource(URI.createURI("tmp.test"));
 		Person p1 = BasicFactory.eINSTANCE.createPerson();
 		p1.setFirstName("Mark");
@@ -166,12 +162,12 @@ public class QVTTransformatorIntegrationTest  {
 		address.setCity("Gera");
 		address.setStreet("Kurt-Keicher");
 		p1.setAddress(address);
-		
+
 		r1.getContents().add(p1);
-		
+
 		ModelTransformator transformator = transformatorAware.waitForService(500);
 		assertNotNull(transformator);
-		
+
 		EObject result = transformator.doTransformation(p1);
 		assertNotNull(result);
 		assertTrue(result instanceof Person);
@@ -184,14 +180,13 @@ public class QVTTransformatorIntegrationTest  {
 		assertEquals("SesamKurt-Keicher", resultAddress.getStreet());
 		assertEquals("MyBeautifulGera", resultAddress.getCity());
 	}
-	
+
 	@Test
-	public void testExampleWithBlackbox01(
-			@InjectService ResourceSet rs, 
-			@InjectService BasicFactory factory,
-			@InjectService ConfigurationAdmin admin,
-			@InjectService(cardinality = 0) ServiceAware<ModelTransformator> transformatorAware
-			) throws InterruptedException, IOException{
+	public void testExampleWithBlackbox01(@InjectService ResourceSet rs, //
+			@InjectService BasicFactory factory, //
+			@InjectService ConfigurationAdmin admin, //
+			@InjectService(cardinality = 0) ServiceAware<ModelTransformator> transformatorAware)
+			throws InterruptedException, IOException {
 		Resource r1 = rs.createResource(URI.createURI("tmp.test"));
 		Person p1 = BasicFactory.eINSTANCE.createPerson();
 		p1.setFirstName("Mark");
@@ -201,41 +196,45 @@ public class QVTTransformatorIntegrationTest  {
 		address.setCity("Gera");
 		address.setStreet("Kurt-Keicher");
 		p1.setAddress(address);
-		
+
 		r1.getContents().add(p1);
-		
+
 		BlackboxRegistry.INSTANCE.registerModule(BlackboxTest.class);
-		
-		Configuration configuration = admin.createFactoryConfiguration(ModelTransformationConstants.TRANSFORMATOR_COMPONENT_NAME, "?");
-		
-		Dictionary<String, String> props = new Hashtable<String, String>();
-		props.put(ModelTransformationConstants.TEMPLATE_PATH, "org.gecko.qvt.osgi.tests/PersonTransformationWithBlackbox.qvto");
-		
+
+		Configuration configuration = admin
+				.createFactoryConfiguration(ModelTransformationConstants.TRANSFORMATOR_COMPONENT_NAME, "?");
+
+		Dictionary<String, String> props = new Hashtable<>();
+		props.put(ModelTransformationConstants.TEMPLATE_PATH,
+				"org.gecko.qvt.osgi.tests/PersonTransformationWithBlackbox.qvto");
+
 		configuration.update(props);
-		
-		ModelTransformator transformator = transformatorAware.waitForService(500);
-		assertNotNull(transformator);
-		
-		EObject result = transformator.doTransformation(p1);
-		assertNotNull(result);
-		assertTrue(result instanceof Person);
-		Person resultPerson = (Person) result;
-		assertEquals(GenderType.FEMALE, resultPerson.getGender());
-		assertEquals("Markin", resultPerson.getFirstName());
-		assertEquals("Hoffmannin", resultPerson.getLastName());
-		assertNotNull(resultPerson.getAddress());
-		Address resultAddress = resultPerson.getAddress();
-		assertEquals("Kurt-KeicherCopy", resultAddress.getStreet());
-		assertEquals("GeraCopy", resultAddress.getCity());
+		try {
+			ModelTransformator transformator = transformatorAware.waitForService(500);
+			assertNotNull(transformator);
+
+			EObject result = transformator.doTransformation(p1);
+			assertNotNull(result);
+			assertTrue(result instanceof Person);
+			Person resultPerson = (Person) result;
+			assertEquals(GenderType.FEMALE, resultPerson.getGender());
+			assertEquals("Markin", resultPerson.getFirstName());
+			assertEquals("Hoffmannin", resultPerson.getLastName());
+			assertNotNull(resultPerson.getAddress());
+			Address resultAddress = resultPerson.getAddress();
+			assertEquals("Kurt-KeicherCopy", resultAddress.getStreet());
+			assertEquals("GeraCopy", resultAddress.getCity());
+		} finally {
+			configuration.delete();
+		}
 	}
-	
+
 	@Test
-	public void testExampleWithBlackbox02(
-			@InjectService ResourceSet rs, 
-			@InjectService BasicFactory factory,
-			@InjectService ConfigurationAdmin admin,
-			@InjectService(cardinality = 0) ServiceAware<ModelTransformator> transformatorAware
-			) throws InterruptedException, IOException{
+	public void testExampleWithBlackbox02(@InjectService ResourceSet rs, //
+			@InjectService BasicFactory factory, //
+			@InjectService ConfigurationAdmin admin, //
+			@InjectService(cardinality = 0) ServiceAware<ModelTransformator> transformatorAware)
+			throws InterruptedException, IOException {
 		Resource r1 = rs.createResource(URI.createURI("tmp.test"));
 		Person p1 = BasicFactory.eINSTANCE.createPerson();
 		p1.setFirstName("Mark");
@@ -245,41 +244,46 @@ public class QVTTransformatorIntegrationTest  {
 		address.setCity("Gera");
 		address.setStreet("Kurt-Keicher");
 		p1.setAddress(address);
-		
+
 		r1.getContents().add(p1);
-		
+
 		TransformationExecutor.BlackboxRegistry.INSTANCE.registerModule(BlackboxTest.class);
-		
-		Configuration configuration = admin.createFactoryConfiguration(ModelTransformationConstants.TRANSFORMATOR_COMPONENT_NAME, "?");
-		
+
+		Configuration configuration = admin
+				.createFactoryConfiguration(ModelTransformationConstants.TRANSFORMATOR_COMPONENT_NAME, "?");
+
 		Dictionary<String, String> props = new Hashtable<String, String>();
-		props.put(ModelTransformationConstants.TEMPLATE_PATH, "org.gecko.qvt.osgi.tests/PersonTransformationWithBlackbox.qvto");
-		
+		props.put(ModelTransformationConstants.TEMPLATE_PATH,
+				"org.gecko.qvt.osgi.tests/PersonTransformationWithBlackbox.qvto");
+
 		configuration.update(props);
-		
-		ModelTransformator transformator = transformatorAware.waitForService(500);
-		assertNotNull(transformator);
-		
-		EObject result = transformator.doTransformation(p1);
-		assertNotNull(result);
-		assertTrue(result instanceof Person);
-		Person resultPerson = (Person) result;
-		assertEquals(GenderType.FEMALE, resultPerson.getGender());
-		assertEquals("Markin", resultPerson.getFirstName());
-		assertEquals("Hoffmannin", resultPerson.getLastName());
-		assertNotNull(resultPerson.getAddress());
-		Address resultAddress = resultPerson.getAddress();
-		assertEquals("Kurt-KeicherCopy", resultAddress.getStreet());
-		assertEquals("GeraCopy", resultAddress.getCity());
+		try {
+			ModelTransformator transformator = transformatorAware.waitForService(500);
+			assertNotNull(transformator);
+
+			EObject result = transformator.doTransformation(p1);
+			assertNotNull(result);
+			assertTrue(result instanceof Person);
+			Person resultPerson = (Person) result;
+			assertEquals(GenderType.FEMALE, resultPerson.getGender());
+			assertEquals("Markin", resultPerson.getFirstName());
+			assertEquals("Hoffmannin", resultPerson.getLastName());
+			assertNotNull(resultPerson.getAddress());
+			Address resultAddress = resultPerson.getAddress();
+			assertEquals("Kurt-KeicherCopy", resultAddress.getStreet());
+			assertEquals("GeraCopy", resultAddress.getCity());
+		} finally {
+			configuration.delete();
+		}
+
 	}
-	
+
 	@Test
-	public void testExampleWithBlackboxAlternativeName01(
-			@InjectService ResourceSet rs, 
-			@InjectService BasicFactory factory,
-			@InjectService ConfigurationAdmin admin,
-			@InjectService(cardinality = 0) ServiceAware<ModelTransformator> transformatorAware
-			) throws InterruptedException, IOException{
+	public void testExampleWithBlackboxAlternativeName01(@InjectService ResourceSet rs, //
+			@InjectService BasicFactory factory, //
+			@InjectService ConfigurationAdmin admin, //
+			@InjectService(cardinality = 0) ServiceAware<ModelTransformator> transformatorAware)
+			throws InterruptedException, IOException {
 		Resource r1 = rs.createResource(URI.createURI("tmp.test"));
 		Person p1 = BasicFactory.eINSTANCE.createPerson();
 		p1.setFirstName("Mark");
@@ -289,40 +293,45 @@ public class QVTTransformatorIntegrationTest  {
 		address.setCity("Gera");
 		address.setStreet("Kurt-Keicher");
 		p1.setAddress(address);
-		
+
 		r1.getContents().add(p1);
-		
-		TransformationExecutor.BlackboxRegistry.INSTANCE.registerModule(BlackboxTest.class, "org.gecko.MyBB", "MyBBTest");
-		
-		Configuration configuration = admin.createFactoryConfiguration(ModelTransformationConstants.TRANSFORMATOR_COMPONENT_NAME, "?");
-		
+
+		TransformationExecutor.BlackboxRegistry.INSTANCE.registerModule(BlackboxTest.class, "org.gecko.MyBB",
+				"MyBBTest");
+
+		Configuration configuration = admin
+				.createFactoryConfiguration(ModelTransformationConstants.TRANSFORMATOR_COMPONENT_NAME, "?");
+
 		Dictionary<String, String> props = new Hashtable<String, String>();
-		props.put(ModelTransformationConstants.TEMPLATE_PATH, "org.gecko.qvt.osgi.tests/PersonTransformationWithBlackboxAltName.qvto");
-		
+		props.put(ModelTransformationConstants.TEMPLATE_PATH,
+				"org.gecko.qvt.osgi.tests/PersonTransformationWithBlackboxAltName.qvto");
+
 		configuration.update(props);
-		
-		ModelTransformator transformator = transformatorAware.waitForService(500);
-		assertNotNull(transformator);
-		EObject result = transformator.doTransformation(p1);
-		assertNotNull(result);
-		assertTrue(result instanceof Person);
-		Person resultPerson = (Person) result;
-		assertEquals(GenderType.FEMALE, resultPerson.getGender());
-		assertEquals("Markin", resultPerson.getFirstName());
-		assertEquals("Hoffmannin", resultPerson.getLastName());
-		assertNotNull(resultPerson.getAddress());
-		Address resultAddress = resultPerson.getAddress();
-		assertEquals("Kurt-KeicherCopy", resultAddress.getStreet());
-		assertEquals("GeraCopy", resultAddress.getCity());
+		try {
+			ModelTransformator transformator = transformatorAware.waitForService(500);
+			assertNotNull(transformator);
+			EObject result = transformator.doTransformation(p1);
+			assertNotNull(result);
+			assertTrue(result instanceof Person);
+			Person resultPerson = (Person) result;
+			assertEquals(GenderType.FEMALE, resultPerson.getGender());
+			assertEquals("Markin", resultPerson.getFirstName());
+			assertEquals("Hoffmannin", resultPerson.getLastName());
+			assertNotNull(resultPerson.getAddress());
+			Address resultAddress = resultPerson.getAddress();
+			assertEquals("Kurt-KeicherCopy", resultAddress.getStreet());
+			assertEquals("GeraCopy", resultAddress.getCity());
+		} finally {
+			configuration.delete();
+		}
 	}
-	
+
 	@Test
-	public void testExampleWithBlackboxAlternativeName02(
-			@InjectService ResourceSet rs, 
-			@InjectService BasicFactory factory,
-			@InjectService ConfigurationAdmin admin,
-			@InjectService(cardinality = 0) ServiceAware<ModelTransformator> transformatorAware
-			) throws InterruptedException, IOException{
+	public void testExampleWithBlackboxAlternativeName02(@InjectService ResourceSet rs, //
+			@InjectService BasicFactory factory, //
+			@InjectService ConfigurationAdmin admin, //
+			@InjectService(cardinality = 0) ServiceAware<ModelTransformator> transformatorAware)
+			throws InterruptedException, IOException {
 		Resource r1 = rs.createResource(URI.createURI("tmp.test"));
 		Person p1 = BasicFactory.eINSTANCE.createPerson();
 		p1.setFirstName("Mark");
@@ -332,40 +341,44 @@ public class QVTTransformatorIntegrationTest  {
 		address.setCity("Gera");
 		address.setStreet("Kurt-Keicher");
 		p1.setAddress(address);
-		
+
 		r1.getContents().add(p1);
-		
+
 		TransformationExecutor.BlackboxRegistry.INSTANCE.registerModule(BlackboxTest.class);
-		
-		Configuration configuration = admin.createFactoryConfiguration(ModelTransformationConstants.TRANSFORMATOR_COMPONENT_NAME, "?");
-		
+
+		Configuration configuration = admin
+				.createFactoryConfiguration(ModelTransformationConstants.TRANSFORMATOR_COMPONENT_NAME, "?");
+
 		Dictionary<String, String> props = new Hashtable<String, String>();
-		props.put(ModelTransformationConstants.TEMPLATE_PATH, "org.gecko.qvt.osgi.tests/PersonTransformationWithBlackbox.qvto");
-		
+		props.put(ModelTransformationConstants.TEMPLATE_PATH,
+				"org.gecko.qvt.osgi.tests/PersonTransformationWithBlackbox.qvto");
+
 		configuration.update(props);
-		
-		ModelTransformator transformator = transformatorAware.waitForService(500);
-		assertNotNull(transformator);
-		EObject result = transformator.doTransformation(p1);
-		assertNotNull(result);
-		assertTrue(result instanceof Person);
-		Person resultPerson = (Person) result;
-		assertEquals(GenderType.FEMALE, resultPerson.getGender());
-		assertEquals("Markin", resultPerson.getFirstName());
-		assertEquals("Hoffmannin", resultPerson.getLastName());
-		assertNotNull(resultPerson.getAddress());
-		Address resultAddress = resultPerson.getAddress();
-		assertEquals("Kurt-KeicherCopy", resultAddress.getStreet());
-		assertEquals("GeraCopy", resultAddress.getCity());
+		try {
+			ModelTransformator transformator = transformatorAware.waitForService(500);
+			assertNotNull(transformator);
+			EObject result = transformator.doTransformation(p1);
+			assertNotNull(result);
+			assertTrue(result instanceof Person);
+			Person resultPerson = (Person) result;
+			assertEquals(GenderType.FEMALE, resultPerson.getGender());
+			assertEquals("Markin", resultPerson.getFirstName());
+			assertEquals("Hoffmannin", resultPerson.getLastName());
+			assertNotNull(resultPerson.getAddress());
+			Address resultAddress = resultPerson.getAddress();
+			assertEquals("Kurt-KeicherCopy", resultAddress.getStreet());
+			assertEquals("GeraCopy", resultAddress.getCity());
+		} finally {
+			configuration.delete();
+		}
 	}
-	
+
 	@Test
-	public void testExampleWithBlackboxService01(
-			@InjectService ResourceSet rs, 
-			@InjectService BasicFactory factory,
-			@InjectService ConfigurationAdmin admin,
-			@InjectService(cardinality = 0) ServiceAware<ModelTransformator> transformatorAware
-			) throws InterruptedException, IOException{
+	public void testExampleWithBlackboxService01(@InjectService ResourceSet rs, //
+			@InjectService BasicFactory factory, //
+			@InjectService ConfigurationAdmin admin, //
+			@InjectService(cardinality = 0) ServiceAware<ModelTransformator> transformatorAware)
+			throws InterruptedException, IOException {
 		Resource r1 = rs.createResource(URI.createURI("tmp.test"));
 		Person p1 = BasicFactory.eINSTANCE.createPerson();
 		p1.setFirstName("Mark");
@@ -375,47 +388,53 @@ public class QVTTransformatorIntegrationTest  {
 		address.setCity("Gera");
 		address.setStreet("Kurt-Keicher");
 		p1.setAddress(address);
-		
+
 		r1.getContents().add(p1);
-		
-		Configuration configuration = admin.createFactoryConfiguration(ModelTransformationConstants.TRANSFORMATOR_COMPONENT_NAME, "?");
-		
+
+		Configuration configuration = admin
+				.createFactoryConfiguration(ModelTransformationConstants.TRANSFORMATOR_COMPONENT_NAME, "?");
+
 		Dictionary<String, String> props = new Hashtable<String, String>();
-		props.put(ModelTransformationConstants.TEMPLATE_PATH, "org.gecko.qvt.osgi.tests/PersonTransformationWithBlackboxService.qvto");
+		props.put(ModelTransformationConstants.TEMPLATE_PATH,
+				"org.gecko.qvt.osgi.tests/PersonTransformationWithBlackboxService.qvto");
 //		
 		BlackboxTest bbt = new BlackboxTest();
-		
+
 		Dictionary<String, Object> properties = new Hashtable<>();
 		properties.put(ModelTransformationConstants.QVT_BLACKBOX, "true");
 		properties.put(ModelTransformationConstants.BLACKBOX_MODULENAME, "MyserviceBB");
 		properties.put(ModelTransformationConstants.BLACKBOX_QUALIFIED_UNIT_NAME, "org.gecko.service.MyBB");
-		
-		ServiceRegistration<BlackboxTest> bbRegistration = context.registerService(BlackboxTest.class, bbt, properties);
-		
-		configuration.update(props);
-		
-		ModelTransformator transformator= transformatorAware.waitForService(500);
-		assertNotNull(transformator);
 
-		EObject result = transformator.doTransformation(p1);
-		assertNotNull(result);
-		assertTrue(result instanceof Person);
-		Person resultPerson = (Person) result;
-		assertEquals(GenderType.FEMALE, resultPerson.getGender());
-		assertEquals("Markin", resultPerson.getFirstName());
-		assertEquals("Hoffmannin", resultPerson.getLastName());
-		assertNotNull(resultPerson.getAddress());
-		Address resultAddress = resultPerson.getAddress();
-		assertEquals("Kurt-KeicherCopy", resultAddress.getStreet());
-		assertEquals("GeraCopy", resultAddress.getCity());
+		context.registerService(BlackboxTest.class, bbt, properties);
+
+		configuration.update(props);
+		try {
+			ModelTransformator transformator = transformatorAware.waitForService(500);
+			assertNotNull(transformator);
+
+			EObject result = transformator.doTransformation(p1);
+			assertNotNull(result);
+			assertTrue(result instanceof Person);
+			Person resultPerson = (Person) result;
+			assertEquals(GenderType.FEMALE, resultPerson.getGender());
+			assertEquals("Markin", resultPerson.getFirstName());
+			assertEquals("Hoffmannin", resultPerson.getLastName());
+			assertNotNull(resultPerson.getAddress());
+			Address resultAddress = resultPerson.getAddress();
+			assertEquals("Kurt-KeicherCopy", resultAddress.getStreet());
+			assertEquals("GeraCopy", resultAddress.getCity());
+		} finally {
+			configuration.delete();
+		}
+
 	}
 
 	@Test
-	public void testBlackboxWithTrafoRegistration(
-			@InjectService ResourceSet rs, 
-			@InjectService BasicFactory factory,
-			@InjectService(cardinality = 0, filter = "(" + ModelTransformationConstants.TRANSFORMATOR_ID + "=testTrafo)") ServiceAware<ModelTransformator> transformatorAware
-			) throws InterruptedException, IOException{
+	public void testBlackboxWithTrafoRegistration(@InjectService ResourceSet rs, //
+			@InjectService BasicFactory factory, //
+			@InjectService(cardinality = 0, filter = "(" + ModelTransformationConstants.TRANSFORMATOR_ID
+					+ "=testTrafo)") ServiceAware<ModelTransformator> transformatorAware)
+			throws InterruptedException {
 		Resource r1 = rs.createResource(URI.createURI("tmp.test"));
 		Person p1 = BasicFactory.eINSTANCE.createPerson();
 		p1.setFirstName("Mark");
@@ -425,12 +444,13 @@ public class QVTTransformatorIntegrationTest  {
 		address.setCity("Gera");
 		address.setStreet("Kurt-Keicher");
 		p1.setAddress(address);
-		
+
 		r1.getContents().add(p1);
-		
-		context.registerService(Condition.class, Condition.INSTANCE, new Hashtable<>(Collections.singletonMap(Condition.CONDITION_ID, "test")));
-		
-		ModelTransformator transformator= transformatorAware.waitForService(1000);
+
+		context.registerService(Condition.class, Condition.INSTANCE,
+				new Hashtable<>(Collections.singletonMap(Condition.CONDITION_ID, "test")));
+
+		ModelTransformator transformator = transformatorAware.waitForService(1000);
 		assertNotNull(transformator);
 
 		EObject result = transformator.doTransformation(p1);
@@ -441,5 +461,5 @@ public class QVTTransformatorIntegrationTest  {
 		assertEquals("Markin", resultPerson.getFirstName());
 		assertEquals("HoffmannBlackBox", resultPerson.getLastName());
 	}
-	
+
 }
