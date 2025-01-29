@@ -9,4 +9,5 @@
 	plugin.xml=_plugin.xml
 	
 Import-Package: \
-	org.eclipse.core.runtime.preferences.*;'resolution:'=optional
+	org.eclipse.core.runtime.preferences.*;'resolution:'=optional,\
+	*
