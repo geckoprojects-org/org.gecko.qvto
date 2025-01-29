@@ -1,0 +1,19 @@
+-resourceonly: true
+-include: ${.}/buildpath.bnd	
+mavendeps: ${sjoin;\n; ${template;-maven-dependencies;${@}}}
+
+-includeresource: resources,\
+	{template/fennecQVT.maven=resources/template/fennecQVT.maven},\
+	 template/qvt.target=${.}/../cnf/qvt.target
+	
+Provide-Capability: \
+	${gecko-base}
+
+gecko-base:\
+    bnd.library;\
+        bnd.library     = fennecQVT; \
+        path            = template
+Bundle-Description: Fennec QVT Workspace Libarary
+Bundle-Version: 2.1.0.SNAPSHOT
+
+-workingset: qvt
