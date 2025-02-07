@@ -17,11 +17,10 @@ import java.text.MessageFormat;
 import java.util.MissingResourceException;
 import java.util.ResourceBundle;
 
-import org.eclipse.emf.common.EMFPlugin;
-
 public class NLS {
 	
-	private static IMessages messagesImpl = (EMFPlugin.IS_ECLIPSE_RUNNING) ? new OSGI_NLS() : new Default_NLS();
+//	private static IMessages messagesImpl = (EMFPlugin.IS_ECLIPSE_RUNNING) ? new OSGI_NLS() : new Default_NLS();
+	private static IMessages messagesImpl = new Default_NLS();
 	
 	protected NLS() {
 		super();
@@ -40,11 +39,11 @@ public class NLS {
 	}		
 	
 	public static void initializeMessages(String bundleName, Class<?> clazz) {
-		if(EMFPlugin.IS_ECLIPSE_RUNNING) {
-			org.eclipse.osgi.util.NLS.initializeMessages(bundleName, clazz);
-		} else {
+//		if(EMFPlugin.IS_ECLIPSE_RUNNING) {
+//			org.eclipse.osgi.util.NLS.initializeMessages(bundleName, clazz);
+//		} else {
 			standaloneInitializeMessages(bundleName, clazz);
-		}			
+//		}			
 	}
 	
 	private static void standaloneInitializeMessages(String bundleName, Class<?> clazz) {
@@ -101,21 +100,21 @@ public class NLS {
 		}
 	}
 	
-	private static class OSGI_NLS implements IMessages {
-		public OSGI_NLS() {
-			super();
-		}
-
-		public String bind(String message, Object arg) {
-			return org.eclipse.osgi.util.NLS.bind(message, arg);
-		}
-
-		public String bind(String message, Object arg1, Object arg2) {
-			return org.eclipse.osgi.util.NLS.bind(message, arg1, arg2);
-		}
-
-		public String bind(String message, Object[] args) {
-			return org.eclipse.osgi.util.NLS.bind(message, args);
-		}
-	}		
+//	private static class OSGI_NLS implements IMessages {
+//		public OSGI_NLS() {
+//			super();
+//		}
+//
+//		public String bind(String message, Object arg) {
+//			return org.eclipse.osgi.util.NLS.bind(message, arg);
+//		}
+//
+//		public String bind(String message, Object arg1, Object arg2) {
+//			return org.eclipse.osgi.util.NLS.bind(message, arg1, arg2);
+//		}
+//
+//		public String bind(String message, Object[] args) {
+//			return org.eclipse.osgi.util.NLS.bind(message, args);
+//		}
+//	}		
 }

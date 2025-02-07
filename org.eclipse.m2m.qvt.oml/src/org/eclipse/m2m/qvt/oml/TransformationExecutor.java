@@ -20,6 +20,7 @@ import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.m2m.internal.qvt.oml.InternalTransformationExecutor.TracesAwareExecutor;
 import org.eclipse.m2m.internal.qvt.oml.TransformationExecutorBlackboxRegistry;
 import org.eclipse.m2m.internal.qvt.oml.evaluator.QVTEvaluationOptions;
+import org.eclipse.m2m.internal.qvt.oml.expressions.OperationalTransformation;
 import org.eclipse.m2m.qvt.oml.util.Trace;
 
 /**
@@ -113,7 +114,7 @@ public final class TransformationExecutor {
 	public Diagnostic loadTransformation() {
 		return fExector.loadTransformation();
 	}
-
+	
 	/**
 	 * Executes the transformation referred by this executor using the given
 	 * model parameters and execution context.

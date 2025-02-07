@@ -13,6 +13,7 @@ package org.eclipse.fennec.qvt.osgi.api;
 
 import java.util.List;
 
+import org.eclipse.emf.common.util.Diagnostic;
 import org.eclipse.emf.ecore.EObject;
 
 /**
@@ -23,6 +24,8 @@ import org.eclipse.emf.ecore.EObject;
  */
 public interface ModelTransformator {
 
+	public Diagnostic loadTransformation();
+	
 	/**
 	 * Starts the batch transformation programmatic 
 	 * http://wiki.eclipse.org/QVTOML/Examples/InvokeInJava

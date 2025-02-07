@@ -30,6 +30,7 @@ import org.eclipse.fennec.qvt.osgi.api.ModelTransformationConstants;
 import org.eclipse.fennec.qvt.osgi.api.ModelTransformationNamespace;
 import org.eclipse.fennec.qvt.osgi.api.ModelTransformator;
 import org.eclipse.fennec.qvt.osgi.util.JULLogWriter;
+import org.eclipse.m2m.internal.qvt.oml.expressions.OperationalTransformation;
 import org.eclipse.m2m.qvt.oml.BasicModelExtent;
 import org.eclipse.m2m.qvt.oml.ExecutionContextImpl;
 import org.eclipse.m2m.qvt.oml.ExecutionDiagnostic;
@@ -143,6 +144,10 @@ public class QVTModelTransformator implements ModelTransformator, ModelTransform
 		} catch (Exception e) {
 			throw new IllegalStateException("Error transforming model from " + inObjects.toString(), e);
 		}
+	}
+	
+	public Diagnostic loadTransformation() {
+		return executor.loadTransformation();
 	}
 
 	/* 

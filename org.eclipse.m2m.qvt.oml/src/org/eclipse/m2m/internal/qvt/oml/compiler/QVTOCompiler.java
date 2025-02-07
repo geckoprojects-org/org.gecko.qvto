@@ -27,7 +27,6 @@ import java.util.Map;
 import java.util.Set;
 import java.util.Stack;
 
-import org.eclipse.emf.common.EMFPlugin;
 import org.eclipse.emf.common.util.BasicEList;
 import org.eclipse.emf.common.util.Diagnostic;
 import org.eclipse.emf.common.util.DiagnosticChain;

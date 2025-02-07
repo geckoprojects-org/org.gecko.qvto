@@ -2,7 +2,9 @@
 
 -resolve.effective: active
 
--runrequires: bnd.identity;id='org.eclipse.fennec.qvt.tests'
+-runrequires: \
+	bnd.identity;id='org.eclipse.fennec.qvt.tests',\
+	bnd.identity;id='biz.aQute.gogo.commands.provider'
 	
 -runbundles.test: \
 	org.eclipse.fennec.qvt.tests;version=snapshot
@@ -24,13 +26,9 @@
 	org.eclipse.emf.common;version='[2.29.0,2.29.1)',\
 	org.eclipse.emf.ecore;version='[2.35.0,2.35.1)',\
 	org.eclipse.emf.ecore.xmi;version='[2.36.0,2.36.1)',\
-	org.osgi.service.cm;version='[1.6.1,1.6.2)',\
 	junit-jupiter-api;version='[5.10.3,5.10.4)',\
-	junit-jupiter-engine;version='[5.10.3,5.10.4)',\
 	junit-jupiter-params;version='[5.10.3,5.10.4)',\
 	junit-platform-commons;version='[1.10.3,1.10.4)',\
-	junit-platform-engine;version='[1.10.3,1.10.4)',\
-	junit-platform-launcher;version='[1.10.3,1.10.4)',\
 	org.apache.felix.scr;version='[2.2.12,2.2.13)',\
 	org.eclipse.equinox.supplement;version='[1.11.100,1.11.101)',\
 	org.eclipse.m2m.qvt.oml;version=snapshot,\
@@ -48,4 +46,21 @@
 	org.osgi.test.junit5.cm;version='[1.3.0,1.3.1)',\
 	org.eclipse.m2m.qvt.oml.common;version=snapshot,\
 	org.eclipse.fennec.qvt.component;version=snapshot,\
-	org.eclipse.fennec.qvt.tests;version=snapshot
+	org.eclipse.fennec.qvt.tests;version=snapshot,\
+	assertj-core;version='[3.26.3,3.26.4)',\
+	net.bytebuddy.byte-buddy;version='[1.14.18,1.14.19)',\
+	org.apache.aries.component-dsl.component-dsl;version='[1.2.2,1.2.3)',\
+	org.apache.aries.typedevent.bus;version='[0.0.3,0.0.4)',\
+	org.osgi.service.typedevent;version='[1.0.0,1.0.1)',\
+	org.osgi.util.pushstream;version='[1.1.0,1.1.1)',\
+	slf4j.api;version='[1.7.36,1.7.37)',\
+	slf4j.simple;version='[1.7.36,1.7.37)',\
+	aQute.libg;version='[7.0.0,7.0.1)',\
+	biz.aQute.gogo.commands.provider;version='[1.9.0,1.9.1)',\
+	org.apache.felix.gogo.runtime;version='[1.1.6,1.1.7)',\
+	org.eclipse.fennec.qvt.event;version=snapshot,\
+	junit-jupiter-engine;version='[5.10.3,5.10.4)',\
+	junit-platform-engine;version='[1.10.3,1.10.4)',\
+	junit-platform-launcher;version='[1.10.3,1.10.4)',\
+	org.apache.felix.gogo.command;version='[1.1.2,1.1.3)',\
+	org.apache.felix.gogo.shell;version='[1.1.4,1.1.5)'

@@ -1,0 +1,14 @@
+modeltype ECORE "strict" uses ecore('http://www.eclipse.org/emf/2002/Ecore');
+modeltype TEST uses "http://gecko.org/example/model/basic";
+
+transformation PersonToAddressTransformation(in rawIn : TEST, out rawOut : TEST);
+
+main() {
+	rawIn.rootObjects()[Person]->mapToAddress();
+}
+
+mapping Person::mapToAddress() : Address {
+	street := self.address.street;
+	city := self.address.city;
+	zip := self.address.zip;
+}

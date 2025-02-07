@@ -1,0 +1,11 @@
+-buildpath: \
+	org.apache.aries.typedevent.bus,\
+	org.osgi.service.typedevent,\
+	org.eclipse.m2m.qvt.oml;version=snapshot,\
+	org.eclipse.fennec.qvt.api,\
+	org.gecko.emf.osgi.api,\
+	org.eclipse.emf.ecore,\
+	org.eclipse.emf.common,\
+	org.osgi.util.converter,\
+	org.eclipse.ocl.ecore;version=snapshot,\
+	org.eclipse.ocl;version=snapshot

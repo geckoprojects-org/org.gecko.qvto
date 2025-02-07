@@ -88,10 +88,11 @@ public class CstTransformation implements Transformation {
 	}
 	
 	private void doLoad() {
-		fLoadDiagnostic = ExecutionDiagnosticImpl.createOkInstance();
+//		fLoadDiagnostic = ExecutionDiagnosticImpl.createOkInstance();
 		
 		try {
 			fCompiledUnit = getCompiledUnit();
+			fLoadDiagnostic = new ExecutionDiagnosticImpl(Diagnostic.OK, 0, "OK", new Object [] {fCompiledUnit});
 		} catch (MdaException e) {
 			fLoadDiagnostic = new ExecutionDiagnosticImpl(Diagnostic.ERROR,
 					ExecutionDiagnostic.TRANSFORMATION_LOAD_FAILED, NLS.bind(
@@ -101,7 +102,6 @@ public class CstTransformation implements Transformation {
 		}
 		
 		if (fCompiledUnit != null && EmfUtilDiagnostic.isSuccess(fLoadDiagnostic)) {
-			
 			ExecutionDiagnostic compilationDiagnostic = createCompilationDiagnostic(fCompiledUnit);
 			
 			if (EmfUtilDiagnostic.isSuccess(compilationDiagnostic)) {

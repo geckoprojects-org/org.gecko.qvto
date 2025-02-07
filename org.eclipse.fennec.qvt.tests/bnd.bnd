@@ -12,7 +12,12 @@
 	org.osgi.service.component;version=latest,\
 	org.gecko.emf.osgi.example.model.basic;version=latest,\
 	org.eclipse.fennec.qvt.api;version=snapshot,\
-	org.eclipse.fennec.qvt.component;version=snapshot
+	org.eclipse.fennec.qvt.component;version=snapshot,\
+	org.apache.aries.typedevent.bus,\
+	org.osgi.service.typedevent,\
+	org.eclipse.fennec.qvt.event,\
+	org.osgi.util.promise,\
+	org.osgi.util.function
 	
 Bundle-Version: 2.0.1.SNAPSHOT
 
