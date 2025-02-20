@@ -14,7 +14,9 @@ package org.eclipse.fennec.qvt.osgi.component;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
 import java.util.logging.Level;
@@ -22,20 +24,29 @@ import java.util.logging.Logger;
 
 import org.eclipse.emf.common.util.Diagnostic;
 import org.eclipse.emf.common.util.ECollections;
+import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.common.util.URI;
+import org.eclipse.emf.ecore.EClass;
+import org.eclipse.emf.ecore.EClassifier;
 import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.ecore.EOperation;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.fennec.qvt.osgi.annotations.ModelTransformatorConfig;
 import org.eclipse.fennec.qvt.osgi.api.ModelTransformationConstants;
 import org.eclipse.fennec.qvt.osgi.api.ModelTransformationNamespace;
 import org.eclipse.fennec.qvt.osgi.api.ModelTransformator;
 import org.eclipse.fennec.qvt.osgi.util.JULLogWriter;
-import org.eclipse.m2m.internal.qvt.oml.expressions.OperationalTransformation;
+import org.eclipse.m2m.internal.qvt.oml.compiler.CompiledUnit;
+import org.eclipse.m2m.internal.qvt.oml.expressions.EntryOperation;
+import org.eclipse.m2m.internal.qvt.oml.expressions.Module;
 import org.eclipse.m2m.qvt.oml.BasicModelExtent;
 import org.eclipse.m2m.qvt.oml.ExecutionContextImpl;
 import org.eclipse.m2m.qvt.oml.ExecutionDiagnostic;
 import org.eclipse.m2m.qvt.oml.ModelExtent;
 import org.eclipse.m2m.qvt.oml.TransformationExecutor;
+import org.eclipse.ocl.ecore.LoopExp;
+import org.eclipse.ocl.ecore.OCLExpression;
+import org.eclipse.ocl.types.BagType;
 import org.gecko.emf.osgi.annotation.require.RequireEMF;
 import org.osgi.annotation.bundle.Capability;
 import org.osgi.framework.Bundle;
@@ -49,16 +60,16 @@ import org.osgi.service.component.annotations.ConfigurationPolicy;
 import org.osgi.service.component.annotations.Deactivate;
 import org.osgi.service.component.annotations.Reference;
 import org.osgi.service.metatype.annotations.Designate;
-
 /**
  * QVT Implementation of a model transformator
+ * 
  * @author Mark Hoffmann
  * @author Juergen Albert
  * @since 20.10.2017
  */
 @RequireConfigurationAdmin
 @RequireEMF
-@Capability( namespace = ModelTransformationNamespace.NAMESPACE, name = "qvto")
+@Capability(namespace = ModelTransformationNamespace.NAMESPACE, name = "qvto")
 @Component(name = ModelTransformationConstants.TRANSFORMATOR_COMPONENT_NAME, service = ModelTransformator.class, configurationPolicy = ConfigurationPolicy.REQUIRE, immediate = true)
 @Designate(ocd = ModelTransformatorConfig.class)
 public class QVTModelTransformator implements ModelTransformator, ModelTransformationConstants {
@@ -71,23 +82,27 @@ public class QVTModelTransformator implements ModelTransformator, ModelTransform
 
 	@Reference(name = "qvt.model")
 	private ResourceSet resourceSet;
-	
+
 	private BundleContext bundleContext;
 	
+	Map<EClassifier,EClassifier> supported = new HashMap<>();
+
 	/**
-	 * Initializes the transformation engine and does a warm-up for the executor to reduce execution time 
-	 * @throws URISyntaxException 
+	 * Initializes the transformation engine and does a warm-up for the executor to
+	 * reduce execution time
+	 * 
+	 * @throws URISyntaxException
 	 */
 	@Activate
 	void init(ComponentContext componentContext, ModelTransformatorConfig config) throws URISyntaxException {
 		this.bundleContext = componentContext.getBundleContext();
-		if(!config.qvt_template_uri().trim().isEmpty()) {
+		if (!config.qvt_template_uri().trim().isEmpty()) {
 			templateUri = URI.createURI(config.qvt_template_uri());
-		} 
-		if(templateUri == null) {
+		}
+		if (templateUri == null) {
 			templateUri = getTemplateUri(config.qvt_template_path());
 		}
-		if ( templateUri == null) {
+		if (templateUri == null) {
 			throw new IllegalArgumentException("Error initializing QVT helper without template or/and resource set");
 		}
 		executor = new TransformationExecutor(templateUri, resourceSet.getPackageRegistry());
@@ -102,8 +117,31 @@ public class QVTModelTransformator implements ModelTransformator, ModelTransform
 			logger.log(Level.SEVERE, String.format("Error loading transformation template: %s", msg));
 			throw new IllegalStateException(msg);
 		}
+		Diagnostic diag = executor.loadTransformation();
+		CompiledUnit compileUnit = (CompiledUnit) diag.getData().get(0);
+		Module module = compileUnit.getModules().get(0);
+		EList<EOperation> operations = module.getEOperations();
+		for (EOperation operation : operations) {
+			if (operation instanceof EntryOperation eop) {
+				EList<OCLExpression> ocls = eop.getBody().getContent();
+				for (OCLExpression ocl : ocls) {
+
+					EClassifier source;
+					if (ocl instanceof LoopExp loopExp) {
+						source = loopExp.getIterator().get(0).getType();
+						if (ocl.getEType() instanceof BagType bType) {
+							EClassifier target = (EClassifier) bType.getElementType();
+							
+							supported.put(source, target);
+							
+							System.out.println("++++ " + compileUnit.getName() + " - Source: " + source.getName()
+									+ " Target: " + target.getName());
+						}
+					}
+				}
+			}
+		}
 	}
-	
 
 	@Deactivate
 	public void dispose() {
@@ -116,9 +154,12 @@ public class QVTModelTransformator implements ModelTransformator, ModelTransform
 		}
 	}
 
-	/* 
+	/*
 	 * (non-Javadoc)
-	 * @see org.gecko.qvt.osgi.api.ModelTransformator#startTransformations(java.util.List)
+	 * 
+	 * @see
+	 * org.gecko.qvt.osgi.api.ModelTransformator#startTransformations(java.util.
+	 * List)
 	 */
 	@SuppressWarnings("unchecked")
 	@Override
@@ -128,31 +169,34 @@ public class QVTModelTransformator implements ModelTransformator, ModelTransform
 		}
 		try {
 			// create the input extent with its initial contents
-			ModelExtent input = new BasicModelExtent(inObjects);    
+			ModelExtent input = new BasicModelExtent(inObjects);
 			// create an empty extent to catch the output
 			ModelExtent output = new BasicModelExtent();
 			ExecutionDiagnostic result = executor.execute(context, input, output);
-			if(result.getSeverity() == Diagnostic.OK) {
+			if (result.getSeverity() == Diagnostic.OK) {
 				// the output objects got captured in the output extent
 				List<? extends EObject> outObjects = output.getContents();
 				logger.fine("QVT transformation succeeded with: " + outObjects.size() + " elements");
 				return (List<T>) outObjects;
 			} else {
 				String message = getDiagnosticMessage(result);
-				throw new IllegalStateException(String.format("Error executing transformation because of diagnostic errors: %s", message));
+				throw new IllegalStateException(
+						String.format("Error executing transformation because of diagnostic errors: %s", message));
 			}
 		} catch (Exception e) {
 			throw new IllegalStateException("Error transforming model from " + inObjects.toString(), e);
 		}
 	}
-	
+
 	public Diagnostic loadTransformation() {
 		return executor.loadTransformation();
 	}
 
-	/* 
+	/*
 	 * (non-Javadoc)
-	 * @see org.gecko.qvt.osgi.api.ModelTransformator#startTransformation(java.util.List)
+	 * 
+	 * @see
+	 * org.gecko.qvt.osgi.api.ModelTransformator#startTransformation(java.util.List)
 	 */
 	@SuppressWarnings("unchecked")
 	@Override
@@ -165,36 +209,40 @@ public class QVTModelTransformator implements ModelTransformator, ModelTransform
 		return null;
 	}
 
-	/* 
+	/*
 	 * (non-Javadoc)
-	 * @see org.gecko.qvt.osgi.api.ModelTransformator#startTransformation(org.eclipse.emf.ecore.EObject)
+	 * 
+	 * @see
+	 * org.gecko.qvt.osgi.api.ModelTransformator#startTransformation(org.eclipse.emf
+	 * .ecore.EObject)
 	 */
 	@Override
 	public <T extends EObject> T doTransformation(EObject inObject) {
 		return doTransformation(ECollections.singletonEList(inObject));
 	}
-	
-    /**
-     * Returns a message for a diagnostic
-     * @param diagnostic the {@link Diagnostic}
-     */
-    private String getDiagnosticMessage(Diagnostic diagnostic) {
-        StringBuilder message = new StringBuilder();
-        createValidationMessage("", diagnostic, message);
-        return message.toString();
-    }
-    
-    private void createValidationMessage(String indent, Diagnostic diagnostic, StringBuilder message) {
-    	String separator = System.getProperty("line.separator");
-        message.append(String.format(VALIDATION_MESSAGE, indent, diagnostic.getSource(), diagnostic.getMessage()));
-        message.append(separator);
-        diagnostic.getChildren().forEach(d -> createValidationMessage("  " + indent , d, message));
-    }
-    
-    /**
-	 * Returns the bundle from the given bsn version string.
-	 * This parameter is expected in the format:
-	 * <bsn>:<version>, where the version part is optional.
+
+	/**
+	 * Returns a message for a diagnostic
+	 * 
+	 * @param diagnostic the {@link Diagnostic}
+	 */
+	private String getDiagnosticMessage(Diagnostic diagnostic) {
+		StringBuilder message = new StringBuilder();
+		createValidationMessage("", diagnostic, message);
+		return message.toString();
+	}
+
+	private void createValidationMessage(String indent, Diagnostic diagnostic, StringBuilder message) {
+		String separator = System.getProperty("line.separator");
+		message.append(String.format(VALIDATION_MESSAGE, indent, diagnostic.getSource(), diagnostic.getMessage()));
+		message.append(separator);
+		diagnostic.getChildren().forEach(d -> createValidationMessage("  " + indent, d, message));
+	}
+
+	/**
+	 * Returns the bundle from the given bsn version string. This parameter is
+	 * expected in the format: <bsn>:<version>, where the version part is optional.
+	 * 
 	 * @param bsnVersionString the {@link String} in the format from above
 	 */
 	private Bundle getBundle(String bsnVersionString) {
@@ -205,9 +253,10 @@ public class QVTModelTransformator implements ModelTransformator, ModelTransform
 			version = Version.parseVersion(bsnVersion[1]);
 		}
 		Set<Bundle> candidates = new TreeSet<>(new Comparator<Bundle>() {
-	
-			/* 
+
+			/*
 			 * (non-Javadoc)
+			 * 
 			 * @see java.util.Comparator#compare(java.lang.Object, java.lang.Object)
 			 */
 			@Override
@@ -229,7 +278,8 @@ public class QVTModelTransformator implements ModelTransformator, ModelTransform
 			}
 		}
 		if (candidates.isEmpty()) {
-			throw new IllegalStateException("There is no bundle with this bsn and version '" + bsn + ":" + version + "'");
+			throw new IllegalStateException(
+					"There is no bundle with this bsn and version '" + bsn + ":" + version + "'");
 		} else {
 			return candidates.stream().findFirst().get();
 		}
@@ -237,14 +287,15 @@ public class QVTModelTransformator implements ModelTransformator, ModelTransform
 
 	/**
 	 * Loads the template from the given path
-	 * @throws URISyntaxException 
+	 * 
+	 * @throws URISyntaxException
 	 */
 	private URI getTemplateUri(String templatePath) throws URISyntaxException {
 		String[] segments = templatePath.split("/");
 		URL url = bundleContext.getBundle().getResource(templatePath);
-		if(url == null) {
+		if (url == null) {
 			if (segments.length < 2) {
-				
+
 				throw new IllegalStateException("There are at least two segments expected in the ecore path");
 			}
 			Bundle bundle = getBundle(segments[0]);
@@ -255,7 +306,32 @@ public class QVTModelTransformator implements ModelTransformator, ModelTransform
 			}
 		}
 		java.net.URI uri = url.toURI();
-		return URI.createHierarchicalURI(uri.getScheme(), uri.getAuthority(), null, uri.getPath().split("/"), null, null);
+		return URI.createHierarchicalURI(uri.getScheme(), uri.getAuthority(), null, uri.getPath().split("/"), null,
+				null);
+	}
+
+	@Override
+	public Map<EClassifier,EClassifier> getSupportedClasses() {
+		return supported;
+		// TODO Auto-generated method stub
+		// Achtung bei Proxy -> resolven
+//		EObjectResolvingEList<EClass> list = new EObjectResolvingEList<>(getClass(), null, 0)
+//		EClass i ;
+//		i.eIsProxy(); 
+//		Eclass EcoreUtil.resolve(i, resourceSet);
+//		return null;
+	}
+
+	@Override
+	public boolean canHandle(EClass source, EClass target) {
+		EClassifier supportedTarget = supported.get(source);
+		if(supportedTarget == null) {
+			return false;
+		}
+		if(supportedTarget instanceof EClass eClass) {
+			return eClass.isSuperTypeOf(target);
+		}
+		return false;
 	}
 
 }

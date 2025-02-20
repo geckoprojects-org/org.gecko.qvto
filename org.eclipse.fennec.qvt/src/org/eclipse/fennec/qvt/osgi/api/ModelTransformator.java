@@ -12,8 +12,11 @@
 package org.eclipse.fennec.qvt.osgi.api;
 
 import java.util.List;
+import java.util.Map;
 
 import org.eclipse.emf.common.util.Diagnostic;
+import org.eclipse.emf.ecore.EClass;
+import org.eclipse.emf.ecore.EClassifier;
 import org.eclipse.emf.ecore.EObject;
 
 /**
@@ -52,4 +55,10 @@ public interface ModelTransformator {
 	 * @param inObject the object to be transformed
 	 */
 	public <T extends EObject> T doTransformation(List<? extends EObject> inObjects);
+	/**
+	 * 
+	 * @return source , target
+	 */
+	public Map<EClassifier,EClassifier> getSupportedClasses();
+	public boolean canHandle(EClass source, EClass target);
 }
